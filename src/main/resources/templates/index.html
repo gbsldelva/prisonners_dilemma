@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Iterative Prisoner's Dilemma</title>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.2/dist/sockjs.min.js"></script>
+</head>
+<body>
+    <h1>Iterative Prisoner's Dilemma Game</h1>
+    
+    <div id="login">
+        <input type="text" id="username" placeholder="Enter your username" />
+        <button onclick="connect()">Connect</button>
+    </div>
+
+    <div id="waiting" style="display:none;">
+        <p>No other user connected yet, please wait...</p>
+        <ul id="availablePlayers"></ul>
+    </div>
+
+    <div id="game" style="display:none;">
+        <p>Game Started!</p>
+        <p>Round: <span id="roundNumber">0</span></p>
+        <p>Your Score: <span id="yourScore">0</span> | Opponent Score: <span id="opponentScore">0</span></p>
+        <div id="choices">
+            <button onclick="makeChoice('C')">Cooperate</button>
+            <button onclick="makeChoice('D')">Defect</button>
+        </div>
+    </div>
+
+    <div id="endGame" style="display:none;">
+        <h2>Game Over!</h2>
+        <p>Final Score: You <span id="finalYourScore">0</span> - Opponent <span id="finalOpponentScore">0</span></p>
+    </div>
+
+    <script>
+        var stompClient = null;
+        var gameId = null;
+        var username = '';
+        var totalIterations = 0;
+        var currentRound = 0;
+
+        function connect() {
+            username = document.getElementById('username').value;
+            var socket = new SockJS('http://localhost:8080/ws');
+            stompClient = Stomp.over(socket);
+
+            // Connect and then subscribe to game-related topics
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+
+                // Subscribe to the game start topic
+                stompClient.subscribe('/user/queue/gameStart', function (message) {
+                    gameId = message.body;
+                    document.getElementById('waiting').style.display = 'none';
+                    document.getElementById('game').style.display = 'block';
+                    totalIterations = parseInt(prompt("Enter number of iterations:", "5"));
+                    stompClient.send("/app/startGame", {}, gameId);
+                });
+
+                // Subscribe to the score update topic
+                stompClient.subscribe('/user/queue/scoreUpdate', function (message) {
+                    var scores = message.body.split('-');
+                    document.getElementById('yourScore').innerText = scores[0];
+                    document.getElementById('opponentScore').innerText = scores[1];
+                    currentRound++;
+                    document.getElementById('roundNumber').innerText = currentRound;
+
+                    if (currentRound < totalIterations) {
+                        // Next round
+                        document.getElementById('choices').style.display = 'block'; // Re-enable choices
+                    } else {
+                        // Game over
+                        document.getElementById('game').style.display = 'none';
+                        stompClient.send("/app/endGame", {}, gameId); // Optional
+                    }
+                });
+
+                // Subscribe to the game end topic
+                stompClient.subscribe('/user/queue/gameEnd', function (message) {
+                    document.getElementById('endGame').style.display = 'block';
+                    var finalScores = message.body.split('-');
+                    document.getElementById('finalYourScore').innerText = finalScores[0];
+                    document.getElementById('finalOpponentScore').innerText = finalScores[1];
+                });
+
+                // Subscribe to the available players topic
+                stompClient.subscribe('/topic/availablePlayers', function (message) {
+                    updateAvailablePlayers(JSON.parse(message.body));
+                });
+
+                // Send connect message with username
+                stompClient.send("/app/connectUser", {}, JSON.stringify({username: username}));
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('waiting').style.display = 'block';
+            }, function(error) {
+                console.log("Error connecting: ", error);
+            });
+        }
+
+        function updateAvailablePlayers(players) {
+            const availablePlayersList = document.getElementById('availablePlayers');
+            availablePlayersList.innerHTML = ''; // Clear previous players
+            players.forEach(player => {
+                const li = document.createElement('li');
+                li.textContent = player;
+                // Optionally add a button to invite
+                const inviteButton = document.createElement('button');
+                inviteButton.textContent = 'Invite';
+                inviteButton.onclick = () => sendInvitation(player);
+                li.appendChild(inviteButton);
+                availablePlayersList.appendChild(li);
+            });
+        }
+
+        function sendInvitation(opponent) {
+            alert(`Invitation sent to ${opponent}`);
+            // Send invitation logic to the server can be implemented here
+        }
+
+        function makeChoice(choice) {
+            if (stompClient && stompClient.connected) {
+                stompClient.send("/app/makeChoice", {}, JSON.stringify({username: username, choice: choice}));
+                // Disable buttons until the next round
+                document.getElementById('choices').style.display = 'none';
+            } else {
+                console.error("Unable to send choice. StompClient is not connected.");
+            }
+        }
+
+    </script>
+</body>
+</html>

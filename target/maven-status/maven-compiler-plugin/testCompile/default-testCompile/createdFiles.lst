@@ -1,0 +1,7 @@
+fr\uga\m1miage\pc\controller\GameControllerTest.class
+fr\uga\m1miage\pc\controller\WebSocketControllerTest.class
+fr\uga\m1miage\pc\config\WebSocketConfigTest.class
+fr\uga\m1miage\pc\model\ChoiceMessageTest.class
+fr\uga\m1miage\pc\model\PlayerTest.class
+fr\uga\m1miage\pc\model\GameSessionTest.class
+fr\uga\m1miage\pc\model\MessageTest.class
