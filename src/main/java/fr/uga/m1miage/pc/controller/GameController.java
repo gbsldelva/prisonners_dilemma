@@ -5,17 +5,17 @@ import fr.uga.m1miage.pc.model.GameSession;
 import fr.uga.m1miage.pc.model.Invitation;
 import fr.uga.m1miage.pc.model.InvitationAnswer;
 import fr.uga.m1miage.pc.model.Player;
+import fr.uga.m1miage.pc.model.Result;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
 
 @Controller
 public class GameController {
@@ -23,124 +23,105 @@ public class GameController {
  @Autowired
  private SimpMessagingTemplate messagingTemplate;
 
- // Queue to hold waiting players
- private ConcurrentLinkedQueue<Player> waitingPlayers = new ConcurrentLinkedQueue<>();
-
+ private Map<String, Integer> invitationIterationMap = new LinkedHashMap<>();
  // Map to hold active game sessions
- private ConcurrentHashMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
+ private static final ConcurrentMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
 
  @MessageMapping("/invite")
  public void invitePlayer(@Payload Invitation invitation) {
+	 invitationIterationMap.put(invitation.getFromPlayer() + "&" + invitation.getToUsername(), invitation.getIteration());
      // Send the message to the user
 	messagingTemplate.convertAndSendToUser(invitation.getToUsername(), "/queue/invitation",invitation.getFromPlayer());
  }
  
- @MessageMapping("invitationAnswer")
+ @MessageMapping("/invitationAnswer")
  public void playerResponseToInvitation(@Payload InvitationAnswer answer) {
 	 messagingTemplate.convertAndSend("/queue/gameStartHandler", answer.getMessage());
- }
- 
- @MessageMapping("/connectPlayer")
- public void connect(@Payload Player player, @Header("simpSessionId") String sessionId) {
-     player.setSessionId(sessionId);
-     waitingPlayers.add(player);
-     pairingPlayers();
+	 if (answer.getMessage().equals("confirmed"))
+		 pairingPlayers(answer.getPlayerUsername(), answer.getOponentUsername());
  }
 
- private void pairingPlayers() {
-     if (waitingPlayers.size() >= 2) {
-         Player player1 = waitingPlayers.poll();
-         Player player2 = waitingPlayers.poll();
-         GameSession session = new GameSession();
-         session.setPlayer1(player1);
-         session.setPlayer2(player2);
-         session.setCurrentIteration(0);
-         // Assign a unique session ID, e.g., using current timestamp or UUID
-         String gameId = "game-" + System.currentTimeMillis();
-         activeGames.put(gameId, session);
-
-         // Notify both players that the game has started
-         messagingTemplate.convertAndSendToUser(player1.getSessionId(), "/queue/gameStart", gameId);
-         messagingTemplate.convertAndSendToUser(player2.getSessionId(), "/queue/gameStart", gameId);
-     }
+ private void pairingPlayers(String player1Username, String player2Username) {
+     Player player1 = WebSocketController.connectedPlayers.get(player1Username);
+     Player player2 = WebSocketController.connectedPlayers.get(player2Username);
+     GameSession session = new GameSession(player1, player2);
+     String key = player1.getUsername() + "&" + player2.getUsername();
+     if (!invitationIterationMap.containsKey(key))
+    	 key = player2.getUsername() + "&" + player1.getUsername();
+     session.setTotalIterations(invitationIterationMap.get(key));
+     String gameId = player1.getUsername() + "VS" + player2.getUsername();
+     activeGames.put(gameId, session);
  }
-
-// @MessageMapping("/startGame")
-// public void startGame(@Payload String gameId, @Header("simpSessionId") String sessionId) {
-//     GameSession session = activeGames.get(gameId);
-//     if (session != null) {
-//         session.setTotalIterations(session.getTotalIterations());
-//         // Notify players to set number of iterations
-//     }
-// }
 
  @MessageMapping("/makeChoice")
- public void makeChoice(@Payload ChoiceMessage choiceMessage, @Header("simpSessionId") String sessionId) {
+ public void makeChoice(@Payload ChoiceMessage choiceMessage) {
      // Find the game session for this player
-     GameSession session = findGameSession(sessionId);
-     if (session != null) {
-         session.getChoices().put(choiceMessage.getUsername(), choiceMessage.getChoice());
-
-         // If both players have made their choices, compute scores
-         if (session.getChoices().size() == 2) {
-             computeScores(session);
-             // Reset choices for next iteration
-             session.getChoices().clear();
-             session.setCurrentIteration(session.getCurrentIteration() + 1);
-
-             // Check if game has ended
-             if (session.getCurrentIteration() >= session.getTotalIterations()) {
-                 endGame(session);
-             }
-         }
+     GameSession session = findGameSession(choiceMessage.getUsername());
+     
+     if (session == null) {
+    	 return; 
+     }
+     if (session.getPlayer1().getUsername().equals(choiceMessage.getUsername()))
+     	session.getPlayer1Choices().add(choiceMessage.getChoice());
+	else
+ 		session.getPlayer2Choices().add(choiceMessage.getChoice());
+     if (session.getPlayer1Choices().size() == session.getPlayer2Choices().size() && session.getPlayer1Choices().size() == session.getCurrentIteration() + 1) {
+    	 session.incrementIteration();
+    	 computeScores(session);
      }
  }
 
- private GameSession findGameSession(String sessionId) {
-     return activeGames.values().stream()
-             .filter(session -> session.getPlayer1().getSessionId().equals(sessionId) ||
-                     session.getPlayer2().getSessionId().equals(sessionId))
-             .findFirst()
-             .orElse(null);
+ public GameSession findGameSession(String username) {
+     GameSession result = null;
+	 for (Map.Entry<String, GameSession> entry : activeGames.entrySet()) {
+    	 if (entry.getKey().contains(username)) {
+    		 result = entry.getValue(); 
+    	 }
+     }
+     return result;
  }
 
  private void computeScores(GameSession session) {
-     String choice1 = session.getChoices().get(session.getPlayer1().getUsername());
-     String choice2 = session.getChoices().get(session.getPlayer2().getUsername());
+     String choice1 = session.getPlayer1Choices().get(session.getPlayer1Choices().size() - 1);
+     String choice2 = session.getPlayer2Choices().get(session.getPlayer2Choices().size() - 1);
 
      int score1 = 0;
      int score2 = 0;
 
-     if (choice1.equals("C") && choice2.equals("C")) {
-         score1 += 3;
-         score2 += 3;
-     } else if (choice1.equals("C") && choice2.equals("D")) {
-         score1 += 1;
-         score2 += 5;
-     } else if (choice1.equals("D") && choice2.equals("C")) {
-         score1 += 5;
-         score2 += 1;
-     } else if (choice1.equals("D") && choice2.equals("D")) {
-         score1 += 0;
-         score2 += 0;
+     if (choice1.equals("c") && choice2.equals("c")) {
+         score1 = 3;
+         score2 = 3;
+     } else if (choice1.equals("c") && choice2.equals("t")) {
+         score2 = 5;
+     } else if (choice1.equals("t") && choice2.equals("c")) {
+         score1 = 5;
+     } else if (choice1.equals("t") && choice2.equals("t")) {
+         score1 = 1;
+         score2 = 1;
      }
 
      session.getPlayer1().setScore(session.getPlayer1().getScore() + score1);
      session.getPlayer2().setScore(session.getPlayer2().getScore() + score2);
-
-     // Send updated scores to both players
-     messagingTemplate.convertAndSendToUser(session.getPlayer1().getSessionId(), "/queue/scoreUpdate",
-             session.getPlayer1().getScore() + "-" + session.getPlayer2().getScore());
-     messagingTemplate.convertAndSendToUser(session.getPlayer2().getSessionId(), "/queue/scoreUpdate",
-             session.getPlayer2().getScore() + "-" + session.getPlayer1().getScore());
+     
+     if (session.getCurrentIteration() == session.getTotalIterations() - 1) {
+         endGame(session);
+     } else {
+    	 Result result = new Result();
+    	 result.setScore(session.getPlayer1().getUsername() + "(" + session.getPlayer1().getScore() + ") - " + session.getPlayer2().getUsername() + "(" + session.getPlayer2().getScore() + ")");
+    	 result.setStatus("En cours");
+    	 result.setParti((session.getCurrentIteration() + 1) + "/" + session.getTotalIterations());
+    	// Send updated scores to both players
+         messagingTemplate.convertAndSend("/queue/scoreUpdate", result.toJson()); 
+     }
  }
 
  void endGame(GameSession session) {
-     // Notify players that the game has ended
-     messagingTemplate.convertAndSendToUser(session.getPlayer1().getSessionId(), "/queue/gameEnd",
-             "Final Score: " + session.getPlayer1().getScore() + " - " + session.getPlayer2().getScore());
-     messagingTemplate.convertAndSendToUser(session.getPlayer2().getSessionId(), "/queue/gameEnd",
-             "Final Score: " + session.getPlayer2().getScore() + " - " + session.getPlayer1().getScore());
+	 Result result = new Result();
+	 result.setScore(session.getPlayer1().getUsername() + "(" + session.getPlayer1().getScore() + ") - " + session.getPlayer2().getUsername() + "(" + session.getPlayer2().getScore() + ")");
+	 result.setStatus("Terminé");
+	 result.setParti(session.getTotalIterations() + "/" + session.getTotalIterations());
+	// Send updated scores to both players
+     messagingTemplate.convertAndSend("/queue/scoreUpdate", result.toJson());
 
      // Remove the game session
      activeGames.values().removeIf(s -> s.equals(session));

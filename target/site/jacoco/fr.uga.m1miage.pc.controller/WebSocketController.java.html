@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebSocketController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.controller</a> &gt; <span class="el_source">WebSocketController.java</span></div><h1>WebSocketController.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.controller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import fr.uga.m1miage.pc.model.Player;
+
 import org.springframework.context.event.EventListener;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -16,43 +21,55 @@ import java.util.Set;
 public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
-<span class="fc" id="L19">    private final Set&lt;String&gt; connectedUsers = new HashSet&lt;&gt;();</span>
+<span class="pc" id="L24">    private final Set&lt;String&gt; connectedUsers = new HashSet&lt;&gt;();</span>
+<span class="pc" id="L25">    private final Map&lt;String, String&gt; userSessionMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L26">    protected static Map&lt;String, Player&gt; connectedPlayers = new HashMap&lt;&gt;();</span>
 
-<span class="fc" id="L21">    public WebSocketController(SimpMessagingTemplate messagingTemplate) {</span>
-<span class="fc" id="L22">        this.messagingTemplate = messagingTemplate;</span>
-<span class="fc" id="L23">    }</span>
+<span class="fc" id="L28">    public WebSocketController(SimpMessagingTemplate messagingTemplate) {</span>
+<span class="fc" id="L29">        this.messagingTemplate = messagingTemplate;</span>
+<span class="fc" id="L30">    }</span>
 
+<span class="nc" id="L32">    public WebSocketController() {</span>
+<span class="nc" id="L33">		this.messagingTemplate = null;</span>
+<span class="nc" id="L34">	}</span>
+
+	// Notify clients when a new user connects
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         // Notify all clients about the new user
-<span class="fc" id="L28">        updateAvailableUsers();</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L40">        updateAvailableUsers();</span>
+<span class="fc" id="L41">    }</span>
 
- // This method is called when a WebSocket session is disconnected
+    // Handle user disconnect
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-<span class="nc" id="L34">        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());</span>
+<span class="nc" id="L46">        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());</span>
 
         // Retrieve the username from the session
-<span class="nc" id="L37">        String username = null;</span>
-<span class="nc" id="L38">        Map&lt;String, Object&gt; attributes = headerAccessor.getSessionAttributes();</span>
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (attributes != null)</span>
-<span class="nc" id="L40">        	username = (String) attributes.get(&quot;username&quot;);</span>
+<span class="nc" id="L49">        String username = null;</span>
+<span class="nc" id="L50">        Map&lt;String, Object&gt; attributes = headerAccessor.getSessionAttributes();</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (attributes != null)</span>
+<span class="nc" id="L52">            username = (String) attributes.get(&quot;username&quot;);</span>
 
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (username != null) {</span>
-<span class="nc" id="L43">            connectedUsers.remove(username); // Remove user from connected users</span>
-<span class="nc" id="L44">            updateAvailableUsers(); // Call a method to update available users for other clients</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (username != null) {</span>
+<span class="nc" id="L55">            connectedUsers.remove(username); // Remove user from connected users</span>
+<span class="nc" id="L56">            connectedPlayers.remove(username);</span>
+<span class="nc" id="L57">            userSessionMap.values().remove(username); // Remove from session map</span>
+<span class="nc" id="L58">            updateAvailableUsers(); // Call a method to update available users for other clients</span>
         }
-<span class="nc" id="L46">    }</span>
+<span class="nc" id="L60">    }</span>
 
+    // Handle a new user connecting with their username and sessionId
     @MessageMapping(&quot;/connectUser&quot;)
-    public void connect(String username) {
-<span class="fc" id="L50">        connectedUsers.add(username);</span>
-<span class="fc" id="L51">        updateAvailableUsers();</span>
-<span class="fc" id="L52">    }</span>
+    public void connectUser(@Payload Player player) {
+<span class="nc" id="L65">        connectedUsers.add(player.toJson());</span>
+<span class="nc" id="L66">        connectedPlayers.put(player.getUsername(), player);</span>
+<span class="nc" id="L67">        userSessionMap.put(player.getSessionId(), player.getUsername());</span>
+<span class="nc" id="L68">        updateAvailableUsers();</span>
+<span class="nc" id="L69">    }</span>
 
     private void updateAvailableUsers() {
-<span class="fc" id="L55">        messagingTemplate.convertAndSend(&quot;/topic/availablePlayers&quot;, connectedUsers);</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L72">        messagingTemplate.convertAndSend(&quot;/topic/availablePlayers&quot;, connectedUsers);</span>
+<span class="fc" id="L73">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

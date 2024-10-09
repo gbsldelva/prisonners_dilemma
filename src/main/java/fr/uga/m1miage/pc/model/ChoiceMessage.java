@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class ChoiceMessage {
     private String username;
-    private String choice; // "C" or "D"
+    private String choice; // "c" or "t"
 
     public ChoiceMessage(String username, String choice) {
         this.username = username;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameSession.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.model</a> &gt; <span class="el_source">GameSession.java</span></div><h1>GameSession.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class GameSession {
@@ -9,83 +9,91 @@ public class GameSession {
     private Player player2;
     private int totalIterations;
     private int currentIteration;
-    private Map&lt;String, String&gt; choices;
+    List&lt;String&gt; player1Choices;
+    List&lt;String&gt; player2Choices;
 
-<span class="fc" id="L14">    public GameSession() {</span>
-<span class="fc" id="L15">        this.choices = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L16">    }</span>
-
-<span class="fc" id="L18">    public GameSession(Player player1, Player player2) {</span>
-<span class="fc" id="L19">        this.player1 = player1;</span>
-<span class="fc" id="L20">        this.player2 = player2;</span>
-<span class="fc" id="L21">        this.choices = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L22">    }</span>
+<span class="fc" id="L15">    public GameSession(Player player1, Player player2) {</span>
+<span class="fc" id="L16">        this.player1 = player1;</span>
+<span class="fc" id="L17">        this.player2 = player2;</span>
+<span class="fc" id="L18">        player1Choices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L19">        player2Choices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L20">    }</span>
 
     public Player getPlayer1() {
-<span class="fc" id="L25">        return player1;</span>
+<span class="fc" id="L23">        return player1;</span>
     }
 
     public void setPlayer1(Player player1) {
-<span class="fc" id="L29">        this.player1 = player1;</span>
-<span class="fc" id="L30">    }</span>
+<span class="nc" id="L27">        this.player1 = player1;</span>
+<span class="nc" id="L28">    }</span>
 
     public Player getPlayer2() {
-<span class="fc" id="L33">        return player2;</span>
+<span class="fc" id="L31">        return player2;</span>
     }
 
     public void setPlayer2(Player player2) {
-<span class="fc" id="L37">        this.player2 = player2;</span>
-<span class="fc" id="L38">    }</span>
+<span class="nc" id="L35">        this.player2 = player2;</span>
+<span class="nc" id="L36">    }</span>
 
     public int getTotalIterations() {
-<span class="fc" id="L41">        return totalIterations;</span>
+<span class="fc" id="L39">        return totalIterations;</span>
     }
 
     public void setTotalIterations(int totalIterations) {
-<span class="fc" id="L45">        this.totalIterations = totalIterations;</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L43">        this.totalIterations = totalIterations;</span>
+<span class="fc" id="L44">    }</span>
 
     public int getCurrentIteration() {
-<span class="fc" id="L49">        return currentIteration;</span>
+<span class="fc" id="L47">        return currentIteration;</span>
     }
 
     public void setCurrentIteration(int currentIteration) {
-<span class="fc" id="L53">        this.currentIteration = currentIteration;</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L51">        this.currentIteration = currentIteration;</span>
+<span class="fc" id="L52">    }</span>
+    
+    public List&lt;String&gt; getPlayer1Choices() {
+<span class="fc" id="L55">		return player1Choices;</span>
+	}
 
-    public Map&lt;String, String&gt; getChoices() {
-<span class="fc" id="L57">        return choices;</span>
-    }
+	public void setPlayer1Choices(List&lt;String&gt; player1Choices) {
+<span class="fc" id="L59">		this.player1Choices = player1Choices;</span>
+<span class="fc" id="L60">	}</span>
 
-    public void setChoices(Map&lt;String, String&gt; choices) {
-<span class="fc" id="L61">        this.choices = choices;</span>
-<span class="fc" id="L62">    }</span>
+	public List&lt;String&gt; getPlayer2Choices() {
+<span class="fc" id="L63">		return player2Choices;</span>
+	}
 
-    @Override
+	public void setPlayer2Choices(List&lt;String&gt; player2Choices) {
+<span class="fc" id="L67">		this.player2Choices = player2Choices;</span>
+<span class="fc" id="L68">	}</span>
+	
+	public void incrementIteration () {
+<span class="fc" id="L71">		this.currentIteration++;</span>
+<span class="fc" id="L72">	}</span>
+	
+	@Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        if (!(o instanceof GameSession)) return false;</span>
-<span class="fc" id="L68">        GameSession that = (GameSession) o;</span>
-<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        return totalIterations == that.totalIterations &amp;&amp;</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (!(o instanceof GameSession)) return false;</span>
+<span class="fc" id="L78">        GameSession that = (GameSession) o;</span>
+<span class="pc bpc" id="L79" title="1 of 4 branches missed.">        return totalIterations == that.totalIterations &amp;&amp;</span>
                currentIteration == that.currentIteration &amp;&amp;
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">               Objects.equals(player1, that.player1) &amp;&amp;</span>
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">               Objects.equals(player2, that.player2) &amp;&amp;</span>
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">               Objects.equals(choices, that.choices);</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">               Objects.equals(player1, that.player1) &amp;&amp;</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">               Objects.equals(player2, that.player2);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="fc" id="L78">        return Objects.hash(player1, player2, totalIterations, currentIteration, choices);</span>
+<span class="fc" id="L87">        return Objects.hash(player1, player2, totalIterations, currentIteration);</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L83">        return &quot;GameSession{&quot; +</span>
+<span class="nc" id="L92">        return &quot;GameSession{&quot; +</span>
                 &quot;player1=&quot; + player1 +
                 &quot;, player2=&quot; + player2 +
                 &quot;, totalIterations=&quot; + totalIterations +
                 &quot;, currentIteration=&quot; + currentIteration +
-                &quot;, choices=&quot; + choices +
                 '}';
     }
 }

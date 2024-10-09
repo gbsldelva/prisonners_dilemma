@@ -1,11 +1,15 @@
 package fr.uga.m1miage.pc.controller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import fr.uga.m1miage.pc.model.Player;
+
 import org.springframework.context.event.EventListener;
 
 import java.util.HashMap;
@@ -18,13 +22,18 @@ public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final Set<String> connectedUsers = new HashSet<>();
-    private final Map<String, String> userSessionMap = new HashMap<>(); // Store session IDs mapped to usernames
+    private final Map<String, String> userSessionMap = new HashMap<>();
+    protected static Map<String, Player> connectedPlayers = new HashMap<>();
 
     public WebSocketController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
-    // Notify clients when a new user connects
+    public WebSocketController() {
+		this.messagingTemplate = null;
+	}
+
+	// Notify clients when a new user connects
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         // Notify all clients about the new user
@@ -44,6 +53,7 @@ public class WebSocketController {
 
         if (username != null) {
             connectedUsers.remove(username); // Remove user from connected users
+            connectedPlayers.remove(username);
             userSessionMap.values().remove(username); // Remove from session map
             updateAvailableUsers(); // Call a method to update available users for other clients
         }
@@ -51,22 +61,11 @@ public class WebSocketController {
 
     // Handle a new user connecting with their username and sessionId
     @MessageMapping("/connectUser")
-    public void connectUser(String username, StompHeaderAccessor headerAccessor) {
-        connectedUsers.add(username);
-        String sessionId = headerAccessor.getSessionId();
-        userSessionMap.put(sessionId, username); // Store session and username association
+    public void connectUser(@Payload Player player) {
+        connectedUsers.add(player.toJson());
+        connectedPlayers.put(player.getUsername(), player);
+        userSessionMap.put(player.getSessionId(), player.getUsername());
         updateAvailableUsers();
-    }
-
-    // Handle game start signal sent from a client
-    @MessageMapping("/startGame")
-    public void startGame(String opponentUsername, StompHeaderAccessor headerAccessor) {
-        String currentUsername = userSessionMap.get(headerAccessor.getSessionId());
-
-        if (currentUsername != null && opponentUsername != null) {
-            messagingTemplate.convertAndSend("/queue/gameStart", "Game started with " + opponentUsername);
-            messagingTemplate.convertAndSend("/queue/gameStart", "Game started with " + currentUsername);
-        }
     }
 
     private void updateAvailableUsers() {
