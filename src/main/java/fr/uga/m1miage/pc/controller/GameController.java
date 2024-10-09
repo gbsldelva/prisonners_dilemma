@@ -2,11 +2,17 @@ package fr.uga.m1miage.pc.controller;
 
 import fr.uga.m1miage.pc.model.ChoiceMessage;
 import fr.uga.m1miage.pc.model.GameSession;
+import fr.uga.m1miage.pc.model.Invitation;
+import fr.uga.m1miage.pc.model.InvitationAnswer;
 import fr.uga.m1miage.pc.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -23,6 +29,17 @@ public class GameController {
  // Map to hold active game sessions
  private ConcurrentHashMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
 
+ @MessageMapping("/invite")
+ public void invitePlayer(@Payload Invitation invitation) {
+     // Send the message to the user
+	messagingTemplate.convertAndSendToUser(invitation.getToUsername(), "/queue/invitation",invitation.getFromPlayer());
+ }
+ 
+ @MessageMapping("invitationAnswer")
+ public void playerResponseToInvitation(@Payload InvitationAnswer answer) {
+	 messagingTemplate.convertAndSend("/queue/gameStartHandler", answer.getMessage());
+ }
+ 
  @MessageMapping("/connectPlayer")
  public void connect(@Payload Player player, @Header("simpSessionId") String sessionId) {
      player.setSessionId(sessionId);
@@ -48,14 +65,14 @@ public class GameController {
      }
  }
 
- @MessageMapping("/startGame")
- public void startGame(@Payload String gameId, @Header("simpSessionId") String sessionId) {
-     GameSession session = activeGames.get(gameId);
-     if (session != null) {
-         session.setTotalIterations(session.getTotalIterations());
-         // Notify players to set number of iterations
-     }
- }
+// @MessageMapping("/startGame")
+// public void startGame(@Payload String gameId, @Header("simpSessionId") String sessionId) {
+//     GameSession session = activeGames.get(gameId);
+//     if (session != null) {
+//         session.setTotalIterations(session.getTotalIterations());
+//         // Notify players to set number of iterations
+//     }
+// }
 
  @MessageMapping("/makeChoice")
  public void makeChoice(@Payload ChoiceMessage choiceMessage, @Header("simpSessionId") String sessionId) {

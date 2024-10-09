@@ -8,6 +8,7 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.context.event.EventListener;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,18 +18,20 @@ public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final Set<String> connectedUsers = new HashSet<>();
+    private final Map<String, String> userSessionMap = new HashMap<>(); // Store session IDs mapped to usernames
 
     public WebSocketController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
+    // Notify clients when a new user connects
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         // Notify all clients about the new user
         updateAvailableUsers();
     }
 
- // This method is called when a WebSocket session is disconnected
+    // Handle user disconnect
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
@@ -37,18 +40,33 @@ public class WebSocketController {
         String username = null;
         Map<String, Object> attributes = headerAccessor.getSessionAttributes();
         if (attributes != null)
-        	username = (String) attributes.get("username");
+            username = (String) attributes.get("username");
 
         if (username != null) {
             connectedUsers.remove(username); // Remove user from connected users
+            userSessionMap.values().remove(username); // Remove from session map
             updateAvailableUsers(); // Call a method to update available users for other clients
         }
     }
 
+    // Handle a new user connecting with their username and sessionId
     @MessageMapping("/connectUser")
-    public void connect(String username) {
+    public void connectUser(String username, StompHeaderAccessor headerAccessor) {
         connectedUsers.add(username);
+        String sessionId = headerAccessor.getSessionId();
+        userSessionMap.put(sessionId, username); // Store session and username association
         updateAvailableUsers();
+    }
+
+    // Handle game start signal sent from a client
+    @MessageMapping("/startGame")
+    public void startGame(String opponentUsername, StompHeaderAccessor headerAccessor) {
+        String currentUsername = userSessionMap.get(headerAccessor.getSessionId());
+
+        if (currentUsername != null && opponentUsername != null) {
+            messagingTemplate.convertAndSend("/queue/gameStart", "Game started with " + opponentUsername);
+            messagingTemplate.convertAndSend("/queue/gameStart", "Game started with " + currentUsername);
+        }
     }
 
     private void updateAvailableUsers() {

@@ -46,21 +46,6 @@ class GameControllerTest {
         verify(messagingTemplate, times(1)).convertAndSendToUser(eq("session2"), eq("/queue/gameStart"), anyString());
     }
 
-    @Test
-    void testStartGame() {
-        GameSession session = new GameSession();
-        session.setPlayer1(new Player("player1", "session1"));
-        session.setPlayer2(new Player("player2", "session2"));
-        session.setTotalIterations(5);
-
-        activeGames.put("game-1", session);
-        
-        gameController.startGame("game-1", "session1");
-
-        // Verify that the game session is initialized correctly
-        assertEquals(5, session.getTotalIterations());
-    }
-
 //    @Test
 //    public void testEndGame() {
 //        // Arrange

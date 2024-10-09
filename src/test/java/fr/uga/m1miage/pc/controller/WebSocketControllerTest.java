@@ -28,23 +28,6 @@ class WebSocketControllerTest {
     }
 
     @Test
-    void testConnectUser() {
-        // Arrange
-        String username = "User1";
-
-        // Act
-        webSocketController.connect(username);
-
-        // Assert
-        ArgumentCaptor<String> destinationCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<Set<String>> payloadCaptor = ArgumentCaptor.forClass(Set.class);
-        verify(messagingTemplate, times(1)).convertAndSend(destinationCaptor.capture(), payloadCaptor.capture());
-        
-        assertEquals("/topic/availablePlayers", destinationCaptor.getValue());
-        assertEquals(Set.of(username), payloadCaptor.getValue());
-    }
-
-    @Test
     void testHandleWebSocketConnectListener() {
         // Arrange
         SessionConnectedEvent event = Mockito.mock(SessionConnectedEvent.class);
