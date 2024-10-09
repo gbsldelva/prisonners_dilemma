@@ -1,10 +1,11 @@
 package fr.uga.m1miage.pc.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Player {
     private String username;
     private String sessionId;
     private int score;
-    private String choice;
 
     public Player() {}
 
@@ -12,7 +13,6 @@ public class Player {
         this.username = username;
         this.sessionId = sessionId;
         this.score = 0;
-        this.choice = "";
     }
     
     public Player(String username) {
@@ -42,14 +42,6 @@ public class Player {
 	public void setScore(int score) {
 		this.score = score;
 	}
-
-	public String getChoice() {
-		return choice;
-	}
-
-	public void setChoice(String choice) {
-		this.choice = choice;
-	}
 	
 	@Override
     public boolean equals(Object o) {
@@ -57,6 +49,15 @@ public class Player {
         if (!(o instanceof Player)) return false;
         Player player = (Player) o;
         return username.equals(player.username);
+    }
+	
+	public String toJson() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        } catch (Exception e) {
+            return "Error converting to JSON: " + e.getMessage();
+        }
     }
 	
 	@Override

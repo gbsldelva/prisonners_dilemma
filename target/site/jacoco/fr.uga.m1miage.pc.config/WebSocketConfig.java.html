@@ -15,7 +15,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
  @Override
  public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
-<span class="nc" id="L18">     config.enableSimpleBroker(&quot;/topic&quot;, &quot;/queue&quot;);</span>
+<span class="nc" id="L18">     config.enableSimpleBroker(&quot;/topic&quot;, &quot;/queue&quot;, &quot;/user&quot;);</span>
 <span class="nc" id="L19">     config.setApplicationDestinationPrefixes(&quot;/app&quot;);</span>
 <span class="nc" id="L20"> }</span>
  
