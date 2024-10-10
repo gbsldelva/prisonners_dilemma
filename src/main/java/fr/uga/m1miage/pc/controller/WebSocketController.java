@@ -29,10 +29,6 @@ public class WebSocketController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public WebSocketController() {
-		this.messagingTemplate = null;
-	}
-
 	// Notify clients when a new user connects
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {

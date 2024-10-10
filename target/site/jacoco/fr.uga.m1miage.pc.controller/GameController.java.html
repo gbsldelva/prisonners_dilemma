@@ -103,7 +103,7 @@ import java.util.concurrent.ConcurrentMap;
 <span class="nc" id="L103">     session.getPlayer1().setScore(session.getPlayer1().getScore() + score1);</span>
 <span class="nc" id="L104">     session.getPlayer2().setScore(session.getPlayer2().getScore() + score2);</span>
      
-<span class="nc bnc" id="L106" title="All 2 branches missed.">     if (session.getCurrentIteration() == session.getTotalIterations() - 1) {</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">     if (session.getCurrentIteration() == session.getTotalIterations()) {</span>
 <span class="nc" id="L107">         endGame(session);</span>
      } else {
 <span class="nc" id="L109">    	 Result result = new Result();</span>
@@ -121,7 +121,7 @@ import java.util.concurrent.ConcurrentMap;
 <span class="nc" id="L121">	 result.setStatus(&quot;Terminé&quot;);</span>
 <span class="nc" id="L122">	 result.setParti(session.getTotalIterations() + &quot;/&quot; + session.getTotalIterations());</span>
 	// Send updated scores to both players
-<span class="nc" id="L124">     messagingTemplate.convertAndSend(&quot;/queue/scoreUpdate&quot;, result.toJson());</span>
+<span class="nc" id="L124">     messagingTemplate.convertAndSend(&quot;/queue/gameEnd&quot;, result.toJson());</span>
 
      // Remove the game session
 <span class="nc" id="L127">     activeGames.values().removeIf(s -&gt; s.equals(session));</span>

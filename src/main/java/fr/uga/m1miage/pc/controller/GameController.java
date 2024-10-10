@@ -103,7 +103,7 @@ public class GameController {
      session.getPlayer1().setScore(session.getPlayer1().getScore() + score1);
      session.getPlayer2().setScore(session.getPlayer2().getScore() + score2);
      
-     if (session.getCurrentIteration() == session.getTotalIterations() - 1) {
+     if (session.getCurrentIteration() == session.getTotalIterations()) {
          endGame(session);
      } else {
     	 Result result = new Result();
@@ -121,7 +121,7 @@ public class GameController {
 	 result.setStatus("Terminé");
 	 result.setParti(session.getTotalIterations() + "/" + session.getTotalIterations());
 	// Send updated scores to both players
-     messagingTemplate.convertAndSend("/queue/scoreUpdate", result.toJson());
+     messagingTemplate.convertAndSend("/queue/gameEnd", result.toJson());
 
      // Remove the game session
      activeGames.values().removeIf(s -> s.equals(session));
