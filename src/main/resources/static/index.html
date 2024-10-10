@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dilemne du prisonnier</title>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.2/dist/sockjs.min.js"></script>
+</head>
+<body>
+    <h1>Dilemne du prisonnier</h1>
+
+    <div id="login">
+        <input type="text" id="username" placeholder="Enter your username" />
+          <select id="strategy">
+          <option value="none">Aucune Stratégie (Jouer manuellement)</option>
+            <option value="titfortat">Oeil pour Oeil (Tit-for-Tat)</option>
+            <option value="alwayscooperate">Toujours Coopérer</option>
+          </select>
+        <button id="connectButton">Se connecter</button>
+    </div>
+
+    <div id="waiting" style="display:none;">
+        <p id="playersHeader">Aucun utilisateur connecté, veuillez attendre</p>
+        <ul id="availablePlayers"></ul>
+    </div>
+
+    <div id="game" style="display:none;">
+        <p id = "gameStatus">Match débuté!</p>
+        <p>Parti: <span id="roundNumber">0</span></p>
+        <p>Score actuel <span id="currentScore">0 - 0</span></p>
+        <div id="choices">
+            <button id="cooperateButton">Coopérer</button>
+            <button id="betrayButton">Trahir</button>
+        </div>
+    </div>
+
+    <div id="endGame" style="display:none;">
+        <h2>Match terminé!</h2>
+        <p>Score final : Toi <span id="finalYourScore">0</span> - Adversaire <span id="finalOpponentScore">0</span></p>
+    </div>
+
+    <div id="dialog" style="display: none;">
+        <input type="text" placeholder="Entrer le nombre de partis" id="textInput" />
+        <button id="sendButton">Envoyer</button>
+    </div>
+
+  <style>
+    #dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+  
+    #dialog input[type="text"] {
+      margin-bottom: 10px;
+    }
+  </style>
+
+    <script>
+        class Player {
+            constructor(username, sessionId, strategy) {
+                this.username = username;
+                this.sessionId = sessionId;
+                this.strategy = strategy;
+            }
+        }
+
+        var stompClient = null;
+        var username = '';
+        var oponentUsername = '';
+        var sessionId = ''; 
+        var totalIterations = 0;
+        var currentRound = 0;
+        var selectedStrategy = 'none';
+
+        function isValidUsername(username) {
+            const regex = /^[a-zA-Z0-9]{3,16}$/;
+            return regex.test(username);
+        }
+
+        // Connect function to handle user connection
+        function connect() {
+            // Get the username input
+            username = document.getElementById('username').value;
+            selectedStrategy = document.getElementById('strategy').value; 
+
+            // Check if username is empty
+            if (username === '' || !isValidUsername(username)) {
+                alert('Veuillez entrer un nom d\'utilisateur correct.\nSans espace, sans caractère spécial.');
+                return;
+            }
+
+            // Establish the WebSocket connection using SockJS
+            var socket = new SockJS('http://localhost:8080/ws');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                // Get the session ID from the WebSocket connection headers if available
+                try {
+                    sessionId = /\/([^\/]+)\/websocket/.exec(socket._transport.url)[1];
+                } catch (e) {
+                    console.log("Failed to extract session ID", e);
+                }
+
+                // Subscribe to available players topic
+                stompClient.subscribe('/topic/availablePlayers', function (message) {
+                    updateAvailablePlayers(JSON.parse(message.body));
+                });
+
+                // Start game if invitation accepted
+                stompClient.subscribe(`/queue/gameStartHandler`, function (message) {
+                    if (message.body == 'confirmed') {
+                        startGameForBothPlayers();
+                    } else {
+                        alert("Invitation refusée");
+                    }
+                });
+
+                stompClient.subscribe(`/queue/scoreUpdate`, function(message) {
+                    console.log(message.body);
+                    displayResults(message.body);
+                    document.getElementById('choices').querySelectorAll('button').forEach(btn => btn.disabled = false);
+                });
+
+                stompClient.subscribe(`/queue/gameEnd`, function(message) {
+                    console.log(message.body);
+                    displayResults(message.body);
+                    document.getElementById('choices').querySelectorAll('button').forEach(btn => btn.disabled = true);
+                });
+                
+                // Subscribe to invitations topic
+                stompClient.subscribe(`/user/${username}/queue/invitation`, function (message) {
+                    // Handle invitation message
+                    handleInvitation(message.body);
+                });
+
+                // Send a connection message with the username and sessionId
+                stompClient.send("/app/connectUser", {}, JSON.stringify({username: username, sessionId: sessionId, strategy: selectedStrategy}));
+
+                // Hide login and show the waiting area
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('waiting').style.display = 'block';
+            }, function (error) {
+                console.log("Error connecting:", error);
+            });
+        }       
+
+        function handleInvitation(inviterUsername) {
+            opponentUsername = inviterUsername;
+            // Display a notification to the user
+            let confirmed = confirm(`${opponentUsername} vous invite à jouer, voulez-vous accepter l'invitation ?`);
+            if (confirmed) {
+                stompClient.send("/app/invitationAnswer", {}, JSON.stringify({message : "confirmed", oponentUsername : inviterUsername, playerUsername : username}));
+            }
+            else
+                stompClient.send("/app/invitationAnswer", {}, JSON.stringify({message : "declined", oponentUsername : inviterUsername, playerUsername : username}));
+        }
+
+        // Start the game for both players when they receive the game start message
+        function startGameForBothPlayers(message) {
+            // Hide the waiting div and show the game div
+            document.getElementById('waiting').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+
+            // Reset the round number and scores
+            document.getElementById('roundNumber').textContent = '1';
+        }
+
+        function displayResults(resultString) {
+            class Result {
+                constructor(status, parti, score) {
+                    this.status = status;
+                    this.parti = parti;
+                    this.score = score;
+                }
+            }
+            let result;
+            try {
+                result = JSON.parse(resultString);
+                document.getElementById('roundNumber').textContent = result.parti;
+                document.getElementById('currentScore').textContent = result.score;
+                document.getElementById('gameStatus').textContent = result.status;
+            } catch (error) {
+                console.error("Error parsing player string:", resultString, error);
+                return;
+            }
+        }
+
+        function makeChoice(choice) {
+            console.log("Make choice is invoked")
+            // Send the choice to the backend via WebSocket
+            if (stompClient) {
+                stompClient.send("/app/makeChoice", {}, JSON.stringify({
+                    username: username,
+                    choice: choice
+                }));
+            }
+            document.getElementById('choices').querySelectorAll('button').forEach(btn => btn.disabled = true);
+        }
+
+        // Update available players list
+        function updateAvailablePlayers(players) {
+            const availablePlayersList = document.getElementById('availablePlayers');
+            availablePlayersList.innerHTML = ''; // Clear previous players
+
+            if (Array.isArray(players) || players.length === 0)  {
+                players.forEach(playerString => {
+                    // Parse the player string into an object
+                    let player;
+                    try {
+                        player = JSON.parse(playerString);
+                    } catch (error) {
+                        console.error("Error parsing player string:", playerString, error);
+                        return;
+                    }
+
+                    // Ensure player object is valid
+                    if (player && player.sessionId && player.username) {
+                        // Exclude the current player by comparing sessionId
+                        if (player.sessionId !== sessionId) {
+                            const li = document.createElement('li');
+                            li.textContent = player.username;
+
+                            // Add an Invite button
+                            const inviteButton = document.createElement('button');
+                            inviteButton.textContent = 'Jouer contre';
+                            inviteButton.onclick = () =>  { 
+                                sendInvitation(player.username);
+                            }
+                            li.appendChild(inviteButton);
+                            availablePlayersList.appendChild(li);
+                        }
+                    } else {
+                        console.error('Invalid player object:', player);
+                    }
+                });
+
+                if (availablePlayersList.innerHTML == '') {
+                    document.getElementById('playersHeader').innerText = 'Liste des joueurs disponibles';
+                }
+    }
+}
+
+        function sendInvitation(opponent) {
+            if (confirm(`Voulez-vous jouer contre ${opponent}?`)) {
+                dialog.style.display = 'block';
+                const closeDialogButton = document.getElementById('sendButton');
+                
+                // Add an event listener to the close dialog button
+                closeDialogButton.addEventListener('click', () => {
+                    const textInput = document.getElementById('textInput');
+                    dialog.style.display = 'none';
+                    stompClient.send("/app/invite", {}, JSON.stringify({fromPlayer: username, toUsername: opponent, iteration : textInput.value}));
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('connectButton').addEventListener('click', connect);
+        // Add event listeners to the buttons
+        const cooperateButton = document.getElementById('cooperateButton');
+        const betrayButton = document.getElementById('betrayButton');
+
+        cooperateButton.addEventListener('click', () => {
+            makeChoice('c');
+        });
+
+        betrayButton.addEventListener('click', () => {
+            makeChoice('t');
+        });
+    });
+
+    
+        // Get the dialog box and text input elements
+        const dialog = document.getElementById('dialog');
+    </script>
+</body>
+</html>
