@@ -21,55 +21,51 @@ import java.util.Set;
 public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
-<span class="pc" id="L24">    private final Set&lt;String&gt; connectedUsers = new HashSet&lt;&gt;();</span>
-<span class="pc" id="L25">    private final Map&lt;String, String&gt; userSessionMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L24">    private final Set&lt;String&gt; connectedUsers = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L25">    private final Map&lt;String, String&gt; userSessionMap = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L26">    protected static Map&lt;String, Player&gt; connectedPlayers = new HashMap&lt;&gt;();</span>
 
 <span class="fc" id="L28">    public WebSocketController(SimpMessagingTemplate messagingTemplate) {</span>
 <span class="fc" id="L29">        this.messagingTemplate = messagingTemplate;</span>
 <span class="fc" id="L30">    }</span>
 
-<span class="nc" id="L32">    public WebSocketController() {</span>
-<span class="nc" id="L33">		this.messagingTemplate = null;</span>
-<span class="nc" id="L34">	}</span>
-
 	// Notify clients when a new user connects
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         // Notify all clients about the new user
-<span class="fc" id="L40">        updateAvailableUsers();</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L36">        updateAvailableUsers();</span>
+<span class="fc" id="L37">    }</span>
 
     // Handle user disconnect
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-<span class="nc" id="L46">        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());</span>
+<span class="nc" id="L42">        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());</span>
 
         // Retrieve the username from the session
-<span class="nc" id="L49">        String username = null;</span>
-<span class="nc" id="L50">        Map&lt;String, Object&gt; attributes = headerAccessor.getSessionAttributes();</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (attributes != null)</span>
-<span class="nc" id="L52">            username = (String) attributes.get(&quot;username&quot;);</span>
+<span class="nc" id="L45">        String username = null;</span>
+<span class="nc" id="L46">        Map&lt;String, Object&gt; attributes = headerAccessor.getSessionAttributes();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (attributes != null)</span>
+<span class="nc" id="L48">            username = (String) attributes.get(&quot;username&quot;);</span>
 
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (username != null) {</span>
-<span class="nc" id="L55">            connectedUsers.remove(username); // Remove user from connected users</span>
-<span class="nc" id="L56">            connectedPlayers.remove(username);</span>
-<span class="nc" id="L57">            userSessionMap.values().remove(username); // Remove from session map</span>
-<span class="nc" id="L58">            updateAvailableUsers(); // Call a method to update available users for other clients</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (username != null) {</span>
+<span class="nc" id="L51">            connectedUsers.remove(username); // Remove user from connected users</span>
+<span class="nc" id="L52">            connectedPlayers.remove(username);</span>
+<span class="nc" id="L53">            userSessionMap.values().remove(username); // Remove from session map</span>
+<span class="nc" id="L54">            updateAvailableUsers(); // Call a method to update available users for other clients</span>
         }
-<span class="nc" id="L60">    }</span>
+<span class="nc" id="L56">    }</span>
 
     // Handle a new user connecting with their username and sessionId
     @MessageMapping(&quot;/connectUser&quot;)
     public void connectUser(@Payload Player player) {
-<span class="nc" id="L65">        connectedUsers.add(player.toJson());</span>
-<span class="nc" id="L66">        connectedPlayers.put(player.getUsername(), player);</span>
-<span class="nc" id="L67">        userSessionMap.put(player.getSessionId(), player.getUsername());</span>
-<span class="nc" id="L68">        updateAvailableUsers();</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L61">        connectedUsers.add(player.toJson());</span>
+<span class="nc" id="L62">        connectedPlayers.put(player.getUsername(), player);</span>
+<span class="nc" id="L63">        userSessionMap.put(player.getSessionId(), player.getUsername());</span>
+<span class="nc" id="L64">        updateAvailableUsers();</span>
+<span class="nc" id="L65">    }</span>
 
     private void updateAvailableUsers() {
-<span class="fc" id="L72">        messagingTemplate.convertAndSend(&quot;/topic/availablePlayers&quot;, connectedUsers);</span>
-<span class="fc" id="L73">    }</span>
+<span class="fc" id="L68">        messagingTemplate.convertAndSend(&quot;/topic/availablePlayers&quot;, connectedUsers);</span>
+<span class="fc" id="L69">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

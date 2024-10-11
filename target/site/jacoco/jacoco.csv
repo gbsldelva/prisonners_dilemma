@@ -1,6 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-prisonniers_dilemma,fr.uga.m1miage.pc.controller,WebSocketController,75,31,4,0,19,10,5,4,3,4
-prisonniers_dilemma,fr.uga.m1miage.pc.controller,GameController,362,0,34,0,67,0,27,0,10,0
+prisonniers_dilemma,fr.uga.m1miage.strategy,DilemmaStrategies,149,0,22,0,27,0,18,0,7,0
+prisonniers_dilemma,fr.uga.m1miage.pc.controller,WebSocketController,59,31,4,0,16,10,4,4,2,4
+prisonniers_dilemma,fr.uga.m1miage.pc.controller,GameController,360,0,34,0,67,0,27,0,10,0
 prisonniers_dilemma,fr.uga.m1miage.pc.model,Invitation,12,24,0,0,5,11,1,7,1,7
 prisonniers_dilemma,fr.uga.m1miage.pc.model,InvitationAnswer,12,24,0,0,5,11,1,7,1,7
 prisonniers_dilemma,fr.uga.m1miage.pc.model,Result,5,32,0,0,2,12,0,8,0,8
