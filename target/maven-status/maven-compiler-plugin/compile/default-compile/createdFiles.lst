@@ -1,14 +1,11 @@
 fr\uga\m1miage\pc\controller\GameController.class
-fr\uga\m1miage\pc\model\AlwaysCooperateStrategy.class
 fr\uga\m1miage\pc\config\WebSocketConfig.class
-fr\uga\m1miage\pc\PrisonnersDilemmaApplication.class
-fr\uga\m1miage\pc\model\Player.class
-fr\uga\m1miage\pc\model\InvitationAnswer.class
-fr\uga\m1miage\pc\model\Strategy.class
 fr\uga\m1miage\pc\controller\WebSocketController.class
 fr\uga\m1miage\pc\model\Message.class
 fr\uga\m1miage\pc\model\ChoiceMessage.class
 fr\uga\m1miage\pc\model\Invitation.class
 fr\uga\m1miage\pc\model\Result.class
 fr\uga\m1miage\pc\model\GameSession.class
-fr\uga\m1miage\pc\model\TitForTatStrategy.class
+fr\uga\m1miage\pc\PrisonnersDilemmaApplication.class
+fr\uga\m1miage\pc\model\Player.class
+fr\uga\m1miage\pc\model\InvitationAnswer.class

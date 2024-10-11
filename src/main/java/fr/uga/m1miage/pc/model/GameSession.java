@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class GameSession {
-
     private Player player1;
     private Player player2;
     private int totalIterations;
@@ -51,48 +50,36 @@ public class GameSession {
     public void setCurrentIteration(int currentIteration) {
         this.currentIteration = currentIteration;
     }
-
+    
     public List<String> getPlayer1Choices() {
-        return player1Choices;
-    }
+		return player1Choices;
+	}
 
-    public void setPlayer1Choices(List<String> player1Choices) {
-        this.player1Choices = player1Choices;
-    }
+	public void setPlayer1Choices(List<String> player1Choices) {
+		this.player1Choices = player1Choices;
+	}
 
-    public List<String> getPlayer2Choices() {
-        return player2Choices;
-    }
+	public List<String> getPlayer2Choices() {
+		return player2Choices;
+	}
 
-    public void setPlayer2Choices(List<String> player2Choices) {
-        this.player2Choices = player2Choices;
-    }
-
-    public void incrementIteration() {
-        this.currentIteration++;
-    }
-
-    public void addChoice(Player player, String choice) {
-        if (player.equals(player1)) {
-            player1Choices.add(choice);
-        } else if (player.equals(player2)) {
-            player2Choices.add(choice);
-        }
-    }
-
-    @Override
+	public void setPlayer2Choices(List<String> player2Choices) {
+		this.player2Choices = player2Choices;
+	}
+	
+	public void incrementIteration () {
+		this.currentIteration++;
+	}
+	
+	@Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof GameSession)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof GameSession)) return false;
         GameSession that = (GameSession) o;
-        return totalIterations == that.totalIterations
-                && currentIteration == that.currentIteration
-                && Objects.equals(player1, that.player1)
-                && Objects.equals(player2, that.player2);
+        return totalIterations == that.totalIterations &&
+               currentIteration == that.currentIteration &&
+               Objects.equals(player1, that.player1) &&
+               Objects.equals(player2, that.player2);
     }
 
     @Override
@@ -102,11 +89,11 @@ public class GameSession {
 
     @Override
     public String toString() {
-        return "GameSession{"
-                + "player1=" + player1
-                + ", player2=" + player2
-                + ", totalIterations=" + totalIterations
-                + ", currentIteration=" + currentIteration
-                + '}';
+        return "GameSession{" +
+                "player1=" + player1 +
+                ", player2=" + player2 +
+                ", totalIterations=" + totalIterations +
+                ", currentIteration=" + currentIteration +
+                '}';
     }
 }

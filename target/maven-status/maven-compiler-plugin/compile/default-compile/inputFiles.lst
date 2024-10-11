@@ -1,14 +1,11 @@
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\config\WebSocketConfig.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\controller\GameController.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\controller\WebSocketController.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\AlwaysCooperateStrategy.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\ChoiceMessage.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\GameSession.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\Invitation.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\InvitationAnswer.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\Message.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\Player.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\Result.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\Strategy.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\model\TitForTatStrategy.java
-C:\Users\nadin\prisonners_dilemma\src\main\java\fr\uga\m1miage\pc\PrisonnersDilemmaApplication.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\config\WebSocketConfig.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\controller\GameController.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\controller\WebSocketController.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\model\ChoiceMessage.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\model\GameSession.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\model\Invitation.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\model\InvitationAnswer.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\model\Message.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\model\Player.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\model\Result.java
+C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\main\java\fr\uga\m1miage\pc\PrisonnersDilemmaApplication.java
