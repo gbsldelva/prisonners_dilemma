@@ -17,11 +17,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import fr.uga.m1miage.pc.model.AlwaysCooperateStrategy;
-import fr.uga.m1miage.pc.model.TitForTatStrategy;
-
 @Controller
 public class WebSocketController {
 
@@ -30,15 +25,18 @@ public class WebSocketController {
     private final Map<String, String> userSessionMap = new HashMap<>();
     protected static Map<String, Player> connectedPlayers = new HashMap<>();
 
-    // Use @Autowired to inject SimpMessagingTemplate
-    @Autowired
     public WebSocketController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
-    // Notify clients when a new user connects
+    public WebSocketController() {
+		this.messagingTemplate = null;
+	}
+
+	// Notify clients when a new user connects
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
+        // Notify all clients about the new user
         updateAvailableUsers();
     }
 
@@ -50,9 +48,8 @@ public class WebSocketController {
         // Retrieve the username from the session
         String username = null;
         Map<String, Object> attributes = headerAccessor.getSessionAttributes();
-        if (attributes != null) {
+        if (attributes != null)
             username = (String) attributes.get("username");
-        }
 
         if (username != null) {
             connectedUsers.remove(username); // Remove user from connected users
@@ -64,30 +61,7 @@ public class WebSocketController {
 
     // Handle a new user connecting with their username and sessionId
     @MessageMapping("/connectUser")
-    public void connectUser(@Payload Map<String, String> playerData) {
-        String username = playerData.get("username");
-        String sessionId = playerData.get("sessionId");
-        String strategyType = playerData.get("strategy");
-
-        Player player = new Player();
-        player.setUsername(username);
-        player.setSessionId(sessionId);
-
-        // Assign the selected strategy if specified
-        if (strategyType != null && !strategyType.equals("none")) {
-            switch (strategyType) {
-                case "titfortat":
-                    player.setStrategy(new TitForTatStrategy());
-                    break;
-                case "alwayscooperate":
-                    player.setStrategy(new AlwaysCooperateStrategy());
-                    break;
-                default:
-                    player.setStrategy(null);
-                    break;
-            }
-        }
-
+    public void connectUser(@Payload Player player) {
         connectedUsers.add(player.toJson());
         connectedPlayers.put(player.getUsername(), player);
         userSessionMap.put(player.getSessionId(), player.getUsername());
