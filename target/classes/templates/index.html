@@ -81,6 +81,15 @@
                 stompClient.subscribe('/topic/availablePlayers', function (message) {
                     updateAvailablePlayers(JSON.parse(message.body));
                 });
+
+                // Start game if invitation accepted
+                stompClient.subscribe(`/queue/gameStartHandler`, function (message) {
+                    if (message.body == 'confirmed') {
+                        startGameForBothPlayers();
+                    } else {
+                        alert("Invitation refusée");
+                    }
+                });
                 
                 // Subscribe to invitations topic
                 stompClient.subscribe(`/user/${username}/queue/invitation`, function (message) {
@@ -184,13 +193,6 @@
         function sendInvitation(opponent) {
             if (confirm(`Voulez-vous jouer contre ${opponent}?`)) {
                 stompClient.send("/app/invite", {}, JSON.stringify({fromPlayer: username, toUsername: opponent}));
-                stompClient.subscribe(`/user/${username}/queue/invitationAnswer`, function (message) {
-                    if (message.body == 'confirmed') {
-                        startGameForBothPlayers();
-                    } else {
-                        alert(opponent + " a refusé ton invitation.");
-                    }
-                });
             }
         }
 
