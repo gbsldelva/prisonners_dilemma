@@ -2,30 +2,16 @@ package fr.uga.m1miage.pc.model;
 
 import java.util.Objects;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class ChoiceMessage {
     private String username;
     private String choice; // "c" or "t"
-
-    public ChoiceMessage(String username, String choice) {
-        this.username = username;
-        this.choice = choice;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getChoice() {
-        return choice;
-    }
-
-    public void setChoice(String choice) {
-        this.choice = choice;
-    }
 
     @Override
     public boolean equals(Object o) {

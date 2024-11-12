@@ -2,12 +2,15 @@ package fr.uga.m1miage.pc.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Player {
     private String username;
     private String sessionId;
     private int score;
-
-    public Player() {}
 
     public Player(String username, String sessionId) {
         this.username = username;
@@ -18,30 +21,6 @@ public class Player {
     public Player(String username) {
     	this.username = username;
     }
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getSessionId() {
-		return sessionId;
-	}
-
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
 	
 	@Override
     public boolean equals(Object o) {
@@ -62,7 +41,7 @@ public class Player {
 	
 	@Override
     public int hashCode() {
-        return username.hashCode();
+        return (username + sessionId).hashCode();
     }
 	
 	@Override

@@ -3,19 +3,19 @@
   <groupId>fr.uga.m1miage.pc</groupId>
   <artifactId>prisonniersdilemma_mg2_10</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>prisonniers_dilemma</name>
+  <name>prisonniers_dilemma_g2_10</name>
   <description>Projet integrateur</description>
   <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.0</version>
+		<version>3.3.5</version>
 		<relativePath/>
 	</parent>
   <properties>
   		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
-  		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<sonar.host.url>http://im2ag-sonar.u-ga.fr:9000</sonar.host.url>
+		    <maven.compiler.source>17</maven.compiler.source>
+    		    <maven.compiler.target>17</maven.compiler.target>
+		<sonar.host.url>https://im2ag-sonar.univ-grenoble-alpes.fr/</sonar.host.url>
 	</properties>
    <dependencies>     	
 		
@@ -23,6 +23,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -44,6 +45,13 @@
 	        <artifactId>stomp-websocket</artifactId>
 	        <version>2.3.3</version>
 	    </dependency>
+	    
+	    <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
+            <scope>provided</scope>
+        </dependency>
 	    
     	<dependency>    
    			<groupId>org.junit.jupiter</groupId>    
