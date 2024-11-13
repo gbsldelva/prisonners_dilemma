@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PavlovAleatoire.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.strategy</a> &gt; <span class="el_source">PavlovAleatoire.java</span></div><h1>PavlovAleatoire.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.strategy;
+
+import java.util.List;
+
+import fr.uga.m1miage.pc.utils.UtilFunctions;
+
+<span class="fc" id="L7">public class PavlovAleatoire implements Strategy {</span>
+
+    @Override
+    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
+<span class="pc bpc" id="L11" title="1 of 4 branches missed.">        if (UtilFunctions.listContainsMoves(myPreviousMoves) &amp;&amp; UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+<span class="fc" id="L12">            String lastMyMove = myPreviousMoves.get(myPreviousMoves.size() - 1);</span>
+<span class="fc" id="L13">            String lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+
+            // Si 5 ou 3 points ont été obtenus au tour précédent
+<span class="fc bfc" id="L16" title="All 2 branches covered.">            if (UtilFunctions.get3or5pointsInLastMove(lastMyMove, lastOpponentMove)) {</span>
+                // Faire un choix aléatoire avec une faible probabilité
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">                if (!UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
+<span class="nc" id="L19">                    return UtilFunctions.getRandomMove();</span>
+                }
+                // Sinon, répéter le dernier choix
+<span class="fc" id="L22">                return lastMyMove;</span>
+            }
+        }
+        
+        // Choix aléatoire par défaut s'il n'y a pas assez d'historique ou pas de points 3 ou 5
+<span class="fc" id="L27">        return UtilFunctions.getRandomMove();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

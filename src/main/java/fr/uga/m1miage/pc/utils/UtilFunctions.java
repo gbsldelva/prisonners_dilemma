@@ -18,10 +18,10 @@ public class UtilFunctions {
 	}
 	
 	public static boolean eventIsVeryLikelyToHappen() {
-		int randomNumber = UtilFunctions.random.nextInt(5);
+		int randomNumber = random.nextInt(10);
 		
 		// We return true if the randomNumber is greater than 0
-		// Theoretically this event has a 80% chance of likelihood
+		// Theoretically this event has a 90% chance of likelihood
 		return randomNumber > 0;
 	}
 	
@@ -36,6 +36,16 @@ public class UtilFunctions {
 		if (move.equals("c"))
 			return "t";
 		return "c";
+	}
+	
+	public static boolean checkOccurenceOfTextInList(List<String> list, String value, int minOccurence) {
+		int occurence = 0;
+		for (String string : list) {
+			if (string.equals(value)) {
+				occurence++;
+			}
+		}
+		return occurence >= minOccurence;
 	}
 	
 }

@@ -4,20 +4,20 @@ import java.util.List;
 
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="nc" id="L7">public class PacificateurNaif implements Strategy{</span>
+<span class="fc" id="L7">public class PacificateurNaif implements Strategy{</span>
 
 	@Override
 	public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="nc bnc" id="L11" title="All 2 branches missed.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+<span class="fc bfc" id="L11" title="All 2 branches covered.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
 			// Change behavior a few time when it's time to cooperate
-<span class="nc bnc" id="L13" title="All 2 branches missed.">			if (opponentPreviousMoves.get(opponentPreviousMoves.size() - 1).equals(&quot;t&quot;)) {</span>
-<span class="nc bnc" id="L14" title="All 2 branches missed.">				boolean shouldChangeBehavior = !UtilFunctions.eventIsVeryLikelyToHappen();</span>
-<span class="nc bnc" id="L15" title="All 2 branches missed.">				if (shouldChangeBehavior)</span>
+<span class="fc bfc" id="L13" title="All 2 branches covered.">			if (opponentPreviousMoves.get(opponentPreviousMoves.size() - 1).equals(&quot;t&quot;)) {</span>
+<span class="pc bpc" id="L14" title="1 of 2 branches missed.">				boolean shouldChangeBehavior = !UtilFunctions.eventIsVeryLikelyToHappen();</span>
+<span class="pc bpc" id="L15" title="1 of 2 branches missed.">				if (shouldChangeBehavior)</span>
 <span class="nc" id="L16">					return &quot;c&quot;;</span>
 			}
-<span class="nc" id="L18">			return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+<span class="fc" id="L18">			return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
 		}
-<span class="nc" id="L20">		return UtilFunctions.getRandomMove();	</span>
+<span class="fc" id="L20">		return UtilFunctions.getRandomMove();	</span>
 	}
 
 }

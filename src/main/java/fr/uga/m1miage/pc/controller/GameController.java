@@ -23,9 +23,9 @@ public class GameController {
  @Autowired
  private SimpMessagingTemplate messagingTemplate;
 
- private Map<String, Integer> invitationIterationMap = new LinkedHashMap<>();
+ Map<String, Integer> invitationIterationMap = new LinkedHashMap<>();
  // Map to hold active game sessions
- private static final ConcurrentMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
+ static final ConcurrentMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
 
  @MessageMapping("/invite")
  public void invitePlayer(@Payload Invitation invitation) {
@@ -41,7 +41,7 @@ public class GameController {
 		 pairingPlayers(answer.getPlayerUsername(), answer.getOponentUsername());
  }
 
- private void pairingPlayers(String player1Username, String player2Username) {
+ void pairingPlayers(String player1Username, String player2Username) {
      Player player1 = WebSocketController.connectedPlayers.get(player1Username);
      Player player2 = WebSocketController.connectedPlayers.get(player2Username);
      GameSession session = new GameSession(player1, player2);
@@ -81,7 +81,7 @@ public class GameController {
      return result;
  }
 
- private void computeScores(GameSession session) {
+ void computeScores(GameSession session) {
      String choice1 = session.getPlayer1Choices().get(session.getPlayer1Choices().size() - 1);
      String choice2 = session.getPlayer2Choices().get(session.getPlayer2Choices().size() - 1);
 

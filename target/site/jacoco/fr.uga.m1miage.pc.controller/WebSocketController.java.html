@@ -21,8 +21,8 @@ import java.util.Set;
 public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
-<span class="fc" id="L24">    private final Set&lt;String&gt; connectedUsers = new HashSet&lt;&gt;();</span>
-<span class="fc" id="L25">    private final Map&lt;String, String&gt; userSessionMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L24">    final Set&lt;String&gt; connectedUsers = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L25">    final Map&lt;String, String&gt; userSessionMap = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L26">    protected static Map&lt;String, Player&gt; connectedPlayers = new HashMap&lt;&gt;();</span>
 
 <span class="fc" id="L28">    public WebSocketController(SimpMessagingTemplate messagingTemplate) {</span>
@@ -58,11 +58,11 @@ public class WebSocketController {
     // Handle a new user connecting with their username and sessionId
     @MessageMapping(&quot;/connectUser&quot;)
     public void connectUser(@Payload Player player) {
-<span class="nc" id="L61">        connectedUsers.add(player.toJson());</span>
-<span class="nc" id="L62">        connectedPlayers.put(player.getUsername(), player);</span>
-<span class="nc" id="L63">        userSessionMap.put(player.getSessionId(), player.getUsername());</span>
-<span class="nc" id="L64">        updateAvailableUsers();</span>
-<span class="nc" id="L65">    }</span>
+<span class="fc" id="L61">        connectedUsers.add(player.toJson());</span>
+<span class="fc" id="L62">        connectedPlayers.put(player.getUsername(), player);</span>
+<span class="fc" id="L63">        userSessionMap.put(player.getSessionId(), player.getUsername());</span>
+<span class="fc" id="L64">        updateAvailableUsers();</span>
+<span class="fc" id="L65">    }</span>
 
     private void updateAvailableUsers() {
 <span class="fc" id="L68">        messagingTemplate.convertAndSend(&quot;/topic/availablePlayers&quot;, connectedUsers);</span>

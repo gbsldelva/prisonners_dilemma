@@ -4,14 +4,24 @@ import fr.uga.m1miage.pc.utils.UtilFunctions;
 
 import java.util.List;
 
-<span class="nc" id="L7">public class DonnantDonnantAleatoire implements Strategy{</span>
-	@Override
-	public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="nc bnc" id="L10" title="All 4 branches missed.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves) &amp;&amp; UtilFunctions.eventIsVeryLikelyToHappen())</span>
-<span class="nc" id="L11">			return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
-		
-<span class="nc" id="L13">		return UtilFunctions.getRandomMove();</span>
-	}
+<span class="fc" id="L7">public class DonnantDonnantAleatoire implements Strategy {</span>
 
+    @Override
+    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
+        // Vérifie si l'adversaire a fait des coups précédents
+<span class="pc bpc" id="L12" title="1 of 2 branches missed.">        if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+            // Avec une probabilité de RANDOM_PROBABILITY, jouer un coup aléatoire
+<span class="pc bpc" id="L14" title="1 of 2 branches missed.">            if (UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
+<span class="fc" id="L15">                return UtilFunctions.getRandomMove();</span>
+            } else {
+                // Sinon, jouer comme le dernier coup de l'adversaire
+<span class="nc" id="L18">                return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+            }
+        }
+
+        // Si aucun coup précédent, jouer un coup aléatoire (ou initiale)
+<span class="nc" id="L23">        return UtilFunctions.getRandomMove();</span>
+    }
 }
+
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

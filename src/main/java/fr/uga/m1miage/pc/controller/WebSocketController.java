@@ -21,8 +21,8 @@ import java.util.Set;
 public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final Set<String> connectedUsers = new HashSet<>();
-    private final Map<String, String> userSessionMap = new HashMap<>();
+    final Set<String> connectedUsers = new HashSet<>();
+    final Map<String, String> userSessionMap = new HashMap<>();
     protected static Map<String, Player> connectedPlayers = new HashMap<>();
 
     public WebSocketController(SimpMessagingTemplate messagingTemplate) {

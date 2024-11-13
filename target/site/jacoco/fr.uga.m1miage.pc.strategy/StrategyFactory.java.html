@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StrategyFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.strategy</a> &gt; <span class="el_source">StrategyFactory.java</span></div><h1>StrategyFactory.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.strategy;
+
+public class StrategyFactory {
+	
+	private StrategyFactory() {}
+	
+    public static Strategy createStrategy(StrategyType type) {
+<span class="fc bfc" id="L8" title="All 2 branches covered.">    	if (type == null)</span>
+<span class="fc" id="L9">    		throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + type);</span>
+    	
+<span class="pc bpc" id="L11" title="1 of 19 branches missed.">        switch (type) {</span>
+            case DONNANT_DONNANT:
+<span class="fc" id="L13">                return new DonnantDonnant();</span>
+            case DONNANT_DONNANT_ALEATOIRE:
+<span class="fc" id="L15">                return new DonnantDonnantAleatoire();</span>
+            case DONNANT_DEUX_DONNANT_ALEATOIRE:
+<span class="fc" id="L17">                return new DonnantDeuxDonnantAleatoire();</span>
+            case DONNANT_DEUX_DONNANT:
+<span class="fc" id="L19">                return new DonnantDeuxDonnant();</span>
+            case SONDEUR_NAIF:
+<span class="fc" id="L21">                return new SondeurNaif();</span>
+            case SONDEUR_REPENTANT:
+<span class="fc" id="L23">                return new SondeurRepentant();</span>
+            case PACIFICATEUR_NAIF:
+<span class="fc" id="L25">                return new PacificateurNaif();</span>
+            case VRAI_PACIFICATEUR:
+<span class="fc" id="L27">                return new VraiPacificateur();</span>
+            case ALEATOIRE:
+<span class="fc" id="L29">                return new Aleatoire();</span>
+            case TOUJOURS_TRAHIR:
+<span class="fc" id="L31">                return new ToujoursTrahir();</span>
+            case TOUJOURS_COOPERER:
+<span class="fc" id="L33">                return new ToujoursCooperer();</span>
+            case RANCUNIER:
+<span class="fc" id="L35">                return new Rancunier();</span>
+            case PAVLOV:
+<span class="fc" id="L37">                return new Pavlov();</span>
+            case PAVLOV_ALEATOIRE:
+<span class="fc" id="L39">                return new PavlovAleatoire();</span>
+            case ADAPTATIF:
+<span class="fc" id="L41">                return new Adaptatif();</span>
+            case GRADUEL:
+<span class="fc" id="L43">                return new Graduel();</span>
+            case DONNANT_DONNANT_SOUPCONNEUX:
+<span class="fc" id="L45">                return new DonnantDonnantSoupconneux();</span>
+            case RANCUNIER_DOUX:
+<span class="fc" id="L47">                return new RancunierDoux();</span>
+            default:
+<span class="nc" id="L49">                throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + type);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

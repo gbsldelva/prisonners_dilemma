@@ -4,13 +4,23 @@ import fr.uga.m1miage.pc.utils.UtilFunctions;
 
 import java.util.List;
 
-public class DonnantDonnantAleatoire implements Strategy{
-	@Override
-	public String playNextMove(List<String> myPreviousMoves, List<String> opponentPreviousMoves) {
-		if (UtilFunctions.listContainsMoves(opponentPreviousMoves) && UtilFunctions.eventIsVeryLikelyToHappen())
-			return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);
-		
-		return UtilFunctions.getRandomMove();
-	}
+public class DonnantDonnantAleatoire implements Strategy {
 
+    @Override
+    public String playNextMove(List<String> myPreviousMoves, List<String> opponentPreviousMoves) {
+        // Vérifie si l'adversaire a fait des coups précédents
+        if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {
+            // Avec une probabilité de RANDOM_PROBABILITY, jouer un coup aléatoire
+            if (UtilFunctions.eventIsVeryLikelyToHappen()) {
+                return UtilFunctions.getRandomMove();
+            } else {
+                // Sinon, jouer comme le dernier coup de l'adversaire
+                return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);
+            }
+        }
+
+        // Si aucun coup précédent, jouer un coup aléatoire (ou initiale)
+        return UtilFunctions.getRandomMove();
+    }
 }
+

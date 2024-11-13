@@ -4,16 +4,16 @@ import java.util.List;
 
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="nc" id="L7">public class DonnantDeuxDonnant implements Strategy{</span>
+<span class="fc" id="L7">public class DonnantDeuxDonnant implements Strategy{</span>
 
 	@Override
 	public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="nc bnc" id="L11" title="All 4 branches missed.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves) &amp;&amp; opponentPreviousMoves.size() &gt;= 2) {</span>
-<span class="nc" id="L12">			boolean twoLastMoveAreSame = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1).equals(opponentPreviousMoves.get(opponentPreviousMoves.size() - 2));</span>
-<span class="nc bnc" id="L13" title="All 2 branches missed.">			if (twoLastMoveAreSame)</span>
-<span class="nc" id="L14">				return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+<span class="fc bfc" id="L11" title="All 4 branches covered.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves) &amp;&amp; opponentPreviousMoves.size() &gt;= 2) {</span>
+<span class="fc" id="L12">			boolean twoLastMoveAreSame = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1).equals(opponentPreviousMoves.get(opponentPreviousMoves.size() - 2));</span>
+<span class="pc bpc" id="L13" title="1 of 2 branches missed.">			if (twoLastMoveAreSame)</span>
+<span class="fc" id="L14">				return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
 		}
-<span class="nc" id="L16">		return UtilFunctions.getRandomMove();</span>
+<span class="fc" id="L16">		return UtilFunctions.getRandomMove();</span>
 	}
 
 }
