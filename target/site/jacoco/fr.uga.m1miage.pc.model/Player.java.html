@@ -2,6 +2,7 @@
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.uga.m1miage.pc.strategy.Strategy;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,46 +12,48 @@ public class Player {
     private String username;
     private String sessionId;
     private int score;
+    private Strategy strategy;
+    private boolean isServer;
 
-<span class="fc" id="L15">    public Player(String username, String sessionId) {</span>
-<span class="fc" id="L16">        this.username = username;</span>
-<span class="fc" id="L17">        this.sessionId = sessionId;</span>
-<span class="fc" id="L18">        this.score = 0;</span>
-<span class="fc" id="L19">    }</span>
-    
-<span class="fc" id="L21">    public Player(String username) {</span>
-<span class="fc" id="L22">    	this.username = username;</span>
+<span class="fc" id="L18">    public Player(String username, String sessionId) {</span>
+<span class="fc" id="L19">        this.username = username;</span>
+<span class="fc" id="L20">        this.sessionId = sessionId;</span>
+<span class="fc" id="L21">        this.score = 0;</span>
+<span class="fc" id="L22">        this.isServer = false;</span>
 <span class="fc" id="L23">    }</span>
+    
+<span class="fc" id="L25">    public Player(String username) {</span>
+<span class="fc" id="L26">    	this.username = username;</span>
+<span class="fc" id="L27">    }</span>
 	
 	@Override
     public boolean equals(Object o) {
-<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        if (!(o instanceof Player)) return false;</span>
-<span class="fc" id="L29">        Player player = (Player) o;</span>
-<span class="fc" id="L30">        return username.equals(player.username);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (!(o instanceof Player)) return false;</span>
+<span class="fc" id="L33">        Player player = (Player) o;</span>
+<span class="fc" id="L34">        return username.equals(player.username);</span>
     }
 	
 	public String toJson() {
         try {
-<span class="fc" id="L35">            ObjectMapper mapper = new ObjectMapper();</span>
-<span class="fc" id="L36">            return mapper.writeValueAsString(this);</span>
-<span class="nc" id="L37">        } catch (Exception e) {</span>
-<span class="nc" id="L38">            return &quot;Error converting to JSON: &quot; + e.getMessage();</span>
+<span class="fc" id="L39">            ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L40">            return mapper.writeValueAsString(this);</span>
+<span class="nc" id="L41">        } catch (Exception e) {</span>
+<span class="nc" id="L42">            return &quot;Error converting to JSON: &quot; + e.getMessage();</span>
         }
     }
 	
 	@Override
     public int hashCode() {
-<span class="fc" id="L44">        return (username + sessionId).hashCode();</span>
+<span class="fc" id="L48">        return (username + sessionId).hashCode();</span>
     }
 	
 	@Override
     public String toString() {
-<span class="fc" id="L49">        return &quot;Player{&quot; +</span>
+<span class="fc" id="L53">        return &quot;Player{&quot; +</span>
                 &quot;username='&quot; + username + '\'' +
                 &quot;, score=&quot; + score +
                 '}';
     }
-    
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

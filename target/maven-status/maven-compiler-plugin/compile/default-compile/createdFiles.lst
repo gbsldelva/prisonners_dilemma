@@ -18,9 +18,11 @@ fr\uga\m1miage\pc\strategy\RancunierDoux.class
 fr\uga\m1miage\pc\strategy\PavlovAleatoire.class
 fr\uga\m1miage\pc\strategy\Adaptatif.class
 fr\uga\m1miage\pc\strategy\Aleatoire.class
+fr\uga\m1miage\pc\service\NotificationService.class
 fr\uga\m1miage\pc\PrisonnersDilemmaApplication.class
 fr\uga\m1miage\pc\utils\UtilFunctions.class
 fr\uga\m1miage\pc\model\Player.class
+fr\uga\m1miage\pc\service\GameSessionService.class
 fr\uga\m1miage\pc\model\InvitationAnswer.class
 fr\uga\m1miage\pc\strategy\StrategyType.class
 fr\uga\m1miage\pc\strategy\SondeurNaif.class

@@ -6,10 +6,10 @@ import fr.uga.m1miage.pc.utils.UtilFunctions;
 
 <span class="fc" id="L7">public class Adaptatif implements Strategy {</span>
 
-<span class="fc" id="L9">    private static final String[] INITIAL_SEQUENCE = {&quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;};</span>
-<span class="fc" id="L10">    private int moveIndex = 0;</span>
-<span class="fc" id="L11">    private int coopScore = 0;</span>
-<span class="fc" id="L12">    private int betrayScore = 0;</span>
+<span class="fc" id="L9">    static final String[] INITIAL_SEQUENCE = {&quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;};</span>
+<span class="fc" id="L10">    int moveIndex = 0;</span>
+<span class="fc" id="L11">    int coopScore = 0;</span>
+<span class="fc" id="L12">    int betrayScore = 0;</span>
     
     @Override
     public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {

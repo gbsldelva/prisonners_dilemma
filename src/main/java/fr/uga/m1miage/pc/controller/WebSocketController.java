@@ -3,10 +3,8 @@ package fr.uga.m1miage.pc.controller;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import fr.uga.m1miage.pc.model.Player;
 
@@ -23,7 +21,7 @@ public class WebSocketController {
     private final SimpMessagingTemplate messagingTemplate;
     final Set<String> connectedUsers = new HashSet<>();
     final Map<String, String> userSessionMap = new HashMap<>();
-    protected static Map<String, Player> connectedPlayers = new HashMap<>();
+    public static Map<String, Player> connectedPlayers = new HashMap<>();
 
     public WebSocketController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
@@ -34,25 +32,6 @@ public class WebSocketController {
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         // Notify all clients about the new user
         updateAvailableUsers();
-    }
-
-    // Handle user disconnect
-    @EventListener
-    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-
-        // Retrieve the username from the session
-        String username = null;
-        Map<String, Object> attributes = headerAccessor.getSessionAttributes();
-        if (attributes != null)
-            username = (String) attributes.get("username");
-
-        if (username != null) {
-            connectedUsers.remove(username); // Remove user from connected users
-            connectedPlayers.remove(username);
-            userSessionMap.values().remove(username); // Remove from session map
-            updateAvailableUsers(); // Call a method to update available users for other clients
-        }
     }
 
     // Handle a new user connecting with their username and sessionId

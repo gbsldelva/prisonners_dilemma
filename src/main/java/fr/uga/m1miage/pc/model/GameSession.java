@@ -33,12 +33,27 @@ public class GameSession {
         if (this == o) return true;
         if (!(o instanceof GameSession)) return false;
         GameSession that = (GameSession) o;
-        return totalIterations == that.totalIterations &&
-               currentIteration == that.currentIteration &&
-               Objects.equals(player1, that.player1) &&
+        return Objects.equals(player1, that.player1) &&
                Objects.equals(player2, that.player2);
     }
+	
+	public boolean isRoundComplete() {
+        return player1Choices.size() == player2Choices.size() && player1Choices.size() > currentIteration;
+    }
 
+    public boolean isGameOver() {
+        return currentIteration >= totalIterations;
+    }
+    
+    public boolean containsPlayer(String username) {
+        return player1.getUsername().equals(username) || player2.getUsername().equals(username);
+    }
+	
+    public String getScoreSummary() {
+        return player1.getUsername() + "(" + player1.getScore() + ") - " +
+               player2.getUsername() + "(" + player2.getScore() + ")";
+    }
+    
     @Override
     public int hashCode() {
         return Objects.hash(player1, player2, totalIterations, currentIteration);

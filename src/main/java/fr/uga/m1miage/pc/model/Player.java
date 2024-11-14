@@ -2,6 +2,7 @@ package fr.uga.m1miage.pc.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.uga.m1miage.pc.strategy.Strategy;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +12,14 @@ public class Player {
     private String username;
     private String sessionId;
     private int score;
+    private Strategy strategy;
+    private boolean isServer;
 
     public Player(String username, String sessionId) {
         this.username = username;
         this.sessionId = sessionId;
         this.score = 0;
+        this.isServer = false;
     }
     
     public Player(String username) {
@@ -51,5 +55,4 @@ public class Player {
                 ", score=" + score +
                 '}';
     }
-    
 }

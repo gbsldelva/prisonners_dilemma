@@ -1,6 +1,7 @@
 package fr.uga.m1miage.pc.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -92,5 +93,8 @@ class UtilFunctionsTest {
 		List<String> moves = Arrays.asList("c", "t", "c", "c", "c", "t");
 		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, "c", 2));
 		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, "c", 4));
+		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, "c", 0));
+		assertFalse(UtilFunctions.checkOccurenceOfTextInList(moves, "d", 1));
+		assertFalse(UtilFunctions.checkOccurenceOfTextInList(new ArrayList<String>(), "d", 1));
 	}
 }

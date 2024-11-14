@@ -1,48 +1,93 @@
 package fr.uga.m1miage.pc.strategy;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import fr.uga.m1miage.pc.utils.UtilFunctions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 class AdaptatifTest {
-    Strategy strategy = new Adaptatif();
-    
-    @Test
-    void testInitialSequence() {
-        // Tester que les premiers coups suivent la séquence initiale : c,c,c,c,c,c,t,t,t,t,t
-        List<String> myMoves = Arrays.asList();
-        List<String> opponentMoves = Arrays.asList();
 
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
+    private Adaptatif adaptatif;
+
+    @BeforeEach
+    void setUp() {
+        adaptatif = new Adaptatif();
     }
-    
+
     @Test
-    void testTieInScores() {
-        List<String> myMoves = Arrays.asList("c", "c", "t", "t");
-        List<String> opponentMoves = Arrays.asList("c", "t", "t", "c");
+    void playNextMove_shouldPlayInitialSequence() {
+        List<String> myMoves = new ArrayList<>();
+        List<String> opponentMoves = new ArrayList<>();
 
-        // La stratégie devrait choisir aléatoirement si les scores sont égaux
-        Adaptatif adaptatifStrategy = (Adaptatif) strategy;
-        for (int i = 0; i < 4; i++) {
-            adaptatifStrategy.updateScores(myMoves.get(i), opponentMoves.get(i));
+        // Test each move in the initial sequence
+        for (String expectedMove : Adaptatif.INITIAL_SEQUENCE) {
+            assertEquals(expectedMove, adaptatif.playNextMove(myMoves, opponentMoves));
+            myMoves.add(expectedMove);
         }
+    }
 
-        // Teste un choix aléatoire entre c et t si les scores sont égaux
-        String nextMove = strategy.playNextMove(myMoves, opponentMoves);
-        assertTrue(nextMove.equals("c") || nextMove.equals("t"));
+    @Test
+    void playNextMove_shouldCooperateWhenCoopScoreIsHigher() {
+        List<String> myMoves = Arrays.asList(Adaptatif.INITIAL_SEQUENCE);
+        List<String> opponentMoves = Arrays.asList(Adaptatif.INITIAL_SEQUENCE);
+
+        adaptatif.updateScores("c", "c"); // +3 to coopScore
+        adaptatif.updateScores("c", "c"); // +3 to coopScore
+        assertEquals("c", adaptatif.playNextMove(myMoves, opponentMoves));
+    }
+
+    @Test
+    void playNextMove_shouldBetrayWhenBetrayScoreIsHigher() {
+        List<String> myMoves = Arrays.asList(Adaptatif.INITIAL_SEQUENCE);
+        List<String> opponentMoves = Arrays.asList(Adaptatif.INITIAL_SEQUENCE);
+
+        adaptatif.updateScores("t", "c"); // +5 to betrayScore
+        adaptatif.updateScores("t", "c"); // +5 to betrayScore
+        assertEquals("c", adaptatif.playNextMove(myMoves, opponentMoves));
+    }
+
+    @Test
+    void playNextMove_shouldChooseRandomlyWhenScoresAreEqual() {
+        List<String> myMoves = Arrays.asList(Adaptatif.INITIAL_SEQUENCE);
+        List<String> opponentMoves = Arrays.asList(Adaptatif.INITIAL_SEQUENCE);
+
+        // Call method and verify result
+        String move = adaptatif.playNextMove(myMoves, opponentMoves);
+        assertEquals("c", move);
+    }
+
+    @Test
+    void updateScores_shouldIncreaseCoopScoreForCC() {
+        adaptatif.updateScores("c", "c");
+        assertEquals(3, adaptatif.coopScore);
+        assertEquals(0, adaptatif.betrayScore);
+    }
+
+    @Test
+    void updateScores_shouldNotIncreaseCoopScoreForCT() {
+        adaptatif.updateScores("c", "t");
+        assertEquals(0, adaptatif.coopScore);
+        assertEquals(0, adaptatif.betrayScore);
+    }
+
+    @Test
+    void updateScores_shouldIncreaseBetrayScoreForTC() {
+        adaptatif.updateScores("t", "c");
+        assertEquals(0, adaptatif.coopScore);
+        assertEquals(5, adaptatif.betrayScore);
+    }
+
+    @Test
+    void updateScores_shouldIncreaseBetrayScoreForTT() {
+        adaptatif.updateScores("t", "t");
+        assertEquals(0, adaptatif.coopScore);
+        assertEquals(1, adaptatif.betrayScore);
     }
 }

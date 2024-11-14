@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameSessionService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.service</a> &gt; <span class="el_source">GameSessionService.java</span></div><h1>GameSessionService.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.service;
+
+import fr.uga.m1miage.pc.controller.WebSocketController;
+import fr.uga.m1miage.pc.model.*;
+import fr.uga.m1miage.pc.strategy.Strategy;
+import fr.uga.m1miage.pc.strategy.VraiPacificateur;
+
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+@Service
+public class GameSessionService {
+
+    private final NotificationService notificationService;
+<span class="fc" id="L20">    public final Map&lt;String, Integer&gt; invitationIterationMap = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L21">    private static final ConcurrentMap&lt;String, GameSession&gt; activeGames = new ConcurrentHashMap&lt;&gt;();</span>
+
+<span class="fc" id="L23">    public GameSessionService(NotificationService notificationService) {</span>
+<span class="fc" id="L24">        this.notificationService = notificationService;</span>
+<span class="fc" id="L25">    }</span>
+    
+    void pairPlayers(String player1Username, String player2Username) {
+<span class="fc" id="L28">        Player player1 = WebSocketController.connectedPlayers.get(player1Username);</span>
+<span class="fc" id="L29">        Player player2 = WebSocketController.connectedPlayers.get(player2Username);</span>
+<span class="fc" id="L30">        String key = player1.getUsername() + &quot;&amp;&quot; + player2.getUsername();</span>
+        
+<span class="fc" id="L32">        createSession(player1, player2, invitationIterationMap.get(key));</span>
+<span class="fc" id="L33">    }</span>
+    
+    public GameSession playAgainstServer(Player player, int iterations) {
+        // Crée une session de jeu avec le joueur humain et un joueur serveur utilisant la stratégie donnée
+<span class="nc" id="L37">        Player server = new Player(&quot;Ordinateur&quot;, null);  // Crée un joueur &quot;serveur&quot;</span>
+<span class="nc" id="L38">        server.setServer(true);</span>
+<span class="nc" id="L39">        GameSession session = new GameSession(player, server);</span>
+<span class="nc" id="L40">        Strategy serverStrategy = new VraiPacificateur();</span>
+<span class="nc" id="L41">        server.setStrategy(serverStrategy);</span>
+<span class="nc" id="L42">        session.setTotalIterations(iterations);</span>
+        
+<span class="nc" id="L44">        activeGames.put(generateSessionKey(player, server), session);</span>
+<span class="nc" id="L45">        return session;</span>
+    }
+    
+    public GameSession createSession(Player player1, Player player2, int iterations) {
+<span class="pc bpc" id="L49" title="2 of 4 branches missed.">        if (player1 == null || player2 == null) {</span>
+<span class="nc" id="L50">            throw new IllegalArgumentException(&quot;Both players must be provided to create a game session.&quot;);</span>
+        }
+<span class="fc" id="L52">        GameSession session = new GameSession(player1, player2);</span>
+<span class="fc" id="L53">        session.setTotalIterations(iterations);</span>
+        
+<span class="fc" id="L55">		activeGames.put(generateSessionKey(player1, player2), session);</span>
+<span class="fc" id="L56">        return session;</span>
+    }
+    
+    private String generateSessionKey(Player player1, Player player2) {
+<span class="fc" id="L60">        return player1.getUsername() + &quot;VS&quot; + player2.getUsername();</span>
+    }
+    
+	public void handleInvitation(Invitation invitation) {
+<span class="fc" id="L64">        invitationIterationMap.put(invitation.getFromPlayer() + &quot;&amp;&quot; + invitation.getToUsername(), invitation.getIteration());</span>
+<span class="fc" id="L65">        notificationService.notifyInvitation(invitation);</span>
+<span class="fc" id="L66">    }</span>
+
+    public void handleInvitationAnswer(InvitationAnswer answer) {
+<span class="fc" id="L69">        notificationService.notifyGameStart(answer.getMessage());</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (&quot;confirmed&quot;.equals(answer.getMessage())) {</span>
+<span class="nc" id="L71">            pairPlayers(answer.getPlayerUsername(), answer.getOponentUsername());</span>
+        }
+<span class="fc" id="L73">    }</span>
+    
+    public void handleChoice(ChoiceMessage choiceMessage) {
+<span class="fc" id="L76">        GameSession session = findGameSession(choiceMessage.getUsername());</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (session == null) return;</span>
+
+        // Détermine quel joueur fait le choix (le joueur 1 est celui qui a envoyé le message)
+<span class="fc" id="L80">        Player currentPlayer = session.getPlayer1();</span>
+<span class="fc" id="L81">        Player player2 = session.getPlayer2(); // Le joueur 2 est toujours le serveur</span>
+
+        // Ajoute le choix du joueur
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {</span>
+<span class="fc" id="L85">            session.getPlayer1Choices().add(choiceMessage.getChoice());</span>
+        } else {
+<span class="fc" id="L87">            session.getPlayer2Choices().add(choiceMessage.getChoice());</span>
+        }
+
+        // Si le serveur est le 2e joueur, il fait son choix en fonction de sa stratégie
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (player2.isServer()) {</span>
+<span class="nc" id="L92">            String serverChoice = player2.getStrategy().playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());</span>
+<span class="nc" id="L93">            session.getPlayer2Choices().add(serverChoice);</span>
+        }
+
+        // Vérifie si la manche est terminée et met à jour ou termine la partie
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (session.isRoundComplete()) {</span>
+<span class="fc" id="L98">            session.incrementIteration();</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            if (session.isGameOver()) {</span>
+<span class="fc" id="L100">                endGame(session);</span>
+            } else {
+<span class="fc" id="L102">                notificationService.updateScore(session);</span>
+            }
+        }
+<span class="fc" id="L105">    }</span>
+
+
+    GameSession findGameSession(String username) {
+<span class="fc" id="L109">        return activeGames.values().stream()</span>
+<span class="fc" id="L110">                .filter(session -&gt; session.containsPlayer(username))</span>
+<span class="fc" id="L111">                .findFirst()</span>
+<span class="fc" id="L112">                .orElse(null);</span>
+    }
+
+    void endGame(GameSession session) {
+<span class="fc" id="L116">        notificationService.endGame(session);</span>
+<span class="fc" id="L117">        activeGames.values().removeIf(s -&gt; s.equals(session));</span>
+<span class="fc" id="L118">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

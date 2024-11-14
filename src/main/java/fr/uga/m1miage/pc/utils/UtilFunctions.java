@@ -45,7 +45,7 @@ public class UtilFunctions {
 				occurence++;
 			}
 		}
-		return occurence >= minOccurence;
+		return occurence >= minOccurence && occurence != 0;
 	}
 	
 }

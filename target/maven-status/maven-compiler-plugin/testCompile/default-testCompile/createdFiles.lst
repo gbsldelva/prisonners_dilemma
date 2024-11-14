@@ -11,6 +11,7 @@ fr\uga\m1miage\pc\utils\UtilFunctionsTest.class
 fr\uga\m1miage\pc\controller\WebSocketControllerTest.class
 fr\uga\m1miage\pc\strategy\AleatoireTest.class
 fr\uga\m1miage\pc\strategy\StrategyTypeTest.class
+fr\uga\m1miage\pc\service\GameSessionServiceTest.class
 fr\uga\m1miage\pc\strategy\SondeurNaifTest.class
 fr\uga\m1miage\pc\strategy\ToujoursCoopererTest.class
 fr\uga\m1miage\pc\strategy\ToujoursTrahirTest.class
@@ -20,6 +21,7 @@ fr\uga\m1miage\pc\controller\GameControllerTest.class
 fr\uga\m1miage\pc\strategy\DonnantDonnantTest.class
 fr\uga\m1miage\pc\model\GameSessionTest.class
 fr\uga\m1miage\pc\strategy\DonnantDeuxDonnantAleatoireTest.class
+fr\uga\m1miage\pc\service\NotificationServiceTest.class
 fr\uga\m1miage\pc\strategy\GraduelTest.class
 fr\uga\m1miage\pc\model\InvitationTest.class
 fr\uga\m1miage\pc\model\ResultTest.class
