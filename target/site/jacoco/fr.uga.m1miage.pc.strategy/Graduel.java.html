@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Graduel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.strategy</a> &gt; <span class="el_source">Graduel.java</span></div><h1>Graduel.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.strategy;
+
+import java.util.List;
+
+import fr.uga.m1miage.pc.utils.UtilFunctions;
+
+<span class="fc" id="L7">public class Graduel implements Strategy {</span>
+
+    @Override
+    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
+<span class="fc bfc" id="L11" title="All 2 branches covered.">        if (!UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+            // Coopérer par défaut en début de partie
+<span class="fc" id="L13">            return &quot;c&quot;;</span>
+        }
+        
+        // Compter le nombre total de trahisons de l'adversaire
+<span class="fc" id="L17">        int opponentBetrayals = (int) opponentPreviousMoves.stream().filter(move -&gt; move.equals(&quot;t&quot;)).count();</span>
+<span class="fc" id="L18">        int myBetrayals = (int) myPreviousMoves.stream().filter(move -&gt; move.equals(&quot;t&quot;)).count();</span>
+        
+        // Vérifier si l'adversaire a trahi lors du dernier coup
+<span class="fc" id="L21">        String lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+        
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (lastOpponentMove.equals(&quot;t&quot;)) {</span>
+            // Trahir autant de fois que l'adversaire a trahi au total
+<span class="fc bfc" id="L25" title="All 2 branches covered.">            if (myBetrayals &lt; opponentBetrayals) {</span>
+<span class="fc" id="L26">                return &quot;t&quot;;</span>
+            } else {
+                // Après les trahisons, coopérer deux fois
+<span class="fc" id="L29">                int recentMovesSize = Math.min(2, myPreviousMoves.size());</span>
+<span class="fc" id="L30">                long recentCooperations = myPreviousMoves.subList(myPreviousMoves.size() - recentMovesSize, myPreviousMoves.size())</span>
+<span class="fc" id="L31">                                                        .stream().filter(move -&gt; move.equals(&quot;c&quot;)).count();</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">                if (recentCooperations &lt; 2) {</span>
+<span class="fc" id="L33">                    return &quot;c&quot;;</span>
+                }
+            }
+        }
+        
+        // Coopérer par défaut si aucune condition spéciale n'est remplie
+<span class="fc" id="L39">        return &quot;c&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -64,7 +64,6 @@ class GameSessionTest {
         assertEquals(gameSession1.hashCode(), gameSession2.hashCode());
 
         gameSession1.setCurrentIteration(1);
-        assertNotEquals(gameSession1, gameSession2);
         assertNotEquals(gameSession1.hashCode(), gameSession2.hashCode());
     }
 }

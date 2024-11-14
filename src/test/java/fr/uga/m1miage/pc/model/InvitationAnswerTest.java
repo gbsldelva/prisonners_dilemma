@@ -6,15 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class InvitationAnswerTest {
     @Test
     void testSettersAndGetters() {
-        InvitationAnswer invitationAnswer = new InvitationAnswer();
-
-        invitationAnswer.setMessage("Hello!");
+        InvitationAnswer invitationAnswer = new InvitationAnswer("Hello!", "oponent", "player");
         assertEquals("Hello!", invitationAnswer.getMessage());
-
-        invitationAnswer.setOponentUsername("oponent");
         assertEquals("oponent", invitationAnswer.getOponentUsername());
-
-        invitationAnswer.setPlayerUsername("player");
         assertEquals("player", invitationAnswer.getPlayerUsername());
     }
 }

@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebSocketController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.controller</a> &gt; <span class="el_source">WebSocketController.java</span></div><h1>WebSocketController.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebSocketController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.controller</a> &gt; <span class="el_source">WebSocketController.java</span></div><h1>WebSocketController.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.controller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import fr.uga.m1miage.pc.model.Player;
 
@@ -21,51 +19,32 @@ import java.util.Set;
 public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
-<span class="fc" id="L24">    private final Set&lt;String&gt; connectedUsers = new HashSet&lt;&gt;();</span>
-<span class="fc" id="L25">    private final Map&lt;String, String&gt; userSessionMap = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L26">    protected static Map&lt;String, Player&gt; connectedPlayers = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L22">    final Set&lt;String&gt; connectedUsers = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L23">    final Map&lt;String, String&gt; userSessionMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L24">    public static Map&lt;String, Player&gt; connectedPlayers = new HashMap&lt;&gt;();</span>
 
-<span class="fc" id="L28">    public WebSocketController(SimpMessagingTemplate messagingTemplate) {</span>
-<span class="fc" id="L29">        this.messagingTemplate = messagingTemplate;</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L26">    public WebSocketController(SimpMessagingTemplate messagingTemplate) {</span>
+<span class="fc" id="L27">        this.messagingTemplate = messagingTemplate;</span>
+<span class="fc" id="L28">    }</span>
 
 	// Notify clients when a new user connects
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         // Notify all clients about the new user
-<span class="fc" id="L36">        updateAvailableUsers();</span>
-<span class="fc" id="L37">    }</span>
-
-    // Handle user disconnect
-    @EventListener
-    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-<span class="nc" id="L42">        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());</span>
-
-        // Retrieve the username from the session
-<span class="nc" id="L45">        String username = null;</span>
-<span class="nc" id="L46">        Map&lt;String, Object&gt; attributes = headerAccessor.getSessionAttributes();</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (attributes != null)</span>
-<span class="nc" id="L48">            username = (String) attributes.get(&quot;username&quot;);</span>
-
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (username != null) {</span>
-<span class="nc" id="L51">            connectedUsers.remove(username); // Remove user from connected users</span>
-<span class="nc" id="L52">            connectedPlayers.remove(username);</span>
-<span class="nc" id="L53">            userSessionMap.values().remove(username); // Remove from session map</span>
-<span class="nc" id="L54">            updateAvailableUsers(); // Call a method to update available users for other clients</span>
-        }
-<span class="nc" id="L56">    }</span>
+<span class="fc" id="L34">        updateAvailableUsers();</span>
+<span class="fc" id="L35">    }</span>
 
     // Handle a new user connecting with their username and sessionId
     @MessageMapping(&quot;/connectUser&quot;)
     public void connectUser(@Payload Player player) {
-<span class="nc" id="L61">        connectedUsers.add(player.toJson());</span>
-<span class="nc" id="L62">        connectedPlayers.put(player.getUsername(), player);</span>
-<span class="nc" id="L63">        userSessionMap.put(player.getSessionId(), player.getUsername());</span>
-<span class="nc" id="L64">        updateAvailableUsers();</span>
-<span class="nc" id="L65">    }</span>
+<span class="fc" id="L40">        connectedUsers.add(player.toJson());</span>
+<span class="fc" id="L41">        connectedPlayers.put(player.getUsername(), player);</span>
+<span class="fc" id="L42">        userSessionMap.put(player.getSessionId(), player.getUsername());</span>
+<span class="fc" id="L43">        updateAvailableUsers();</span>
+<span class="fc" id="L44">    }</span>
 
     private void updateAvailableUsers() {
-<span class="fc" id="L68">        messagingTemplate.convertAndSend(&quot;/topic/availablePlayers&quot;, connectedUsers);</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L47">        messagingTemplate.convertAndSend(&quot;/topic/availablePlayers&quot;, connectedUsers);</span>
+<span class="fc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
