@@ -27,9 +27,15 @@ public class GameSessionService {
     void pairPlayers(String player1Username, String player2Username) {
         Player player1 = WebSocketController.connectedPlayers.get(player1Username);
         Player player2 = WebSocketController.connectedPlayers.get(player2Username);
-        String key = player1.getUsername() + "&" + player2.getUsername();
+        String key1 = player1.getUsername() + "&" + player2.getUsername();
+        String key2 = player2.getUsername() + "&" + player1.getUsername();
+        int nbIteration = 0;
+        if (invitationIterationMap.containsKey(key1))
+        	nbIteration = invitationIterationMap.get(key1);
+        else if (invitationIterationMap.containsKey(key2))
+        	nbIteration = invitationIterationMap.get(key2);
         
-        createSession(player1, player2, invitationIterationMap.get(key));
+        createSession(player1, player2, nbIteration);
     }
     
     public GameSession playAgainstServer(Player player, int iterations) {
@@ -61,7 +67,9 @@ public class GameSessionService {
     }
     
 	public void handleInvitation(Invitation invitation) {
-        invitationIterationMap.put(invitation.getFromPlayer() + "&" + invitation.getToUsername(), invitation.getIteration());
+		String key = invitation.getFromPlayer() + "&" + invitation.getToUsername();
+		
+        invitationIterationMap.put(key, invitation.getIteration());
         notificationService.notifyInvitation(invitation);
     }
 
