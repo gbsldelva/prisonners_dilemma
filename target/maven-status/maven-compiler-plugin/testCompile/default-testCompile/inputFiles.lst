@@ -1,33 +1,33 @@
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\config\WebSocketConfigTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\controller\GameControllerTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\controller\WebSocketControllerTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\model\ChoiceMessageTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\model\GameSessionTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\model\InvitationAnswerTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\model\InvitationTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\model\MessageTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\model\PlayerTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\model\ResultTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\service\GameSessionServiceTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\service\NotificationServiceTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\AdaptatifTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\AleatoireTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\DonnantDeuxDonnantAleatoireTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\DonnantDeuxDonnantTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\DonnantDonnantAleatoireTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\DonnantDonnantSoupconneuxTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\DonnantDonnantTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\GraduelTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\PacificateurNaifTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\PavlovAleatoireTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\PavlovTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\RancunierDouxTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\RancunierTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\SondeurNaifTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\SondeurRepentantTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\StrategyFactoryTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\StrategyTypeTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\ToujoursCoopererTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\ToujoursTrahirTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\strategy\VraiPacificateurTest.java
-C:\Users\gbsld\Documents\MIAGE\M1\S1\PC\Projet Integrateur\SonarQubeVersion\prisonniersdilemma_mg2_10\src\test\java\fr\uga\m1miage\pc\utils\UtilFunctionsTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/config/WebSocketConfigTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/controller/GameControllerTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/controller/WebSocketControllerTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/model/ChoiceMessageTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/model/GameSessionTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/model/InvitationAnswerTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/model/InvitationTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/model/MessageTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/model/PlayerTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/model/ResultTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/service/GameSessionServiceTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/service/NotificationServiceTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/AdaptatifTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/AleatoireTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/DonnantDeuxDonnantAleatoireTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/DonnantDeuxDonnantTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/DonnantDonnantAleatoireTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/DonnantDonnantSoupconneuxTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/DonnantDonnantTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/GraduelTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/PacificateurNaifTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/PavlovAleatoireTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/PavlovTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/RancunierDouxTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/RancunierTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/SondeurNaifTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/SondeurRepentantTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/StrategyFactoryTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/StrategyTypeTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/ToujoursCoopererTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/ToujoursTrahirTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/strategy/VraiPacificateurTest.java
+/Users/nadine/Desktop/prisonners_dilemma/src/test/java/fr/uga/m1miage/pc/utils/UtilFunctionsTest.java

@@ -15,21 +15,21 @@ public class Message {
 
     @Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (!(o instanceof Message)) return false;</span>
-<span class="fc" id="L20">        Message message = (Message) o;</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        return Objects.equals(type, message.type) &amp;&amp; </span>
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">               Objects.equals(payload, message.payload);</span>
+<span class="nc bnc" id="L18" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (!(o instanceof Message)) return false;</span>
+<span class="nc" id="L20">        Message message = (Message) o;</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        return Objects.equals(type, message.type) &amp;&amp; </span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">               Objects.equals(payload, message.payload);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="fc" id="L27">        return Objects.hash(type, payload);</span>
+<span class="nc" id="L27">        return Objects.hash(type, payload);</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L32">        return &quot;Message{&quot; +</span>
+<span class="nc" id="L32">        return &quot;Message{&quot; +</span>
                 &quot;type='&quot; + type + '\'' +
                 &quot;, payload=&quot; + payload +
                 '}';

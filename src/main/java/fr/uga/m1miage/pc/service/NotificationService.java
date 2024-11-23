@@ -1,10 +1,11 @@
 package fr.uga.m1miage.pc.service;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+
 import fr.uga.m1miage.pc.model.GameSession;
 import fr.uga.m1miage.pc.model.Invitation;
 import fr.uga.m1miage.pc.model.Result;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationService {
@@ -38,8 +39,12 @@ public class NotificationService {
     public void endGame(GameSession session) {
         Result result = new Result();
         result.setScore(session.getScoreSummary());
-        result.setStatus("Terminé");
+        result.setStatus("TerminÃ©");
         result.setParti(session.getTotalIterations() + "/" + session.getTotalIterations());
         messagingTemplate.convertAndSend("/queue/gameEnd", result.toJson());
+    }
+
+    public void notifyPlayerReplacement(String username, String message) {
+        messagingTemplate.convertAndSendToUser(username, "/queue/playerReplacement", message);
     }
 }

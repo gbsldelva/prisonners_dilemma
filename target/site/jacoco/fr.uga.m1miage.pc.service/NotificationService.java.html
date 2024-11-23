@@ -11,36 +11,36 @@ public class NotificationService {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-<span class="fc" id="L14">    public NotificationService(SimpMessagingTemplate messagingTemplate) {</span>
-<span class="fc" id="L15">        this.messagingTemplate = messagingTemplate;</span>
-<span class="fc" id="L16">    }</span>
+<span class="nc" id="L14">    public NotificationService(SimpMessagingTemplate messagingTemplate) {</span>
+<span class="nc" id="L15">        this.messagingTemplate = messagingTemplate;</span>
+<span class="nc" id="L16">    }</span>
 
     public void notifyInvitation(Invitation invitation) {
-<span class="fc" id="L19">        messagingTemplate.convertAndSendToUser(</span>
-<span class="fc" id="L20">            invitation.getToUsername(),</span>
+<span class="nc" id="L19">        messagingTemplate.convertAndSendToUser(</span>
+<span class="nc" id="L20">            invitation.getToUsername(),</span>
             &quot;/queue/invitation&quot;,
-<span class="fc" id="L22">            invitation.getFromPlayer()</span>
+<span class="nc" id="L22">            invitation.getFromPlayer()</span>
         );
-<span class="fc" id="L24">    }</span>
+<span class="nc" id="L24">    }</span>
 
     public void notifyGameStart(String message) {
-<span class="fc" id="L27">        messagingTemplate.convertAndSend(&quot;/queue/gameStartHandler&quot;, message);</span>
-<span class="fc" id="L28">    }</span>
+<span class="nc" id="L27">        messagingTemplate.convertAndSend(&quot;/queue/gameStartHandler&quot;, message);</span>
+<span class="nc" id="L28">    }</span>
 
     public void updateScore(GameSession session) {
-<span class="fc" id="L31">        Result result = new Result();</span>
-<span class="fc" id="L32">        result.setScore(session.getScoreSummary());</span>
-<span class="fc" id="L33">        result.setStatus(&quot;En cours&quot;);</span>
-<span class="fc" id="L34">        result.setParti(session.getCurrentIteration() + 1 + &quot;/&quot; + session.getTotalIterations());</span>
-<span class="fc" id="L35">        messagingTemplate.convertAndSend(&quot;/queue/scoreUpdate&quot;, result.toJson());</span>
-<span class="fc" id="L36">    }</span>
+<span class="nc" id="L31">        Result result = new Result();</span>
+<span class="nc" id="L32">        result.setScore(session.getScoreSummary());</span>
+<span class="nc" id="L33">        result.setStatus(&quot;En cours&quot;);</span>
+<span class="nc" id="L34">        result.setParti(session.getCurrentIteration() + 1 + &quot;/&quot; + session.getTotalIterations());</span>
+<span class="nc" id="L35">        messagingTemplate.convertAndSend(&quot;/queue/scoreUpdate&quot;, result.toJson());</span>
+<span class="nc" id="L36">    }</span>
 
     public void endGame(GameSession session) {
-<span class="fc" id="L39">        Result result = new Result();</span>
-<span class="fc" id="L40">        result.setScore(session.getScoreSummary());</span>
-<span class="fc" id="L41">        result.setStatus(&quot;Terminé&quot;);</span>
-<span class="fc" id="L42">        result.setParti(session.getTotalIterations() + &quot;/&quot; + session.getTotalIterations());</span>
-<span class="fc" id="L43">        messagingTemplate.convertAndSend(&quot;/queue/gameEnd&quot;, result.toJson());</span>
-<span class="fc" id="L44">    }</span>
+<span class="nc" id="L39">        Result result = new Result();</span>
+<span class="nc" id="L40">        result.setScore(session.getScoreSummary());</span>
+<span class="nc" id="L41">        result.setStatus(&quot;Terminé&quot;);</span>
+<span class="nc" id="L42">        result.setParti(session.getTotalIterations() + &quot;/&quot; + session.getTotalIterations());</span>
+<span class="nc" id="L43">        messagingTemplate.convertAndSend(&quot;/queue/gameEnd&quot;, result.toJson());</span>
+<span class="nc" id="L44">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

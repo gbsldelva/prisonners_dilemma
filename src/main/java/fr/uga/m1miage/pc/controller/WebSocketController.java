@@ -1,5 +1,11 @@
 package fr.uga.m1miage.pc.controller;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -7,13 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 import fr.uga.m1miage.pc.model.Player;
-
-import org.springframework.context.event.EventListener;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 @Controller
 public class WebSocketController {
@@ -37,10 +36,17 @@ public class WebSocketController {
     // Handle a new user connecting with their username and sessionId
     @MessageMapping("/connectUser")
     public void connectUser(@Payload Player player) {
+    if (connectedPlayers.containsKey(player.getUsername())) {
+        messagingTemplate.convertAndSendToUser( player.getSessionId(), "/queue/errors", 
+            "Le nom d'utilisateur \"" + player.getUsername() + "\" est déjà pris.");
+    } else {
+        String playerJson = player.toJson();
+        System.out.println("Serialized Player JSON: " + playerJson);
         connectedUsers.add(player.toJson());
         connectedPlayers.put(player.getUsername(), player);
         userSessionMap.put(player.getSessionId(), player.getUsername());
         updateAvailableUsers();
+    }
     }
 
     private void updateAvailableUsers() {
