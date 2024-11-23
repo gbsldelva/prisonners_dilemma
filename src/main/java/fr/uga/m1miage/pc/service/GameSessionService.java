@@ -1,17 +1,22 @@
 package fr.uga.m1miage.pc.service;
 
-import fr.uga.m1miage.pc.controller.WebSocketController;
-import fr.uga.m1miage.pc.model.*;
-import fr.uga.m1miage.pc.strategy.Strategy;
-import fr.uga.m1miage.pc.strategy.VraiPacificateur;
-
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ThreadLocalRandom;
+
+import org.springframework.stereotype.Service;
+
+import fr.uga.m1miage.pc.controller.WebSocketController;
+import fr.uga.m1miage.pc.model.ChoiceMessage;
+import fr.uga.m1miage.pc.model.GameSession;
+import fr.uga.m1miage.pc.model.Invitation;
+import fr.uga.m1miage.pc.model.InvitationAnswer;
+import fr.uga.m1miage.pc.model.Player;
+import fr.uga.m1miage.pc.strategy.Strategy;
+import fr.uga.m1miage.pc.strategy.StrategyFactory;
+import fr.uga.m1miage.pc.strategy.StrategyType;
 
 @Service
 public class GameSessionService {
@@ -38,19 +43,34 @@ public class GameSessionService {
         createSession(player1, player2, nbIteration);
     }
     
-    public GameSession playAgainstServer(Player player, int iterations) {
-        // Cr?e une session de jeu avec le joueur humain et un joueur serveur utilisant la strat?gie donn?e
-        Player server = new Player("Ordinateur", null);  // Cr?e un joueur "serveur"
-        server.setServer(true);
-        GameSession session = new GameSession(player, server);
-        Strategy serverStrategy = new VraiPacificateur();
-        server.setStrategy(serverStrategy);
-        session.setTotalIterations(iterations);
-        
-        activeGames.put(generateSessionKey(player, server), session);
-        return session;
+public GameSession playAgainstServer(Player player, int iterations) {
+    if (iterations <= 0) {
+        throw new IllegalArgumentException("Le nombre d'itérations doit être positif.");
     }
+    // Create a server player
+    Player server = new Player("Ordinateur", null); // Server has no sessionId
+    server.setServer(true);
+
+    // Assign a random strategy to the server
+    StrategyType randomStrategy = getRandomStrategy();
+    server.setStrategy(randomStrategy);
+
+    // Create the game session
+    GameSession session = createSession(player, server, iterations);
+
+    // Notify the player that the game has started
+    notificationService.notifyGameStart("La partie commence contre l'ordinateur");
+
+    return session;
+}
     
+    // Helper method to get a random StrategyType
+    private StrategyType getRandomStrategy() {
+      StrategyType[] strategies = StrategyType.values(); // Get all possible strategies
+      int randomIndex = ThreadLocalRandom.current().nextInt(strategies.length); // Generate a random index
+      return strategies[randomIndex];
+    }
+
     public GameSession createSession(Player player1, Player player2, int iterations) {
         if (player1 == null || player2 == null) {
             throw new IllegalArgumentException("Both players must be provided to create a game session.");
@@ -95,13 +115,14 @@ public class GameSessionService {
             session.getPlayer2Choices().add(choiceMessage.getChoice());
         }
 
-        // Si le serveur est le 2e joueur, il fait son choix en fonction de sa strat?gie
+        // Si le serveur est le 2e joueur, il fait son choix en fonction de sa stratégie
         if (player2.isServer()) {
-            String serverChoice = player2.getStrategy().playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());
+            Strategy serverStrategy = StrategyFactory.createStrategy(player2.getStrategy());
+            String serverChoice = serverStrategy.playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());
             session.getPlayer2Choices().add(serverChoice);
         }
 
-        // V?rifie si la manche est termin?e et met ? jour ou termine la partie
+        // Vérifie si la manche est termin?e et met ? jour ou termine la partie
         if (session.isRoundComplete()) {
             session.incrementIteration();
             if (session.isGameOver()) {
@@ -123,5 +144,39 @@ public class GameSessionService {
     void endGame(GameSession session) {
         notificationService.endGame(session);
         activeGames.values().removeIf(s -> s.equals(session));
+    }
+
+    public void handleDisconnection(String username) {
+        GameSession session = findGameSession(username);
+        if (session != null) {
+            Player remainingPlayer;
+            Player disconnectedPlayer;
+
+        // Determine the remaining and disconnected players
+        if (session.getPlayer1().getUsername().equals(username)) {
+            remainingPlayer = session.getPlayer2();
+            disconnectedPlayer = session.getPlayer1();
+        } else {
+            remainingPlayer = session.getPlayer1();
+            disconnectedPlayer = session.getPlayer2();
+        }  
+        // Create a server player to replace the disconnected player
+        Player serverPlayer = new Player("Ordinateur", disconnectedPlayer.getSessionId(), disconnectedPlayer.getStrategy(), true); 
+
+        // Update the session to replace the disconnected player with the server
+        if (session.getPlayer1().getUsername().equals(username)) {
+            session.setPlayer1(serverPlayer);
+        } else {
+            session.setPlayer2(serverPlayer);
+        }
+
+        // Notify the remaining player about the change
+        notificationService.notifyPlayerReplacement(remainingPlayer.getUsername(), "Votre adversaire a été remplacé par un ordinateur.");
+
+        // Continue the game with the server
+      //  session.setTotalIterations(session.getTotalIterations() - session.getCurrentIteration());
+      //  activeGames.put(generateSessionKey(session.getPlayer1(), session.getPlayer2()), session);
+       notificationService.updateScore(session); 
+     }         
     }
 }

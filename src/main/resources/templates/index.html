@@ -9,7 +9,26 @@
     <h1>Dilemne du prisonnier</h1>
 
     <div id="login">
-        <input type="text" id="username" placeholder="Enter your username" />
+        <input type="text" id="username" placeholder="Enter your username" required/>
+        <label for="strategy">Stratégie</label>
+        <select id="strategy" required>
+            <option value="DONNANT_DONNANT">Donnant-Donnant Aléatoire</option>
+            <option value="DONNANT_DONNANT_ALEATOIRE">Donnant-Donnant Aléatoire</option>
+            <option value="DONNANT_DEUX_DONNANT">Donnant-Deux-Donnant Aléatoire</option>
+            <option value="SONDEUR_NAIF">Sondeur naif</option>
+            <option value="SONDEUR_REPENTANT">Sondeur Repentant</option>
+            <option value="PACIFICATEUR_NAIF">Pacificateur naif</option>
+            <option value="VRAI_PACIFICATEUR">Vrai Pacificateur</option>
+            <option value="ALEATOIRE">Aléatoire</option>
+            <option value="TOUJOURS_TRAHIR">Toujours Tahrir</option>
+            <option value="TOUJOURS_COOPERER">Toujours Coopérer</option>
+            <option value="RANCUNIER">Rancunier</option>
+            <option value="PAVLOV">Pavlov</option>
+            <option value="PAVLOV_ALEATOIRE">Pavlov Aléatoire</option>
+            <option value="GRADUEL">Graduel</option>
+            <option value="DONNANT_DONNANT_SOUPCONNEUX">Donnant-Donnant Soupconneux</option>
+            <option value="RANCUNIER_DOUX">Rancunier Doux</option>
+        </select>
         <button id="connectButton">Se connecter</button>
     </div>
 
@@ -25,6 +44,11 @@
         <div id="choices">
             <button id="cooperateButton">Coopérer</button>
             <button id="betrayButton">Trahir</button>
+        </div>
+    </div>
+
+    <div id="disconnect" style="display:none;">
+            <button id="disconnectButton">Déconnexion</button>
         </div>
     </div>
 
@@ -60,14 +84,16 @@
 
     <script>
         class Player {
-            constructor(username, sessionId) {
+            constructor(username, sessionId, strategy) {
                 this.username = username;
                 this.sessionId = sessionId;
+                this.strategy = strategy;
             }
         }
 
         var stompClient = null;
         var username = '';
+        var strategy = '';
         var oponentUsername = '';
         var sessionId = ''; // Track the session ID
         var totalIterations = 0;
@@ -82,6 +108,7 @@
         function connect() {
             // Get the username input
             username = document.getElementById('username').value;
+            strategy = document.getElementById('strategy').value;
 
             // Check if username is empty
             if (username === '' || !isValidUsername(username)) {
@@ -102,10 +129,9 @@
                 }
                 // Subscribe to error messsages
                 stompClient.subscribe(`/user/${sessionId}/queue/errors`, function (message) {
-                    console.log("Error:", message.body);
-                    alert("Error:" + message.body);
                     document.getElementById('login').style.display = 'block';
                     document.getElementById('waiting').style.display = 'none'; 
+                    alert("Erreur:" + message.body);
                     return;
                 });
                 // Subscribe to available players topic
@@ -139,9 +165,13 @@
                     // Handle invitation message
                     handleInvitation(message.body);
                 });
+                // Subscribe to player replacement notifications
+                stompClient.subscribe(`/user/${username}/queue/playerReplacement`, function (message) {
+                    alert(message.body);
+                });
 
                 // Send a connection message with the username and sessionId
-                stompClient.send("/app/connectUser", {}, JSON.stringify({username: username, sessionId: sessionId}));
+                stompClient.send("/app/connectUser", {}, JSON.stringify({username: username, sessionId: sessionId, strategy: strategy}));
 
                 // Hide login and show the waiting area
                 document.getElementById('login').style.display = 'none';
@@ -167,6 +197,7 @@
             // Hide the waiting div and show the game div
             document.getElementById('waiting').style.display = 'none';
             document.getElementById('game').style.display = 'block';
+            document.getElementById('disconnect').style.display = 'block';
 
             // Reset the round number and scores
             document.getElementById('roundNumber').textContent = '1';
@@ -267,6 +298,8 @@
         const cooperateButton = document.getElementById('cooperateButton');
         const betrayButton = document.getElementById('betrayButton');
 
+        const disconnectButton = document.getElementById('disconnectButton');
+
         cooperateButton.addEventListener('click', () => {
             makeChoice('c');
         });
@@ -274,9 +307,15 @@
         betrayButton.addEventListener('click', () => {
             makeChoice('t');
         });
+
+        disconnectButton.addEventListener('click', () => {
+            stompClient.send("/app/disconnect", {}, JSON.stringify({username: username}));
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('disconnect').style.display = 'none';
+            document.getElementById('waiting').style.display = 'block';
     });
 
-    
+});
         // Get the dialog box and text input elements
         const dialog = document.getElementById('dialog');
     </script>
