@@ -100,7 +100,13 @@
                 } catch (e) {
                     console.log("Failed to extract session ID", e);
                 }
-
+                // Subscribe to error messsages
+                stompClient.subscribe(`/user/${sessionId}/queue/errors`, function (message) {
+                    document.getElementById('login').style.display = 'block';
+                    document.getElementById('waiting').style.display = 'none'; 
+                    alert("Erreur:" + message.body);
+                    return;
+                });
                 // Subscribe to available players topic
                 stompClient.subscribe('/topic/availablePlayers', function (message) {
                     updateAvailablePlayers(JSON.parse(message.body));

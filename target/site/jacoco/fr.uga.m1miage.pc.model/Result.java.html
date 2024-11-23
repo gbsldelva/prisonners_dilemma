@@ -7,15 +7,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-<span class="fc" id="L10">public class Result {</span>
+<span class="nc" id="L10">public class Result {</span>
 	String status;
 	String parti; 
 	String score;
 	
 	public String toJson() {
         try {
-<span class="fc" id="L17">            ObjectMapper mapper = new ObjectMapper();</span>
-<span class="fc" id="L18">            return mapper.writeValueAsString(this);</span>
+<span class="nc" id="L17">            ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L18">            return mapper.writeValueAsString(this);</span>
 <span class="nc" id="L19">        } catch (Exception e) {</span>
 <span class="nc" id="L20">            return &quot;Error converting to JSON: &quot; + e.getMessage();</span>
         }

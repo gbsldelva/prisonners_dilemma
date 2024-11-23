@@ -17,26 +17,26 @@ import java.util.concurrent.ConcurrentMap;
 public class GameSessionService {
 
     private final NotificationService notificationService;
-<span class="fc" id="L20">    public final Map&lt;String, Integer&gt; invitationIterationMap = new LinkedHashMap&lt;&gt;();</span>
-<span class="fc" id="L21">    private static final ConcurrentMap&lt;String, GameSession&gt; activeGames = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="nc" id="L20">    public final Map&lt;String, Integer&gt; invitationIterationMap = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L21">    private static final ConcurrentMap&lt;String, GameSession&gt; activeGames = new ConcurrentHashMap&lt;&gt;();</span>
 
-<span class="fc" id="L23">    public GameSessionService(NotificationService notificationService) {</span>
-<span class="fc" id="L24">        this.notificationService = notificationService;</span>
-<span class="fc" id="L25">    }</span>
+<span class="nc" id="L23">    public GameSessionService(NotificationService notificationService) {</span>
+<span class="nc" id="L24">        this.notificationService = notificationService;</span>
+<span class="nc" id="L25">    }</span>
     
     void pairPlayers(String player1Username, String player2Username) {
-<span class="fc" id="L28">        Player player1 = WebSocketController.connectedPlayers.get(player1Username);</span>
-<span class="fc" id="L29">        Player player2 = WebSocketController.connectedPlayers.get(player2Username);</span>
-<span class="fc" id="L30">        String key1 = player1.getUsername() + &quot;&amp;&quot; + player2.getUsername();</span>
-<span class="fc" id="L31">        String key2 = player2.getUsername() + &quot;&amp;&quot; + player1.getUsername();</span>
-<span class="fc" id="L32">        int nbIteration = 0;</span>
-<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (invitationIterationMap.containsKey(key1))</span>
-<span class="fc" id="L34">        	nbIteration = invitationIterationMap.get(key1);</span>
+<span class="nc" id="L28">        Player player1 = WebSocketController.connectedPlayers.get(player1Username);</span>
+<span class="nc" id="L29">        Player player2 = WebSocketController.connectedPlayers.get(player2Username);</span>
+<span class="nc" id="L30">        String key1 = player1.getUsername() + &quot;&amp;&quot; + player2.getUsername();</span>
+<span class="nc" id="L31">        String key2 = player2.getUsername() + &quot;&amp;&quot; + player1.getUsername();</span>
+<span class="nc" id="L32">        int nbIteration = 0;</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (invitationIterationMap.containsKey(key1))</span>
+<span class="nc" id="L34">        	nbIteration = invitationIterationMap.get(key1);</span>
 <span class="nc bnc" id="L35" title="All 2 branches missed.">        else if (invitationIterationMap.containsKey(key2))</span>
 <span class="nc" id="L36">        	nbIteration = invitationIterationMap.get(key2);</span>
         
-<span class="fc" id="L38">        createSession(player1, player2, nbIteration);</span>
-<span class="fc" id="L39">    }</span>
+<span class="nc" id="L38">        createSession(player1, player2, nbIteration);</span>
+<span class="nc" id="L39">    }</span>
     
     public GameSession playAgainstServer(Player player, int iterations) {
         // Crée une session de jeu avec le joueur humain et un joueur serveur utilisant la stratégie donnée
@@ -52,77 +52,77 @@ public class GameSessionService {
     }
     
     public GameSession createSession(Player player1, Player player2, int iterations) {
-<span class="pc bpc" id="L55" title="2 of 4 branches missed.">        if (player1 == null || player2 == null) {</span>
+<span class="nc bnc" id="L55" title="All 4 branches missed.">        if (player1 == null || player2 == null) {</span>
 <span class="nc" id="L56">            throw new IllegalArgumentException(&quot;Both players must be provided to create a game session.&quot;);</span>
         }
-<span class="fc" id="L58">        GameSession session = new GameSession(player1, player2);</span>
-<span class="fc" id="L59">        session.setTotalIterations(iterations);</span>
+<span class="nc" id="L58">        GameSession session = new GameSession(player1, player2);</span>
+<span class="nc" id="L59">        session.setTotalIterations(iterations);</span>
         
-<span class="fc" id="L61">		activeGames.put(generateSessionKey(player1, player2), session);</span>
-<span class="fc" id="L62">        return session;</span>
+<span class="nc" id="L61">		activeGames.put(generateSessionKey(player1, player2), session);</span>
+<span class="nc" id="L62">        return session;</span>
     }
     
     private String generateSessionKey(Player player1, Player player2) {
-<span class="fc" id="L66">        return player1.getUsername() + &quot;VS&quot; + player2.getUsername();</span>
+<span class="nc" id="L66">        return player1.getUsername() + &quot;VS&quot; + player2.getUsername();</span>
     }
     
 	public void handleInvitation(Invitation invitation) {
-<span class="fc" id="L70">		String key = invitation.getFromPlayer() + &quot;&amp;&quot; + invitation.getToUsername();</span>
+<span class="nc" id="L70">		String key = invitation.getFromPlayer() + &quot;&amp;&quot; + invitation.getToUsername();</span>
 		
-<span class="fc" id="L72">        invitationIterationMap.put(key, invitation.getIteration());</span>
-<span class="fc" id="L73">        notificationService.notifyInvitation(invitation);</span>
-<span class="fc" id="L74">    }</span>
+<span class="nc" id="L72">        invitationIterationMap.put(key, invitation.getIteration());</span>
+<span class="nc" id="L73">        notificationService.notifyInvitation(invitation);</span>
+<span class="nc" id="L74">    }</span>
 
     public void handleInvitationAnswer(InvitationAnswer answer) {
-<span class="fc" id="L77">        notificationService.notifyGameStart(answer.getMessage());</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (&quot;confirmed&quot;.equals(answer.getMessage())) {</span>
+<span class="nc" id="L77">        notificationService.notifyGameStart(answer.getMessage());</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (&quot;confirmed&quot;.equals(answer.getMessage())) {</span>
 <span class="nc" id="L79">            pairPlayers(answer.getPlayerUsername(), answer.getOponentUsername());</span>
         }
-<span class="fc" id="L81">    }</span>
+<span class="nc" id="L81">    }</span>
     
     public void handleChoice(ChoiceMessage choiceMessage) {
-<span class="fc" id="L84">        GameSession session = findGameSession(choiceMessage.getUsername());</span>
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (session == null) return;</span>
+<span class="nc" id="L84">        GameSession session = findGameSession(choiceMessage.getUsername());</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (session == null) return;</span>
 
         // Détermine quel joueur fait le choix (le joueur 1 est celui qui a envoyé le message)
-<span class="fc" id="L88">        Player currentPlayer = session.getPlayer1();</span>
-<span class="fc" id="L89">        Player player2 = session.getPlayer2(); // Le joueur 2 est toujours le serveur</span>
+<span class="nc" id="L88">        Player currentPlayer = session.getPlayer1();</span>
+<span class="nc" id="L89">        Player player2 = session.getPlayer2(); // Le joueur 2 est toujours le serveur</span>
 
         // Ajoute le choix du joueur
-<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {</span>
-<span class="fc" id="L93">            session.getPlayer1Choices().add(choiceMessage.getChoice());</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {</span>
+<span class="nc" id="L93">            session.getPlayer1Choices().add(choiceMessage.getChoice());</span>
         } else {
-<span class="fc" id="L95">            session.getPlayer2Choices().add(choiceMessage.getChoice());</span>
+<span class="nc" id="L95">            session.getPlayer2Choices().add(choiceMessage.getChoice());</span>
         }
 
         // Si le serveur est le 2e joueur, il fait son choix en fonction de sa stratégie
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (player2.isServer()) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (player2.isServer()) {</span>
 <span class="nc" id="L100">            String serverChoice = player2.getStrategy().playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());</span>
 <span class="nc" id="L101">            session.getPlayer2Choices().add(serverChoice);</span>
         }
 
         // Vérifie si la manche est terminée et met à jour ou termine la partie
-<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (session.isRoundComplete()) {</span>
-<span class="fc" id="L106">            session.incrementIteration();</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">            if (session.isGameOver()) {</span>
-<span class="fc" id="L108">                endGame(session);</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (session.isRoundComplete()) {</span>
+<span class="nc" id="L106">            session.incrementIteration();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (session.isGameOver()) {</span>
+<span class="nc" id="L108">                endGame(session);</span>
             } else {
-<span class="fc" id="L110">                notificationService.updateScore(session);</span>
+<span class="nc" id="L110">                notificationService.updateScore(session);</span>
             }
         }
-<span class="fc" id="L113">    }</span>
+<span class="nc" id="L113">    }</span>
 
 
     GameSession findGameSession(String username) {
-<span class="fc" id="L117">        return activeGames.values().stream()</span>
-<span class="fc" id="L118">                .filter(session -&gt; session.containsPlayer(username))</span>
-<span class="fc" id="L119">                .findFirst()</span>
-<span class="fc" id="L120">                .orElse(null);</span>
+<span class="nc" id="L117">        return activeGames.values().stream()</span>
+<span class="nc" id="L118">                .filter(session -&gt; session.containsPlayer(username))</span>
+<span class="nc" id="L119">                .findFirst()</span>
+<span class="nc" id="L120">                .orElse(null);</span>
     }
 
     void endGame(GameSession session) {
-<span class="fc" id="L124">        notificationService.endGame(session);</span>
-<span class="fc" id="L125">        activeGames.values().removeIf(s -&gt; s.equals(session));</span>
-<span class="fc" id="L126">    }</span>
+<span class="nc" id="L124">        notificationService.endGame(session);</span>
+<span class="nc" id="L125">        activeGames.values().removeIf(s -&gt; s.equals(session));</span>
+<span class="nc" id="L126">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
