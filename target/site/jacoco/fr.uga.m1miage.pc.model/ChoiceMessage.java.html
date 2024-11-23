@@ -15,21 +15,21 @@ public class ChoiceMessage {
 
     @Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (!(o instanceof ChoiceMessage)) return false;</span>
-<span class="fc" id="L20">        ChoiceMessage that = (ChoiceMessage) o;</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        return Objects.equals(username, that.username) &amp;&amp; </span>
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">               Objects.equals(choice, that.choice);</span>
+<span class="nc bnc" id="L18" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (!(o instanceof ChoiceMessage)) return false;</span>
+<span class="nc" id="L20">        ChoiceMessage that = (ChoiceMessage) o;</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        return Objects.equals(username, that.username) &amp;&amp; </span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">               Objects.equals(choice, that.choice);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="fc" id="L27">        return Objects.hash(username, choice);</span>
+<span class="nc" id="L27">        return Objects.hash(username, choice);</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L32">        return &quot;ChoiceMessage{&quot; +</span>
+<span class="nc" id="L32">        return &quot;ChoiceMessage{&quot; +</span>
                 &quot;username='&quot; + username + '\'' +
                 &quot;, choice='&quot; + choice + '\'' +
                 '}';

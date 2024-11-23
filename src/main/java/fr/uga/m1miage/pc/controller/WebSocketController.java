@@ -37,10 +37,15 @@ public class WebSocketController {
     // Handle a new user connecting with their username and sessionId
     @MessageMapping("/connectUser")
     public void connectUser(@Payload Player player) {
+    if (connectedPlayers.containsKey(player.getUsername())) {
+        messagingTemplate.convertAndSendToUser( player.getSessionId(), "/queue/errors", 
+            "Le nom d'utilisateur \"" + player.getUsername() + "\" est déjà pris.");
+    } else {
         connectedUsers.add(player.toJson());
         connectedPlayers.put(player.getUsername(), player);
         userSessionMap.put(player.getSessionId(), player.getUsername());
         updateAvailableUsers();
+    }
     }
 
     private void updateAvailableUsers() {

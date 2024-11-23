@@ -5,46 +5,46 @@ public class StrategyFactory {
 	private StrategyFactory() {}
 	
     public static Strategy createStrategy(StrategyType type) {
-<span class="fc bfc" id="L8" title="All 2 branches covered.">    	if (type == null)</span>
-<span class="fc" id="L9">    		throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + type);</span>
+<span class="nc bnc" id="L8" title="All 2 branches missed.">    	if (type == null)</span>
+<span class="nc" id="L9">    		throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + type);</span>
     	
-<span class="pc bpc" id="L11" title="1 of 19 branches missed.">        switch (type) {</span>
+<span class="nc bnc" id="L11" title="All 19 branches missed.">        switch (type) {</span>
             case DONNANT_DONNANT:
-<span class="fc" id="L13">                return new DonnantDonnant();</span>
+<span class="nc" id="L13">                return new DonnantDonnant();</span>
             case DONNANT_DONNANT_ALEATOIRE:
-<span class="fc" id="L15">                return new DonnantDonnantAleatoire();</span>
+<span class="nc" id="L15">                return new DonnantDonnantAleatoire();</span>
             case DONNANT_DEUX_DONNANT_ALEATOIRE:
-<span class="fc" id="L17">                return new DonnantDeuxDonnantAleatoire();</span>
+<span class="nc" id="L17">                return new DonnantDeuxDonnantAleatoire();</span>
             case DONNANT_DEUX_DONNANT:
-<span class="fc" id="L19">                return new DonnantDeuxDonnant();</span>
+<span class="nc" id="L19">                return new DonnantDeuxDonnant();</span>
             case SONDEUR_NAIF:
-<span class="fc" id="L21">                return new SondeurNaif();</span>
+<span class="nc" id="L21">                return new SondeurNaif();</span>
             case SONDEUR_REPENTANT:
-<span class="fc" id="L23">                return new SondeurRepentant();</span>
+<span class="nc" id="L23">                return new SondeurRepentant();</span>
             case PACIFICATEUR_NAIF:
-<span class="fc" id="L25">                return new PacificateurNaif();</span>
+<span class="nc" id="L25">                return new PacificateurNaif();</span>
             case VRAI_PACIFICATEUR:
-<span class="fc" id="L27">                return new VraiPacificateur();</span>
+<span class="nc" id="L27">                return new VraiPacificateur();</span>
             case ALEATOIRE:
-<span class="fc" id="L29">                return new Aleatoire();</span>
+<span class="nc" id="L29">                return new Aleatoire();</span>
             case TOUJOURS_TRAHIR:
-<span class="fc" id="L31">                return new ToujoursTrahir();</span>
+<span class="nc" id="L31">                return new ToujoursTrahir();</span>
             case TOUJOURS_COOPERER:
-<span class="fc" id="L33">                return new ToujoursCooperer();</span>
+<span class="nc" id="L33">                return new ToujoursCooperer();</span>
             case RANCUNIER:
-<span class="fc" id="L35">                return new Rancunier();</span>
+<span class="nc" id="L35">                return new Rancunier();</span>
             case PAVLOV:
-<span class="fc" id="L37">                return new Pavlov();</span>
+<span class="nc" id="L37">                return new Pavlov();</span>
             case PAVLOV_ALEATOIRE:
-<span class="fc" id="L39">                return new PavlovAleatoire();</span>
+<span class="nc" id="L39">                return new PavlovAleatoire();</span>
             case ADAPTATIF:
-<span class="fc" id="L41">                return new Adaptatif();</span>
+<span class="nc" id="L41">                return new Adaptatif();</span>
             case GRADUEL:
-<span class="fc" id="L43">                return new Graduel();</span>
+<span class="nc" id="L43">                return new Graduel();</span>
             case DONNANT_DONNANT_SOUPCONNEUX:
-<span class="fc" id="L45">                return new DonnantDonnantSoupconneux();</span>
+<span class="nc" id="L45">                return new DonnantDonnantSoupconneux();</span>
             case RANCUNIER_DOUX:
-<span class="fc" id="L47">                return new RancunierDoux();</span>
+<span class="nc" id="L47">                return new RancunierDoux();</span>
             default:
 <span class="nc" id="L49">                throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + type);</span>
         }

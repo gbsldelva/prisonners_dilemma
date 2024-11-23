@@ -39,8 +39,8 @@ public class GameSessionService {
     }
     
     public GameSession playAgainstServer(Player player, int iterations) {
-        // Crée une session de jeu avec le joueur humain et un joueur serveur utilisant la stratégie donnée
-        Player server = new Player("Ordinateur", null);  // Crée un joueur "serveur"
+        // Cr?e une session de jeu avec le joueur humain et un joueur serveur utilisant la strat?gie donn?e
+        Player server = new Player("Ordinateur", null);  // Cr?e un joueur "serveur"
         server.setServer(true);
         GameSession session = new GameSession(player, server);
         Strategy serverStrategy = new VraiPacificateur();
@@ -84,7 +84,7 @@ public class GameSessionService {
         GameSession session = findGameSession(choiceMessage.getUsername());
         if (session == null) return;
 
-        // Détermine quel joueur fait le choix (le joueur 1 est celui qui a envoyé le message)
+        // D?termine quel joueur fait le choix (le joueur 1 est celui qui a envoy? le message)
         Player currentPlayer = session.getPlayer1();
         Player player2 = session.getPlayer2(); // Le joueur 2 est toujours le serveur
 
@@ -95,13 +95,13 @@ public class GameSessionService {
             session.getPlayer2Choices().add(choiceMessage.getChoice());
         }
 
-        // Si le serveur est le 2e joueur, il fait son choix en fonction de sa stratégie
+        // Si le serveur est le 2e joueur, il fait son choix en fonction de sa strat?gie
         if (player2.isServer()) {
             String serverChoice = player2.getStrategy().playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());
             session.getPlayer2Choices().add(serverChoice);
         }
 
-        // Vérifie si la manche est terminée et met à jour ou termine la partie
+        // V?rifie si la manche est termin?e et met ? jour ou termine la partie
         if (session.isRoundComplete()) {
             session.incrementIteration();
             if (session.isGameOver()) {
