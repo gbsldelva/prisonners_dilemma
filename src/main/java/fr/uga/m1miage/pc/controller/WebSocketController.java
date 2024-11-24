@@ -38,7 +38,7 @@ public class WebSocketController {
     public void connectUser(@Payload Player player) {
     if (connectedPlayers.containsKey(player.getUsername())) {
         messagingTemplate.convertAndSendToUser( player.getSessionId(), "/queue/errors", 
-            "Le nom d'utilisateur \"" + player.getUsername() + "\" est déjà pris.");
+            "Le nom d'utilisateur \"" + player.getUsername() + "\" est d?j? pris.");
     } else {
         String playerJson = player.toJson();
         System.out.println("Serialized Player JSON: " + playerJson);

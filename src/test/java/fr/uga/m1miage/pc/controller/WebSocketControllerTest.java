@@ -32,6 +32,9 @@ class WebSocketControllerTest {
         MockitoAnnotations.openMocks(this);
         messagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
         webSocketController = new WebSocketController(messagingTemplate);
+        WebSocketController.connectedPlayers.clear();
+        webSocketController.connectedUsers.clear();
+        webSocketController.userSessionMap.clear();
     }
 
     @Test
@@ -92,7 +95,7 @@ class WebSocketControllerTest {
         verify(messagingTemplate, times(1)).convertAndSendToUser(
           eq("session2"), 
           eq("/queue/errors"),
-          eq("Le nom d'utilisateur \"user1\" est déjà pris.")
+          eq("Le nom d'utilisateur \"user1\" est d?j? pris.")
     );
     }
 }

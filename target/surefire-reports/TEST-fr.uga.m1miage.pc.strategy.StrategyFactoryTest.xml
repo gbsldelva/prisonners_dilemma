@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="fr.uga.m1miage.pc.strategy.StrategyFactoryTest" time="0.07" tests="2" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="fr.uga.m1miage.pc.strategy.StrategyFactoryTest" time="0.055" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/Oracle_JDK-21.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241123154114023_3.jar /Users/nadine/Desktop/prisonners_dilemma/target/surefire 2024-11-23T15-41-13_933-jvmRun1 surefire-20241123154114023_1tmp surefire_0-20241123154114023_2tmp"/>
+    <property name="sun.java.command" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241124154834834_3.jar /Users/nadine/Desktop/prisonners_dilemma/target/surefire 2024-11-24T15-48-34_774-jvmRun1 surefire-20241124154834834_1tmp surefire_0-20241124154834834_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="fr.uga.m1miage.pc.strategy.StrategyFactoryTest"/>
@@ -30,7 +30,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241123154114023_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241124154834834_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="21.0.5+9-LTS-239"/>
@@ -59,6 +59,6 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testCreateStrategyAllCases" classname="fr.uga.m1miage.pc.strategy.StrategyFactoryTest" time="0.039"/>
+  <testcase name="testCreateStrategyAllCases" classname="fr.uga.m1miage.pc.strategy.StrategyFactoryTest" time="0.029"/>
   <testcase name="shouldThrowExceptionForUnknownStrategy" classname="fr.uga.m1miage.pc.strategy.StrategyFactoryTest" time="0.003"/>
 </testsuite>

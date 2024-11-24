@@ -1,23 +1,29 @@
 package fr.uga.m1miage.pc.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import org.mockito.MockitoAnnotations;
+
 import fr.uga.m1miage.pc.controller.WebSocketController;
 import fr.uga.m1miage.pc.model.ChoiceMessage;
 import fr.uga.m1miage.pc.model.GameSession;
 import fr.uga.m1miage.pc.model.Invitation;
 import fr.uga.m1miage.pc.model.InvitationAnswer;
 import fr.uga.m1miage.pc.model.Player;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class GameSessionServiceTest {
 
@@ -45,7 +51,7 @@ class GameSessionServiceTest {
 
         WebSocketController.connectedPlayers = connectedPlayers;
     }
-    
+
     @Test
     void testHandleInvitation() {
         Invitation invitation = new Invitation(player1.getUsername(), player2.getUsername(), 5);
@@ -106,6 +112,8 @@ class GameSessionServiceTest {
 
     @Test
     void testHandleChoiceGameOver() {
+        
+        gameSessionService.clearActiveGames();
         gameSessionService.createSession(player1, player2, 1);
 
         ChoiceMessage choice1 = new ChoiceMessage("player1", "c");
@@ -143,4 +151,38 @@ class GameSessionServiceTest {
         GameSession foundSession = gameSessionService.findGameSession(player1.getUsername());
         assertEquals(session, foundSession);
     }
+    
+    @Test
+    void testPlayAgainstServer() {
+        int iterations = 5;
+
+        GameSession createdSession = gameSessionService.playAgainstServer(player1, iterations);
+
+        assertNotNull(createdSession);
+        assertEquals(iterations, createdSession.getTotalIterations());
+        assertTrue(createdSession.containsPlayer("player1"));
+        assertEquals("Ordinateur", createdSession.getPlayer2().getUsername());
+        assertTrue(createdSession.getPlayer2().isServer());
+
+        verify(notificationService, times(1)).notifyGameStart(eq("player1"), anyString());
+    }
+
+    @Test
+    void testPlayAgainstServerInvalidIterations() {
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> gameSessionService.playAgainstServer(player1, 0)
+        );
+        assertEquals("Le nombre d'itérations doit être positif.", exception.getMessage());
+    }
+
+    @Test
+    void testCreateSessionInvalidPlayers() {
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> gameSessionService.createSession(null, player2, 3)
+        );
+        assertEquals("Les joueurs ne peuvent pas être nuls.", exception.getMessage());
+    }
+    
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="1.44" tests="9" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="1.106" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -13,7 +13,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/Oracle_JDK-21.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241123154301101_3.jar /Users/nadine/Desktop/prisonners_dilemma/target/surefire 2024-11-23T15-43-01_011-jvmRun1 surefire-20241123154301101_1tmp surefire_0-20241123154301101_2tmp"/>
+    <property name="sun.java.command" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241124155301455_3.jar /Users/nadine/Desktop/prisonners_dilemma/target/surefire 2024-11-24T15-53-01_376-jvmRun1 surefire-20241124155301455_1tmp surefire_0-20241124155301455_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="fr.uga.m1miage.pc.service.GameSessionServiceTest"/>
@@ -31,7 +31,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241123154301101_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241124155301455_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="21.0.5+9-LTS-239"/>
@@ -60,7 +60,7 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testEndGame" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="1.337">
+  <testcase name="testEndGame" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="1.019">
     <system-err><![CDATA[java.lang.instrument.IllegalClassFormatException: Error while instrumenting com/sun/tools/attach/VirtualMachine.
 	at org.jacoco.agent.rt.internal_3570298.CoverageTransformer.transform(CoverageTransformer.java:94)
 	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:244)
@@ -98,7 +98,7 @@
 	at org.mockito.internal.configuration.plugins.Plugins.<clinit>(Plugins.java:26)
 	at org.mockito.internal.configuration.GlobalConfiguration.tryGetPluginAnnotationEngine(GlobalConfiguration.java:50)
 	at org.mockito.MockitoAnnotations.openMocks(MockitoAnnotations.java:80)
-	at fr.uga.m1miage.pc.service.GameSessionServiceTest.setUp(GameSessionServiceTest.java:36)
+	at fr.uga.m1miage.pc.service.GameSessionServiceTest.setUp(GameSessionServiceTest.java:42)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
@@ -191,12 +191,15 @@ WARNING: If a serviceability tool is not in use, please run with -Djdk.instrumen
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
 ]]></system-err>
   </testcase>
-  <testcase name="testHandleChoiceRoundComplete" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.009"/>
-  <testcase name="testFindGameSession" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.006"/>
-  <testcase name="testHandleInvitationAnswerConfirmed" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.006"/>
-  <testcase name="testHandleInvitationAnswerRejected" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.004"/>
-  <testcase name="testPairPlayers" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.004"/>
-  <testcase name="testHandleChoiceGameOver" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.003"/>
-  <testcase name="testPairingPlayers" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.005"/>
-  <testcase name="testHandleInvitation" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.004"/>
+  <testcase name="testHandleChoiceRoundComplete" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.008"/>
+  <testcase name="testFindGameSession" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.004"/>
+  <testcase name="testHandleInvitationAnswerConfirmed" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.004"/>
+  <testcase name="testHandleInvitationAnswerRejected" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.002"/>
+  <testcase name="testCreateSessionInvalidPlayers" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.003"/>
+  <testcase name="testPairPlayers" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.002"/>
+  <testcase name="testPlayAgainstServer" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.006"/>
+  <testcase name="testHandleChoiceGameOver" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.002"/>
+  <testcase name="testPairingPlayers" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.003"/>
+  <testcase name="testPlayAgainstServerInvalidIterations" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.001"/>
+  <testcase name="testHandleInvitation" classname="fr.uga.m1miage.pc.service.GameSessionServiceTest" time="0.002"/>
 </testsuite>

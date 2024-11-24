@@ -1,17 +1,19 @@
 package fr.uga.m1miage.pc.service;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import org.mockito.MockitoAnnotations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+
+import fr.uga.m1miage.pc.controller.WebSocketController;
 import fr.uga.m1miage.pc.model.GameSession;
 import fr.uga.m1miage.pc.model.Invitation;
 import fr.uga.m1miage.pc.model.Player;
 import fr.uga.m1miage.pc.model.Result;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-
-import static org.mockito.Mockito.*;
 
 class NotificationServiceTest {
 
@@ -45,7 +47,21 @@ class NotificationServiceTest {
             eq(invitation.getFromPlayer())
         );
     }
+    @Test
+    void testNotifyGameStartWithUsername() {
+        fromPlayer.setSessionId("sessionId1");
+        WebSocketController.connectedPlayers.put(fromPlayer.getUsername(), fromPlayer);
 
+        String message = "Game between Alice and the server started";
+        notificationService.notifyGameStart(fromPlayer.getUsername(), message);
+
+        verify(messagingTemplate).convertAndSendToUser(
+            eq("sessionId1"),
+            eq("/queue/gameStartHandler"),
+            eq(message)
+        );
+    }
+    
     @Test
     void testNotifyGameStart() {
         String message = "Game between Alice and Bob started";
@@ -74,12 +90,26 @@ class NotificationServiceTest {
 
         Result expectedResult = new Result();
         expectedResult.setScore("Alice(0) - Bob(0)");
-        expectedResult.setStatus("Termin�");
+        expectedResult.setStatus("Terminé");
         expectedResult.setParti("3/3");
 
         verify(messagingTemplate).convertAndSend(
             eq("/queue/gameEnd"),
             eq(expectedResult.toJson())
+        );
+    }
+
+
+    @Test
+    void testNotifyPlayerReplacement() {
+        String remainingPlayerUsername = toPlayer.getUsername();
+        String message = ", Votre adversaire a été remplacé par un ordinateur.";
+        notificationService.notifyPlayerReplacement(remainingPlayerUsername, message);
+
+        verify(messagingTemplate).convertAndSendToUser(
+            eq(toPlayer.getUsername()),
+            eq("/queue/playerReplacement"),
+            eq(message)
         );
     }
 }

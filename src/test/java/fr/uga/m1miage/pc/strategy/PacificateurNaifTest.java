@@ -13,7 +13,7 @@ class PacificateurNaifTest {
     
     @Test
     void testFirstMoveIsRandom() {
-        // Premier coup: s'assurer que la stratégie joue au hasard si aucun coup précédent
+        // Premier coup: s'assurer que la strat?gie joue au hasard si aucun coup pr?c?dent
         assertTrue("c,t".contains(strategy.playNextMove(null, null)));
     }
 
@@ -22,7 +22,7 @@ class PacificateurNaifTest {
         List<String> myMoves = Arrays.asList("c");
         List<String> opponentMoves = Arrays.asList("c");
         
-        // Si l'adversaire coopère, le PacificateurNaif devrait coopérer
+        // Si l'adversaire coop?re, le PacificateurNaif devrait coop?rer
         assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
     }
 
@@ -31,7 +31,7 @@ class PacificateurNaifTest {
         List<String> myMoves = Arrays.asList("c", "c");
         List<String> opponentMoves = Arrays.asList("c", "t");
         
-        // Si l'adversaire trahit, le PacificateurNaif devrait généralement imiter
+        // Si l'adversaire trahit, le PacificateurNaif devrait g?n?ralement imiter
         assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
     }
     
@@ -40,7 +40,7 @@ class PacificateurNaifTest {
         List<String> myMoves = Arrays.asList("t", "c");
         List<String> opponentMoves = Arrays.asList("c", "t");
 
-        // Le PacificateurNaif a une faible probabilité de coopérer malgré la trahison de l'adversaire
+        // Le PacificateurNaif a une faible probabilit? de coop?rer malgr? la trahison de l'adversaire
         String nextMove = strategy.playNextMove(myMoves, opponentMoves);
         assertTrue("c,t".contains(nextMove));
     }
@@ -50,7 +50,7 @@ class PacificateurNaifTest {
         List<String> myMoves = Arrays.asList("c", "t", "c");
         List<String> opponentMoves = Arrays.asList("t", "c", "c");
 
-        // Si l'adversaire coopère, le PacificateurNaif devrait continuer à coopérer sans changer de comportement
+        // Si l'adversaire coop?re, le PacificateurNaif devrait continuer ? coop?rer sans changer de comportement
         assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
     }
 }

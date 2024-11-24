@@ -70,7 +70,7 @@ public GameSession playAgainstServer(Player player, int iterations) {
 
     public GameSession createSession(Player player1, Player player2, int iterations) {
         if (player1 == null || player2 == null) {
-            throw new IllegalArgumentException("Both players must be provided to create a game session.");
+            throw new IllegalArgumentException("Les joueurs ne peuvent pas être nuls.");
         }
         GameSession session = new GameSession(player1, player2);
         session.setTotalIterations(iterations);
@@ -176,4 +176,10 @@ public GameSession playAgainstServer(Player player, int iterations) {
        notificationService.updateScore(session); 
      }         
     }
+    
+    @SuppressWarnings("unused")
+     void clearActiveGames() {
+         activeGames.clear();
+     }
+
 }
