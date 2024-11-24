@@ -171,6 +171,12 @@
                     alert(message.body);
                 });
 
+                stompClient.subscribe(`/user/${sessionId}/queue/gameStartHandler`, function (message) {
+                    alert(message.body); 
+                    startGameForBothPlayers(message.body); 
+            });
+     
+
                 // Send a connection message with the username and sessionId
                 stompClient.send("/app/connectUser", {}, JSON.stringify({username: username, sessionId: sessionId, strategy: strategy}));
 
@@ -302,6 +308,7 @@
         const disconnectButton = document.getElementById('disconnectButton');
 
         const playAgainstServerButton = document.getElementById('playAgainstServer');
+        const dialog = document.getElementById('dialog');
 
         cooperateButton.addEventListener('click', () => {
             makeChoice('c');
@@ -312,19 +319,27 @@
         });
 
         disconnectButton.addEventListener('click', () => {
-            stompClient.send("/app/disconnect", {}, JSON.stringify({username: username}));
+            stompClient.send("/app/disconnect", {}, JSON.stringify());
             document.getElementById('game').style.display = 'none';
             document.getElementById('disconnect').style.display = 'none';
             document.getElementById('waiting').style.display = 'block';
     });
 
-        playAgainstServerButton.addEventListener('click', () => {
-            stompClient.send("/app/playAgainstServer", {}, JSON.stringify({username: username}));
+      playAgainstServerButton.addEventListener('click', () => {      
+           dialog.style.display = 'block';
+           const closeDialogButton = document.getElementById('sendButton');  
+           // Add an event listener to the close dialog button
+            closeDialogButton.addEventListener('click', () => {
+            const textInput = document.getElementById('textInput');
+             dialog.style.display = 'none';
+                  stompClient.send("/app/playAgainstServer", {}, JSON.stringify({username: username, iterations : textInput.value}));
+
+                });
+            
         });
 
 });
-        // Get the dialog box and text input elements
-        const dialog = document.getElementById('dialog');
+
     </script>
 </body>
 </html>

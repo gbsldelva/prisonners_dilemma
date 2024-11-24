@@ -48,18 +48,15 @@ public GameSession playAgainstServer(Player player, int iterations) {
         throw new IllegalArgumentException("Le nombre d'itérations doit être positif.");
     }
     // Create a server player
-    Player server = new Player("Ordinateur", null); // Server has no sessionId
+    Player server = new Player("Ordinateur", null);
     server.setServer(true);
 
     // Assign a random strategy to the server
     StrategyType randomStrategy = getRandomStrategy();
     server.setStrategy(randomStrategy);
 
-    // Create the game session
     GameSession session = createSession(player, server, iterations);
-
-    // Notify the player that the game has started
-    notificationService.notifyGameStart("La partie commence contre l'ordinateur");
+    notificationService.notifyGameStart(player.getUsername(), "La partie commence contre l'ordinateur");
 
     return session;
 }

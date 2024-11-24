@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import fr.uga.m1miage.pc.model.ChoiceMessage;
 import fr.uga.m1miage.pc.model.Invitation;
 import fr.uga.m1miage.pc.model.InvitationAnswer;
+import fr.uga.m1miage.pc.model.PlayAgainstServerRequest;
 import fr.uga.m1miage.pc.model.Player;
 import fr.uga.m1miage.pc.service.GameSessionService;
 
@@ -39,13 +40,13 @@ public class GameController {
     }
 
     @MessageMapping("/playAgainstServer")
-    public void playAgainstServer(@Payload String username, int iterations) {
-          Player player = WebSocketController.connectedPlayers.get(username);
-         if (player == null) {
-         // Handle error if player not found
-         System.err.println("Player not found: " + username);
-         return;
-         }
-        gameSessionService.playAgainstServer(player, iterations);
+    public void playAgainstServer(@Payload PlayAgainstServerRequest request) {
+        Player player = WebSocketController.connectedPlayers.get(request.getUsername());
+        if (player == null) {
+            System.err.println("Player not found: " + request.getUsername());
+            return;
+        }
+        gameSessionService.playAgainstServer(player, request.getIterations());
     }
 }
+

@@ -7,6 +7,7 @@
 /Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/model/Invitation.java
 /Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/model/InvitationAnswer.java
 /Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/model/Message.java
+/Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/model/PlayAgainstServerRequest.java
 /Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/model/Player.java
 /Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/model/Result.java
 /Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/service/GameSessionService.java

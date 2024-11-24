@@ -35,6 +35,7 @@
     <div id="waiting" style="display:none;">
         <p id="playersHeader">Aucun utilisateur connecté, veuillez attendre</p>
         <ul id="availablePlayers"></ul>
+        <button id="playAgainstServer">Jouer avec le serveur</button>  
     </div>
 
     <div id="game" style="display:none;">
@@ -300,6 +301,8 @@
 
         const disconnectButton = document.getElementById('disconnectButton');
 
+        const playAgainstServerButton = document.getElementById('playAgainstServer');
+
         cooperateButton.addEventListener('click', () => {
             makeChoice('c');
         });
@@ -309,11 +312,24 @@
         });
 
         disconnectButton.addEventListener('click', () => {
-            stompClient.send("/app/disconnect", {}, JSON.stringify({username: username}));
+            stompClient.send("/app/disconnect", {}, JSON.stringify());
             document.getElementById('game').style.display = 'none';
             document.getElementById('disconnect').style.display = 'none';
             document.getElementById('waiting').style.display = 'block';
     });
+
+      playAgainstServerButton.addEventListener('click', () => {      
+           dialog.style.display = 'block';
+           const closeDialogButton = document.getElementById('sendButton');  
+           // Add an event listener to the close dialog button
+            closeDialogButton.addEventListener('click', () => {
+            const textInput = document.getElementById('textInput');
+             dialog.style.display = 'none';
+                  stompClient.send("/app/playAgainstServer", {}, JSON.stringify({username: username, iterations : textInput.value}));
+
+                });
+            
+        });
 
 });
         // Get the dialog box and text input elements
