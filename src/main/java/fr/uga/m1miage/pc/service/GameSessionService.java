@@ -2,9 +2,12 @@ package fr.uga.m1miage.pc.service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -22,11 +25,13 @@ import fr.uga.m1miage.pc.strategy.StrategyType;
 public class GameSessionService {
 
     private final NotificationService notificationService;
+    private final WebSocketController webSocketController;
     public final Map<String, Integer> invitationIterationMap = new LinkedHashMap<>();
     private static final ConcurrentMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
 
-    public GameSessionService(NotificationService notificationService) {
+    public GameSessionService(NotificationService notificationService, WebSocketController webSocketController) {
         this.notificationService = notificationService;
+        this.webSocketController = webSocketController;
     }
     
     void pairPlayers(String player1Username, String player2Username) {
@@ -42,8 +47,8 @@ public class GameSessionService {
         
         createSession(player1, player2, nbIteration);
     }
-    
-public GameSession playAgainstServer(Player player, int iterations) {
+
+    public GameSession playAgainstServer(Player player, int iterations) {
     if (iterations <= 0) {
         throw new IllegalArgumentException("Le nombre d'itérations doit être positif.");
     }
@@ -130,24 +135,35 @@ public GameSession playAgainstServer(Player player, int iterations) {
         }
     }
 
-
-    GameSession findGameSession(String username) {
-        return activeGames.values().stream()
-                .filter(session -> session.containsPlayer(username))
-                .findFirst()
-                .orElse(null);
+    public GameSession findGameSession(String username) {
+    System.out.println("Finding session for username: " + username);
+    for (GameSession session : activeGames.values()) {
+        System.out.println("Checking session: " + session);
+        if (session.containsPlayer(username)) {
+            System.out.println("Found matching session: " + session);
+            return session;
+        }
     }
+    System.out.println("No matching session found for username: " + username);
+    return null;
+}
 
     void endGame(GameSession session) {
         notificationService.endGame(session);
         activeGames.values().removeIf(s -> s.equals(session));
+        webSocketController.refreshAvailableUsers();
     }
 
     public void handleDisconnection(String username) {
-        GameSession session = findGameSession(username);
-        if (session != null) {
-            Player remainingPlayer;
-            Player disconnectedPlayer;
+    System.out.println("Disconnecting player: " + username);
+
+    // Normalize the username
+    username = username.replaceAll("^\"|\"$", "").trim();
+    GameSession session = findGameSession(username);
+
+    if (session != null) {
+        Player remainingPlayer;
+        Player disconnectedPlayer;
 
         // Determine the remaining and disconnected players
         if (session.getPlayer1().getUsername().equals(username)) {
@@ -156,30 +172,54 @@ public GameSession playAgainstServer(Player player, int iterations) {
         } else {
             remainingPlayer = session.getPlayer1();
             disconnectedPlayer = session.getPlayer2();
-        }  
-        // Create a server player to replace the disconnected player
-        Player serverPlayer = new Player("Ordinateur", disconnectedPlayer.getSessionId(), disconnectedPlayer.getStrategy(), true); 
+        }
 
-        // Update the session to replace the disconnected player with the server
+        // Replace the disconnected player with a server player
+        Player serverPlayer = new Player("Ordinateur", null, disconnectedPlayer.getStrategy(), true);
         if (session.getPlayer1().getUsername().equals(username)) {
             session.setPlayer1(serverPlayer);
         } else {
             session.setPlayer2(serverPlayer);
         }
 
-        // Notify the remaining player about the change
-        notificationService.notifyPlayerReplacement(remainingPlayer.getUsername(), "Votre adversaire a été remplacé par un ordinateur.");
+        // Notify the remaining player about the replacement
+        notificationService.notifyPlayerReplacement(
+            remainingPlayer.getUsername(),
+            "Votre adversaire a été remplacé par un ordinateur avec la stratégie de votre adversaire initial."
+        );
 
-        // Continue the game with the server
-      //  session.setTotalIterations(session.getTotalIterations() - session.getCurrentIteration());
-      //  activeGames.put(generateSessionKey(session.getPlayer1(), session.getPlayer2()), session);
-       notificationService.updateScore(session); 
-     }         
+        // Simulate the server's move for the next round using its strategy
+        if (session.getCurrentIteration() < session.getTotalIterations()) {
+            Strategy serverStrategy = StrategyFactory.createStrategy(serverPlayer.getStrategy());
+            String serverChoice = serverStrategy.playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());
+
+            // Add the server's choice to the session
+            if (serverPlayer.equals(session.getPlayer1())) {
+                session.getPlayer1Choices().add(serverChoice);
+            } else {
+                session.getPlayer2Choices().add(serverChoice);
+            }
+
+            // Notify that the game continues
+            notificationService.updateScore(session);
+        }
+
+        // Refresh available users since the disconnected player is no longer active
+        webSocketController.refreshAvailableUsers();
+    } else {
+        System.out.println("No session found for disconnected player: " + username);
     }
-    
+}  
     @SuppressWarnings("unused")
      void clearActiveGames() {
          activeGames.clear();
      }
+
+    public Set<String> getActivePlayers() {
+      return activeGames.values().stream()
+            .flatMap(game -> Stream.of(game.getPlayer1().getUsername(), game.getPlayer2().getUsername()))
+            .collect(Collectors.toSet());
+    }
+
 
 }

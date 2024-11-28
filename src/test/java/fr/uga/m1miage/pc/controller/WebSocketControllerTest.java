@@ -19,10 +19,14 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 import fr.uga.m1miage.pc.model.Player;
+import fr.uga.m1miage.pc.service.GameSessionService;
 
 class WebSocketControllerTest {
 	@Mock
     private SimpMessagingTemplate messagingTemplate;
+
+    @Mock
+    private GameSessionService gameSessionService;
 
     @InjectMocks
     private WebSocketController webSocketController;
@@ -31,7 +35,8 @@ class WebSocketControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         messagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-        webSocketController = new WebSocketController(messagingTemplate);
+        gameSessionService = Mockito.mock(GameSessionService.class);
+        webSocketController = new WebSocketController(messagingTemplate, gameSessionService);
         WebSocketController.connectedPlayers.clear();
         webSocketController.connectedUsers.clear();
         webSocketController.userSessionMap.clear();

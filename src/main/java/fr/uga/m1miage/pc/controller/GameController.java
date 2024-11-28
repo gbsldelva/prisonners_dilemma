@@ -36,6 +36,7 @@ public class GameController {
     }
     @MessageMapping("/disconnect")
     public void disconnect(@Payload String username) {
+        System.out.println("Disconnecting player: " + username);
         gameSessionService.handleDisconnection(username);
     }
 

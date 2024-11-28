@@ -54,6 +54,13 @@ public class NotificationService {
     }
 
     public void notifyPlayerReplacement(String username, String message) {
-        messagingTemplate.convertAndSendToUser(username, "/queue/playerReplacement", message);
+    Player player = WebSocketController.connectedPlayers.get(username);
+    if (player != null && player.getSessionId() != null) {
+        System.out.println("Notifying player replacement: " + message);
+        messagingTemplate.convertAndSendToUser(player.getSessionId(), "/queue/playerReplacement", message);
+    } else {
+        System.err.println("Unable to notify player replacement: Player not found or session ID missing for " + username);
     }
+}
+
 }

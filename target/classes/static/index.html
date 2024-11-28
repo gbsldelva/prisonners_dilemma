@@ -167,7 +167,7 @@
                     handleInvitation(message.body);
                 });
                 // Subscribe to player replacement notifications
-                stompClient.subscribe(`/user/${username}/queue/playerReplacement`, function (message) {
+                stompClient.subscribe(`/user/${sessionId}/queue/playerReplacement`, function (message) {
                     alert(message.body);
                 });
 
@@ -319,7 +319,7 @@
         });
 
         disconnectButton.addEventListener('click', () => {
-            stompClient.send("/app/disconnect", {}, JSON.stringify());
+            stompClient.send("/app/disconnect", {}, JSON.stringify(username));
             document.getElementById('game').style.display = 'none';
             document.getElementById('disconnect').style.display = 'none';
             document.getElementById('waiting').style.display = 'block';

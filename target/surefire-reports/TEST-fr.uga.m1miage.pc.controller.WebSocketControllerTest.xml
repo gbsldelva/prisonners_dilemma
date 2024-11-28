@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="fr.uga.m1miage.pc.controller.WebSocketControllerTest" time="1.537" tests="3" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="fr.uga.m1miage.pc.controller.WebSocketControllerTest" time="1.922" tests="3" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -13,7 +13,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/Users/nadine/Desktop/prisonners_dilemma/src/main/java/fr/uga/m1miage/pc/Oracle_JDK-21.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241124154752765_3.jar /Users/nadine/Desktop/prisonners_dilemma/target/surefire 2024-11-24T15-47-52_676-jvmRun1 surefire-20241124154752765_1tmp surefire_0-20241124154752765_2tmp"/>
+    <property name="sun.java.command" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241124161511092_3.jar /Users/nadine/Desktop/prisonners_dilemma/target/surefire 2024-11-24T16-15-11_036-jvmRun1 surefire-20241124161511092_1tmp surefire_0-20241124161511092_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="fr.uga.m1miage.pc.controller.WebSocketControllerTest"/>
@@ -31,7 +31,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241124154752765_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/nadine/Desktop/prisonners_dilemma/target/surefire/surefirebooter-20241124161511092_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="21.0.5+9-LTS-239"/>
@@ -60,7 +60,7 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testUsernamesAlreadyTaken" classname="fr.uga.m1miage.pc.controller.WebSocketControllerTest" time="1.447">
+  <testcase name="testUsernamesAlreadyTaken" classname="fr.uga.m1miage.pc.controller.WebSocketControllerTest" time="1.826">
     <system-out><![CDATA[Serialized Player JSON: {"username":"user1","sessionId":"session1","score":0,"strategy":null,"server":false}
 ]]></system-out>
     <system-err><![CDATA[java.lang.instrument.IllegalClassFormatException: Error while instrumenting com/sun/tools/attach/VirtualMachine.
@@ -100,7 +100,7 @@
 	at org.mockito.internal.configuration.plugins.Plugins.<clinit>(Plugins.java:26)
 	at org.mockito.internal.configuration.GlobalConfiguration.tryGetPluginAnnotationEngine(GlobalConfiguration.java:50)
 	at org.mockito.MockitoAnnotations.openMocks(MockitoAnnotations.java:80)
-	at fr.uga.m1miage.pc.controller.WebSocketControllerTest.setUp(WebSocketControllerTest.java:32)
+	at fr.uga.m1miage.pc.controller.WebSocketControllerTest.setUp(WebSocketControllerTest.java:36)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
@@ -225,8 +225,8 @@ java.lang.instrument.IllegalClassFormatException: Error while instrumenting sun/
 	at com.fasterxml.jackson.databind.util.StdDateFormat.<clinit>(StdDateFormat.java:116)
 	at com.fasterxml.jackson.databind.ObjectMapper.<clinit>(ObjectMapper.java:411)
 	at fr.uga.m1miage.pc.model.Player.toJson(Player.java:62)
-	at fr.uga.m1miage.pc.controller.WebSocketController.connectUser(WebSocketController.java:43)
-	at fr.uga.m1miage.pc.controller.WebSocketControllerTest.testUsernamesAlreadyTaken(WebSocketControllerTest.java:82)
+	at fr.uga.m1miage.pc.controller.WebSocketController.connectUser(WebSocketController.java:49)
+	at fr.uga.m1miage.pc.controller.WebSocketControllerTest.testUsernamesAlreadyTaken(WebSocketControllerTest.java:87)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
@@ -315,5 +315,5 @@ Caused by: java.lang.IllegalArgumentException: Unsupported class file major vers
     <system-out><![CDATA[Serialized Player JSON: {"username":"user1","sessionId":"session1","score":0,"strategy":null,"server":false}
 ]]></system-out>
   </testcase>
-  <testcase name="testHandleWebSocketConnectListener" classname="fr.uga.m1miage.pc.controller.WebSocketControllerTest" time="0.042"/>
+  <testcase name="testHandleWebSocketConnectListener" classname="fr.uga.m1miage.pc.controller.WebSocketControllerTest" time="0.041"/>
 </testsuite>

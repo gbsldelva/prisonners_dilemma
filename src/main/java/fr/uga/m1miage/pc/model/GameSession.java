@@ -44,11 +44,29 @@ public class GameSession {
     public boolean isGameOver() {
         return currentIteration >= totalIterations;
     }
-    
+
     public boolean containsPlayer(String username) {
-        return player1.getUsername().equals(username) || player2.getUsername().equals(username);
+    if (username == null) {
+        return false;
     }
-	
+
+    String normalizedUsername = username.trim().toLowerCase();
+    String player1Raw = player1.getUsername();
+    String player2Raw = player2.getUsername();
+
+    System.out.println("Raw input username: \"" + username + "\"");
+    System.out.println("Raw Player1: \"" + player1Raw + "\", Raw Player2: \"" + player2Raw + "\"");
+
+    String player1Normalized = player1Raw.trim().toLowerCase();
+    String player2Normalized = player2Raw.trim().toLowerCase();
+
+    System.out.println("Normalized input username: \"" + normalizedUsername + "\"");
+    System.out.println("Normalized Player1: \"" + player1Normalized + "\", Normalized Player2: \"" + player2Normalized + "\"");
+
+    return normalizedUsername.equals(player1Normalized) || normalizedUsername.equals(player2Normalized);
+}
+
+
     public String getScoreSummary() {
         return player1.getUsername() + "(" + player1.getScore() + ") - " +
                player2.getUsername() + "(" + player2.getScore() + ")";
