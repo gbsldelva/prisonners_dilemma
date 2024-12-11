@@ -1,10 +1,13 @@
 package fr.uga.m1miage.pc.service;
 
-import fr.uga.m1miage.pc.model.GameSession;
-import fr.uga.m1miage.pc.model.Invitation;
-import fr.uga.m1miage.pc.model.Result;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
+import fr.uga.m1miage.pc.controller.WebSocketController;
+import fr.uga.m1miage.pc.model.GameSession;
+import fr.uga.m1miage.pc.model.Invitation;
+import fr.uga.m1miage.pc.model.Player;
+import fr.uga.m1miage.pc.model.Result;
 
 @Service
 public class NotificationService {
@@ -22,8 +25,23 @@ public class NotificationService {
             invitation.getFromPlayer()
         );
     }
+    
+    public void sendCompetitionResult(String sessionId, String message) {
+        messagingTemplate.convertAndSendToUser(
+            sessionId,
+            "/queue/competitionResult",
+            message
+        );
+    }
 
-    public void notifyGameStart(String message) {
+    public void notifyGameStart(String username, String message) {
+         Player player = WebSocketController.connectedPlayers.get(username);
+              if (player != null && player.getSessionId() != null) {
+                  messagingTemplate.convertAndSendToUser(player.getSessionId(), "/queue/gameStartHandler", message);
+          }
+    }
+
+      public void notifyGameStart(String message) {
         messagingTemplate.convertAndSend("/queue/gameStartHandler", message);
     }
 
@@ -42,4 +60,11 @@ public class NotificationService {
         result.setParti(session.getTotalIterations() + "/" + session.getTotalIterations());
         messagingTemplate.convertAndSend("/queue/gameEnd", result.toJson());
     }
+
+    public void notifyPlayerReplacement(String username, String message) {
+    Player player = WebSocketController.connectedPlayers.get(username);
+    if (player != null && player.getSessionId() != null) {
+        messagingTemplate.convertAndSendToUser(player.getSessionId(), "/queue/playerReplacement", message);
+    }
+}
 }

@@ -9,6 +9,7 @@ fr\uga\m1miage\pc\strategy\DonnantDonnantSoupconneuxTest.class
 fr\uga\m1miage\pc\strategy\PavlovAleatoireTest.class
 fr\uga\m1miage\pc\utils\UtilFunctionsTest.class
 fr\uga\m1miage\pc\controller\WebSocketControllerTest.class
+fr\uga\m1miage\pc\model\PlayAgainstServerRequestTest.class
 fr\uga\m1miage\pc\strategy\AleatoireTest.class
 fr\uga\m1miage\pc\strategy\StrategyTypeTest.class
 fr\uga\m1miage\pc\service\GameSessionServiceTest.class

@@ -3,49 +3,64 @@
 import java.security.SecureRandom;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
+
 public class UtilFunctions {
-<span class="fc" id="L7">	public static final SecureRandom random = new SecureRandom();</span>
-<span class="fc" id="L8">	static String[] choices = {&quot;c&quot;, &quot;t&quot;};</span>
+<span class="fc" id="L9">	public static final SecureRandom random = new SecureRandom();</span>
+<span class="fc" id="L10">	static String[] choices = {&quot;c&quot;, &quot;t&quot;};</span>
 	
 	private UtilFunctions() {}
 	
 	public static boolean listContainsMoves(List&lt;String&gt; myList) {
-<span class="fc bfc" id="L13" title="All 4 branches covered.">	    return myList != null &amp;&amp; !myList.isEmpty();</span>
+<span class="fc bfc" id="L15" title="All 4 branches covered.">	    return myList != null &amp;&amp; !myList.isEmpty();</span>
+	}
+	
+	public static int getScore(Decision myDecision, Decision opponentDecision) {
+<span class="fc" id="L19">		int score = -1;</span>
+<span class="pc bpc" id="L20" title="1 of 4 branches missed.">		if (myDecision == Decision.COOPERATE &amp;&amp; opponentDecision == Decision.BETRAY)</span>
+<span class="fc" id="L21">			score = 0;</span>
+<span class="pc bpc" id="L22" title="3 of 4 branches missed.">		else if (myDecision == Decision.COOPERATE &amp;&amp; opponentDecision == Decision.COOPERATE)</span>
+<span class="nc" id="L23">			score = 3;</span>
+<span class="pc bpc" id="L24" title="2 of 4 branches missed.">		else if (myDecision == Decision.BETRAY &amp;&amp; opponentDecision == Decision.BETRAY)</span>
+<span class="nc" id="L25">			score = 1;</span>
+<span class="pc bpc" id="L26" title="2 of 4 branches missed.">		else if (myDecision == Decision.BETRAY &amp;&amp; opponentDecision == Decision.COOPERATE)</span>
+<span class="fc" id="L27">			score = 5;</span>
+<span class="fc" id="L28">		return score;</span>
 	}
 	
 	public static String getRandomMove() {
-<span class="fc" id="L17">		return choices[random.nextInt(2)];</span>
+<span class="fc" id="L32">		return choices[random.nextInt(2)];</span>
 	}
 	
 	public static boolean eventIsVeryLikelyToHappen() {
-<span class="fc" id="L21">		int randomNumber = random.nextInt(10);</span>
+<span class="fc" id="L36">		int randomNumber = random.nextInt(10);</span>
 		
 		// We return true if the randomNumber is greater than 0
 		// Theoretically this event has a 90% chance of likelihood
-<span class="fc bfc" id="L25" title="All 2 branches covered.">		return randomNumber &gt; 0;</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">		return randomNumber &gt; 0;</span>
 	}
 	
 	public static boolean get3or5pointsInLastMove(String myMove, String opponentMove) {
-<span class="fc bfc" id="L29" title="All 4 branches covered.">		boolean bothCooperated = myMove.equals(opponentMove) &amp;&amp; myMove.equals(&quot;c&quot;);</span>
-<span class="fc bfc" id="L30" title="All 4 branches covered.">		boolean ibetrayedOnly = opponentMove.equals(&quot;c&quot;) &amp;&amp; myMove.equals(&quot;t&quot;);</span>
+<span class="fc bfc" id="L44" title="All 4 branches covered.">		boolean bothCooperated = myMove.equals(opponentMove) &amp;&amp; myMove.equals(&quot;c&quot;);</span>
+<span class="fc bfc" id="L45" title="All 4 branches covered.">		boolean ibetrayedOnly = opponentMove.equals(&quot;c&quot;) &amp;&amp; myMove.equals(&quot;t&quot;);</span>
 		
-<span class="fc bfc" id="L32" title="All 4 branches covered.">		return bothCooperated || ibetrayedOnly;</span>
+<span class="fc bfc" id="L47" title="All 4 branches covered.">		return bothCooperated || ibetrayedOnly;</span>
 	}
 	
 	public static String getOppositeMove(String move) {
-<span class="fc bfc" id="L36" title="All 2 branches covered.">		if (move.equals(&quot;c&quot;))</span>
-<span class="fc" id="L37">			return &quot;t&quot;;</span>
-<span class="fc" id="L38">		return &quot;c&quot;;</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">		if (move.equals(&quot;c&quot;))</span>
+<span class="fc" id="L52">			return &quot;t&quot;;</span>
+<span class="fc" id="L53">		return &quot;c&quot;;</span>
 	}
 	
 	public static boolean checkOccurenceOfTextInList(List&lt;String&gt; list, String value, int minOccurence) {
-<span class="fc" id="L42">		int occurence = 0;</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">		for (String string : list) {</span>
-<span class="fc bfc" id="L44" title="All 2 branches covered.">			if (string.equals(value)) {</span>
-<span class="fc" id="L45">				occurence++;</span>
+<span class="fc" id="L57">		int occurence = 0;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		for (String string : list) {</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">			if (string.equals(value)) {</span>
+<span class="fc" id="L60">				occurence++;</span>
 			}
-<span class="fc" id="L47">		}</span>
-<span class="pc bpc" id="L48" title="1 of 4 branches missed.">		return occurence &gt;= minOccurence &amp;&amp; occurence != 0;</span>
+<span class="fc" id="L62">		}</span>
+<span class="pc bpc" id="L63" title="1 of 4 branches missed.">		return occurence &gt;= minOccurence &amp;&amp; occurence != 0;</span>
 	}
 	
 }

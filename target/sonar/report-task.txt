@@ -2,5 +2,5 @@ projectKey=fr.uga.m1miage.pc:prisonniersdilemma_mg2_10
 serverUrl=https://im2ag-sonar.univ-grenoble-alpes.fr
 serverVersion=9.9.7.96285
 dashboardUrl=https://im2ag-sonar.univ-grenoble-alpes.fr/dashboard?id=fr.uga.m1miage.pc%3Aprisonniersdilemma_mg2_10
-ceTaskId=AZNTctplU20OkjQNTdby
-ceTaskUrl=https://im2ag-sonar.univ-grenoble-alpes.fr/api/ce/task?id=AZNTctplU20OkjQNTdby
+ceTaskId=AZO36H4pU20OkjQNTd4W
+ceTaskUrl=https://im2ag-sonar.univ-grenoble-alpes.fr/api/ce/task?id=AZO36H4pU20OkjQNTd4W

@@ -3,6 +3,8 @@ package fr.uga.m1miage.pc.utils;
 import java.security.SecureRandom;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
+
 public class UtilFunctions {
 	public static final SecureRandom random = new SecureRandom();
 	static String[] choices = {"c", "t"};
@@ -11,6 +13,19 @@ public class UtilFunctions {
 	
 	public static boolean listContainsMoves(List<String> myList) {
 	    return myList != null && !myList.isEmpty();
+	}
+	
+	public static int getScore(Decision myDecision, Decision opponentDecision) {
+		int score = -1;
+		if (myDecision == Decision.COOPERATE && opponentDecision == Decision.BETRAY)
+			score = 0;
+		else if (myDecision == Decision.COOPERATE && opponentDecision == Decision.COOPERATE)
+			score = 3;
+		else if (myDecision == Decision.BETRAY && opponentDecision == Decision.BETRAY)
+			score = 1;
+		else if (myDecision == Decision.BETRAY && opponentDecision == Decision.COOPERATE)
+			score = 5;
+		return score;
 	}
 	
 	public static String getRandomMove() {

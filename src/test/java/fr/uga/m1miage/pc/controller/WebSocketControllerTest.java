@@ -1,24 +1,32 @@
 package fr.uga.m1miage.pc.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 import fr.uga.m1miage.pc.model.Player;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import fr.uga.m1miage.pc.service.GameSessionService;
 
 class WebSocketControllerTest {
 	@Mock
     private SimpMessagingTemplate messagingTemplate;
+
+    @Mock
+    private GameSessionService gameSessionService;
 
     @InjectMocks
     private WebSocketController webSocketController;
@@ -27,7 +35,11 @@ class WebSocketControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         messagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-        webSocketController = new WebSocketController(messagingTemplate);
+        gameSessionService = Mockito.mock(GameSessionService.class);
+        webSocketController = new WebSocketController(messagingTemplate, gameSessionService);
+        WebSocketController.connectedPlayers.clear();
+        webSocketController.connectedUsers.clear();
+        webSocketController.userSessionMap.clear();
     }
 
     @Test
@@ -64,5 +76,31 @@ class WebSocketControllerTest {
 
         // Verify that updateAvailableUsers is called (sends message to /topic/availablePlayers)
         verify(messagingTemplate, times(1)).convertAndSend(eq("/topic/availablePlayers"), anySet());
+    }
+    @Test
+    void testUsernamesAlreadyTaken() {
+        // Arrange
+        Player player1 = new Player("user1", "session1");
+        Player player2 = new Player("user1", "session2");
+        
+        // Act
+        webSocketController.connectUser(player1);
+        webSocketController.connectUser(player2);
+
+        // Assert
+        assertTrue(webSocketController.connectedUsers.contains(player1.toJson()));
+        assertTrue(WebSocketController.connectedPlayers.containsKey(player1.getUsername()));
+        assertEquals(player1.getUsername(), webSocketController.userSessionMap.get("session1"));
+
+        // Verify player2 is not added to connectedUsers or connectedPlayers
+        assertFalse(WebSocketController.connectedPlayers.containsKey(player2.getSessionId()));
+        assertNull(webSocketController.userSessionMap.get("session2"));
+
+//        // Verify that error message is sent to /user/queue/errors
+//        verify(messagingTemplate, times(1)).convertAndSendToUser(
+//          eq("session2"), 
+//          eq("/queue/errors"),
+//          eq("Le nom d'utilisateur \"user1\" est déjà pris.")
+//    );
     }
 }

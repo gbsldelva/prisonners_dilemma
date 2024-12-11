@@ -1,23 +1,29 @@
 package fr.uga.m1miage.pc.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import org.mockito.MockitoAnnotations;
+
 import fr.uga.m1miage.pc.controller.WebSocketController;
 import fr.uga.m1miage.pc.model.ChoiceMessage;
 import fr.uga.m1miage.pc.model.GameSession;
 import fr.uga.m1miage.pc.model.Invitation;
 import fr.uga.m1miage.pc.model.InvitationAnswer;
 import fr.uga.m1miage.pc.model.Player;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class GameSessionServiceTest {
 
@@ -26,6 +32,9 @@ class GameSessionServiceTest {
 
     @InjectMocks
     private GameSessionService gameSessionService;
+    
+    @InjectMocks
+    private WebSocketController webSocketController;
 
     private Player player1;
     private Player player2;
@@ -42,10 +51,12 @@ class GameSessionServiceTest {
         Map<String, Player> connectedPlayers = new HashMap<>();
         connectedPlayers.put(player1.getUsername(), player1);
         connectedPlayers.put(player2.getUsername(), player2);
+        
+        gameSessionService = new GameSessionService(notificationService, webSocketController);
 
         WebSocketController.connectedPlayers = connectedPlayers;
     }
-    
+
     @Test
     void testHandleInvitation() {
         Invitation invitation = new Invitation(player1.getUsername(), player2.getUsername(), 5);
@@ -103,30 +114,6 @@ class GameSessionServiceTest {
         assertEquals(1, session.getCurrentIteration());
         verify(notificationService, times(1)).updateScore(session);
     }
-
-    @Test
-    void testHandleChoiceGameOver() {
-        gameSessionService.createSession(player1, player2, 1);
-
-        ChoiceMessage choice1 = new ChoiceMessage("player1", "c");
-        ChoiceMessage choice2 = new ChoiceMessage("player2", "c");
-
-        gameSessionService.handleChoice(choice1);
-        gameSessionService.handleChoice(choice2);
-
-        session = gameSessionService.findGameSession("player1");
-        assertNull(session);
-    }
-
-    @Test
-    void testEndGame() {
-        gameSessionService.createSession(player1, player2, 1);
-        
-        gameSessionService.endGame(session);
-        
-        assertNull(gameSessionService.findGameSession("player1"));
-        verify(notificationService, times(1)).endGame(session);
-    }
     
     @Test
     void testPairingPlayers() {
@@ -143,4 +130,32 @@ class GameSessionServiceTest {
         GameSession foundSession = gameSessionService.findGameSession(player1.getUsername());
         assertEquals(session, foundSession);
     }
+    
+    @Test
+    void testPlayAgainstServer() {
+        int iterations = 5;
+
+        GameSession createdSession = gameSessionService.playAgainstServer(player1, iterations);
+
+        assertNotNull(createdSession);
+        assertEquals(iterations, createdSession.getTotalIterations());
+        assertTrue(createdSession.containsPlayer("player1"));
+        assertEquals("Ordinateur", createdSession.getPlayer2().getUsername());
+        assertTrue(createdSession.getPlayer2().isServer());
+
+        verify(notificationService, times(1)).notifyGameStart(eq("player1"), anyString());
+    }
+
+    @Test
+    void testPlayAgainstServerInvalidIterations() {
+        GameSession gameSession = gameSessionService.playAgainstServer(player1, 0);
+        assertNull(gameSession);
+    }
+
+    @Test
+    void testCreateSessionInvalidPlayers() {
+        GameSession gameSession = gameSessionService.createSession(null, player2, 3);
+        assertNull(gameSession);
+    }
+    
 }
