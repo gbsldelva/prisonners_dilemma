@@ -53,7 +53,7 @@ public class StrategyCompetitionService {
 		notificationService.sendCompetitionResult(sessionId, result);
 	}
 	
-	String textForChoice(String choice) {
+	public String textForChoice(String choice) {
 		if (choice.equals("c"))
 			return "Coopérer";
 		return "Trahir";

@@ -6,8 +6,8 @@ import fr.uga.strats.g8.enums.TypeAction;
 public class TypeActionToDecision {
 	private TypeActionToDecision() {}
 	public static Decision convert(TypeAction typeAction) {
-<span class="nc bnc" id="L9" title="All 2 branches missed.">		if (typeAction == TypeAction.TRAHIR)</span>
-<span class="nc" id="L10">			return Decision.BETRAY;</span>
+<span class="pc bpc" id="L9" title="1 of 2 branches missed.">		if (typeAction == TypeAction.TRAHIR)</span>
+<span class="fc" id="L10">			return Decision.BETRAY;</span>
 <span class="nc" id="L11">		return Decision.COOPERATE;</span>
 	}
 }

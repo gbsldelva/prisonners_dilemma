@@ -40,23 +40,23 @@ public class GameController {
 <span class="fc" id="L40">    }</span>
     @MessageMapping(&quot;/disconnect&quot;)
     public void disconnect(@Payload String username) {
-<span class="nc" id="L43">        gameSessionService.handleDisconnection(username);</span>
-<span class="nc" id="L44">    }</span>
+<span class="fc" id="L43">        gameSessionService.handleDisconnection(username);</span>
+<span class="fc" id="L44">    }</span>
     
     @MessageMapping(&quot;/startCompetition&quot;)
     public void startCompetition(Competition competition) {
-<span class="nc bnc" id="L48" title="All 2 branches missed.">    	if (competition.getIterations() &gt; 0)</span>
-<span class="nc" id="L49">    		competitionService.startCompetition(competition.getGroupe210Strategy(), competition.getGroupe18Strategy(), competition.getIterations(), competition.getSessionId());</span>
-<span class="nc" id="L50">    }</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">    	if (competition.getIterations() &gt; 0)</span>
+<span class="fc" id="L49">    		competitionService.startCompetition(competition.getGroupe210Strategy(), competition.getGroupe18Strategy(), competition.getIterations(), competition.getSessionId());</span>
+<span class="fc" id="L50">    }</span>
 
     @MessageMapping(&quot;/playAgainstServer&quot;)
     public void playAgainstServer(@Payload PlayAgainstServerRequest request) {
-<span class="nc" id="L54">        Player player = WebSocketController.connectedPlayers.get(request.getUsername());</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (player == null) {</span>
+<span class="fc" id="L54">        Player player = WebSocketController.connectedPlayers.get(request.getUsername());</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (player == null) {</span>
 <span class="nc" id="L56">            return;</span>
         }
-<span class="nc" id="L58">        gameSessionService.playAgainstServer(player, request.getIterations());</span>
-<span class="nc" id="L59">    }</span>
+<span class="fc" id="L58">        gameSessionService.playAgainstServer(player, request.getIterations());</span>
+<span class="fc" id="L59">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

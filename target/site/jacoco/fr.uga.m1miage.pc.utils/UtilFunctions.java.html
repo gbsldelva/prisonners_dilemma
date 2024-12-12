@@ -17,12 +17,12 @@ public class UtilFunctions {
 	
 	public static int getScore(Decision myDecision, Decision opponentDecision) {
 <span class="fc" id="L19">		int score = -1;</span>
-<span class="pc bpc" id="L20" title="1 of 4 branches missed.">		if (myDecision == Decision.COOPERATE &amp;&amp; opponentDecision == Decision.BETRAY)</span>
+<span class="fc bfc" id="L20" title="All 4 branches covered.">		if (myDecision == Decision.COOPERATE &amp;&amp; opponentDecision == Decision.BETRAY)</span>
 <span class="fc" id="L21">			score = 0;</span>
-<span class="pc bpc" id="L22" title="3 of 4 branches missed.">		else if (myDecision == Decision.COOPERATE &amp;&amp; opponentDecision == Decision.COOPERATE)</span>
-<span class="nc" id="L23">			score = 3;</span>
-<span class="pc bpc" id="L24" title="2 of 4 branches missed.">		else if (myDecision == Decision.BETRAY &amp;&amp; opponentDecision == Decision.BETRAY)</span>
-<span class="nc" id="L25">			score = 1;</span>
+<span class="pc bpc" id="L22" title="1 of 4 branches missed.">		else if (myDecision == Decision.COOPERATE &amp;&amp; opponentDecision == Decision.COOPERATE)</span>
+<span class="fc" id="L23">			score = 3;</span>
+<span class="pc bpc" id="L24" title="1 of 4 branches missed.">		else if (myDecision == Decision.BETRAY &amp;&amp; opponentDecision == Decision.BETRAY)</span>
+<span class="fc" id="L25">			score = 1;</span>
 <span class="pc bpc" id="L26" title="2 of 4 branches missed.">		else if (myDecision == Decision.BETRAY &amp;&amp; opponentDecision == Decision.COOPERATE)</span>
 <span class="fc" id="L27">			score = 5;</span>
 <span class="fc" id="L28">		return score;</span>

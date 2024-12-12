@@ -50,4 +50,5 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/net/bytebuddy/byte-buddy/1.14.19/byte-buddy-1.14.19.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/net/bytebuddy/byte-buddy-agent/1.14.19/byte-buddy-agent-1.14.19.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/objenesis/objenesis/3.3/objenesis-3.3.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/fr/uga/strats/g8/1.0/g8-1.0.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>

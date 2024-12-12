@@ -2,8 +2,10 @@ package fr.uga.m1miage.pc.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,8 +31,8 @@ class GameSessionServiceTest {
 
 	@Mock
     private NotificationService notificationService;
-
-    @InjectMocks
+	
+	@InjectMocks
     private GameSessionService gameSessionService;
     
     @InjectMocks
@@ -156,6 +158,35 @@ class GameSessionServiceTest {
     void testCreateSessionInvalidPlayers() {
         GameSession gameSession = gameSessionService.createSession(null, player2, 3);
         assertNull(gameSession);
+    }
+    
+    @Test
+    void testDisconectedPlayerShouldPlayNow() {
+        // Créez une nouvelle session avec les joueurs player1 et player2
+        GameSession gameSession = new GameSession(player1, player2);
+
+        // Ajoutez des choix pour les joueurs
+        gameSession.getPlayer1Choices().add("c");
+        gameSession.getPlayer2Choices().add("t");
+        
+        // Testez la fonction avec le joueur 1 déconnecté
+        boolean result = gameSessionService.disconectedPlayerShouldPlayNow(player1, gameSession);
+        assertFalse(result); // Le joueur 2 devrait jouer maintenant
+
+        gameSession.getPlayer2Choices().add("t");
+        result = gameSessionService.disconectedPlayerShouldPlayNow(player1, gameSession);
+        assertTrue(result); // Le joueur 2 devrait jouer maintenant
+    }
+    
+    @Test
+    void testGetActivePlayers() {
+        // Get active players
+        Set<String> activePlayers = gameSessionService.getActivePlayers();
+
+        // Verify that both players are active
+        assertEquals(3, activePlayers.size());
+        assertTrue(activePlayers.contains(player1.getUsername()));
+        assertTrue(activePlayers.contains(player2.getUsername()));
     }
     
 }

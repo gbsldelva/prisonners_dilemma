@@ -26,6 +26,8 @@ public class Groupe2StrategyFactory {
 	static SecureRandom secureRandom = new SecureRandom();
 	private Groupe2StrategyFactory() {}
 	public static Strategie createStrategy(StrategyType type) {
+		if (type == null)
+			return null;
         switch (type) {
             case DONNANT_DONNANT:
                 return new DonnantDonnantStrategie();

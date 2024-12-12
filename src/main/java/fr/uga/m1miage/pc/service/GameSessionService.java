@@ -29,7 +29,7 @@ public class GameSessionService {
     private final NotificationService notificationService;
     private final WebSocketController webSocketController;
     public final Map<String, Integer> invitationIterationMap = new LinkedHashMap<>();
-    private static final ConcurrentMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
+    public static final ConcurrentMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
 
     public GameSessionService(NotificationService notificationService, WebSocketController webSocketController) {
         this.notificationService = notificationService;
