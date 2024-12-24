@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
+import fr.uga.m1miage.pc.utils.UtilFunctions;
 import org.junit.jupiter.api.Test;
 
 class PavlovTest {
@@ -13,41 +15,41 @@ class PavlovTest {
 	
 	@Test
 	void testRepeatingMoveCase1() {
-		List<String> myMoves = Arrays.asList("c", "c");
-		List<String> opponentMoves = Arrays.asList("c", "c");
+		List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
+		List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
 		
-		assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+		assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
 	}
 	
 	@Test
 	void testRepeatingMoveCase2() {
-		List<String> myMoves = Arrays.asList("c", "t");
-		List<String> opponentMoves = Arrays.asList("c", "c");
+		List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
+		List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
 		
-		assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
+		assertEquals(Decision.BETRAY, strategy.playNextMove(myMoves, opponentMoves));
 	}
 	
 	@Test
 	void testChangeMoveCase1() {
-		List<String> myMoves = Arrays.asList("c", "t");
-		List<String> opponentMoves = Arrays.asList("c", "t");
+		List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
+		List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
 		
-		assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+		assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
 	}
 	
 	@Test
 	void testChangeMoveCase2() {
-		List<String> myMoves = Arrays.asList("c", "c");
-		List<String> opponentMoves = Arrays.asList("c", "t");
+		List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
+		List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
 		
-		assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
+		assertEquals(Decision.BETRAY, strategy.playNextMove(myMoves, opponentMoves));
 	}
-	
+
 	@Test
 	void otherCases() {
-		List<String> opponentMoves = Arrays.asList("t");
-		assertTrue("c,t".contains(strategy.playNextMove(null, null)));
-		assertTrue("c,t".contains(strategy.playNextMove(null, opponentMoves)));
+		List<Decision> opponentMoves = Arrays.asList(Decision.BETRAY, Decision.COOPERATE);
+		assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, null)));
+		assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, opponentMoves)));
 	}
 	
 }

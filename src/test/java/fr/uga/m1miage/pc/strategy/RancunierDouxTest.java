@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import org.junit.jupiter.api.Test;
 
 class RancunierDouxTest {
@@ -12,43 +13,43 @@ class RancunierDouxTest {
     
     @Test
     void testInitialCooperation() {
-        // Premier coup : la stratégie coopère
-        assertEquals("c", strategy.playNextMove(null, null));
+        // Premier coup : la stratÃ©gie coopÃ¨re
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(null, null));
     }
     
     @Test
     void testCooperatesIfOpponentCooperates() {
-        List<String> myMoves = Arrays.asList("c", "c", "c");
-        List<String> opponentMoves = Arrays.asList("c", "c", "c");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE);
 
-        // Coopération continue tant que l'adversaire coopère
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        // Coopï¿½ration continue tant que l'adversaire coopï¿½re
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
     
     @Test
     void testStartsPunishmentAfterBetrayal() {
-        List<String> myMoves = Arrays.asList("c", "c", "c");
-        List<String> opponentMoves = Arrays.asList("c", "c", "t");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.BETRAY);
 
-        // La stratégie commence la séquence punitive
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
+        // La stratÃ©gie commence la sÃ©quence punitive
+        assertEquals(Decision.BETRAY, strategy.playNextMove(myMoves, opponentMoves));
     }
     
     @Test
     void testResumesCooperationAfterPunishment() {
-        List<String> myMoves = Arrays.asList("c", "t", "t", "t", "t", "c", "c");
-        List<String> opponentMoves = Arrays.asList("c", "c", "t", "t", "t", "t", "c");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE);
 
-        // Après la séquence punitive, la stratégie coopère de nouveau
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        // Aprï¿½s la sï¿½quence punitive, la stratï¿½gie coopï¿½re de nouveau
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
     
     @Test
     void testRestartsPunishmentIfBetrayedAgain() {
-        List<String> myMoves = Arrays.asList("c", "t", "t", "t", "t", "c", "c", "c");
-        List<String> opponentMoves = Arrays.asList("c", "c", "t", "t", "t", "t", "c", "t");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE, Decision.BETRAY);
 
-        // Si l'adversaire trahit à nouveau, la stratégie recommence la séquence punitive
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
+        // Si l'adversaire trahit ï¿½ nouveau, la stratï¿½gie recommence la sï¿½quence punitive
+        assertEquals(Decision.BETRAY, strategy.playNextMove(myMoves, opponentMoves));
     }
 }

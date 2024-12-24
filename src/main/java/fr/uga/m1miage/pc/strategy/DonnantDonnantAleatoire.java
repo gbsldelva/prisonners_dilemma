@@ -1,5 +1,6 @@
 package fr.uga.m1miage.pc.strategy;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public class DonnantDonnantAleatoire implements Strategy {
 
     @Override
-    public String playNextMove(List<String> myPreviousMoves, List<String> opponentPreviousMoves) {
+    public Decision playNextMove(List<Decision> myPreviousMoves, List<Decision> opponentPreviousMoves) {
         // Vérifie si l'adversaire a fait des coups précédents
         if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {
             // Avec une probabilité de RANDOM_PROBABILITY, jouer un coup aléatoire

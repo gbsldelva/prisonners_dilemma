@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
+import fr.uga.m1miage.pc.utils.UtilFunctions;
 import org.junit.jupiter.api.Test;
 
 class SondeurRepentantTest {
@@ -13,34 +15,31 @@ class SondeurRepentantTest {
     
     @Test
     void testInitialCooperation() {
-        List<String> myMoves = Arrays.asList();
-        List<String> opponentMoves = Arrays.asList();
-        
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(null, null));
     }
     
     @Test
     void testImitatingOpponentMove() {
-        List<String> myMoves = Arrays.asList("c", "t");
-        List<String> opponentMoves = Arrays.asList("c", "c");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
         
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
     
     @Test
     void testRepentanceAfterOpponentRetaliation() {
-        List<String> myMoves = Arrays.asList("c", "t");
-        List<String> opponentMoves = Arrays.asList("c", "t");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
         
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
     
     @Test
     void testRandomBetrayal() {
         // This test checks that either "c" or "t" can be chosen in cases of random betrayal
-        List<String> myMoves = Arrays.asList("c", "c");
-        List<String> opponentMoves = Arrays.asList("c", "c");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
         
-        assertTrue("c,t".contains(strategy.playNextMove(myMoves, opponentMoves)));
+        assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(myMoves, opponentMoves)));
     }
 }

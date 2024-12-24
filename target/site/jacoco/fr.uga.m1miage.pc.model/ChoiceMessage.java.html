@@ -22,14 +22,18 @@ public class ChoiceMessage {
 <span class="pc bpc" id="L22" title="1 of 2 branches missed.">               Objects.equals(choice, that.choice);</span>
     }
 
+    public Decision getDecision() {
+<span class="fc" id="L26">        return Decision.fromString(this.getChoice());</span>
+    }
+
     @Override
     public int hashCode() {
-<span class="fc" id="L27">        return Objects.hash(username, choice);</span>
+<span class="fc" id="L31">        return Objects.hash(username, choice);</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L32">        return &quot;ChoiceMessage{&quot; +</span>
+<span class="fc" id="L36">        return &quot;ChoiceMessage{&quot; +</span>
                 &quot;username='&quot; + username + '\'' +
                 &quot;, choice='&quot; + choice + '\'' +
                 '}';

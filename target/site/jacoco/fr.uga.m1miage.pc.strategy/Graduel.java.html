@@ -2,41 +2,42 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class Graduel implements Strategy {</span>
+<span class="fc" id="L8">public class Graduel implements Strategy {</span>
 
     @Override
-    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="fc bfc" id="L11" title="All 2 branches covered.">        if (!UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+    public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+<span class="fc bfc" id="L12" title="All 2 branches covered.">        if (!UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
             // Coopérer par défaut en début de partie
-<span class="fc" id="L13">            return &quot;c&quot;;</span>
+<span class="fc" id="L14">            return Decision.COOPERATE;</span>
         }
         
         // Compter le nombre total de trahisons de l'adversaire
-<span class="fc" id="L17">        int opponentBetrayals = (int) opponentPreviousMoves.stream().filter(move -&gt; move.equals(&quot;t&quot;)).count();</span>
-<span class="fc" id="L18">        int myBetrayals = (int) myPreviousMoves.stream().filter(move -&gt; move.equals(&quot;t&quot;)).count();</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        int opponentBetrayals = (int) opponentPreviousMoves.stream().filter(move -&gt; move == Decision.BETRAY).count();</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        int myBetrayals = (int) myPreviousMoves.stream().filter(move -&gt;  move == Decision.BETRAY).count();</span>
         
         // Vérifier si l'adversaire a trahi lors du dernier coup
-<span class="fc" id="L21">        String lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+<span class="fc" id="L22">        Decision lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
         
-<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (lastOpponentMove.equals(&quot;t&quot;)) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (lastOpponentMove == Decision.BETRAY) {</span>
             // Trahir autant de fois que l'adversaire a trahi au total
-<span class="fc bfc" id="L25" title="All 2 branches covered.">            if (myBetrayals &lt; opponentBetrayals) {</span>
-<span class="fc" id="L26">                return &quot;t&quot;;</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">            if (myBetrayals &lt; opponentBetrayals) {</span>
+<span class="fc" id="L27">                return Decision.BETRAY;</span>
             } else {
                 // Après les trahisons, coopérer deux fois
-<span class="fc" id="L29">                int recentMovesSize = Math.min(2, myPreviousMoves.size());</span>
-<span class="fc" id="L30">                long recentCooperations = myPreviousMoves.subList(myPreviousMoves.size() - recentMovesSize, myPreviousMoves.size())</span>
-<span class="fc" id="L31">                                                        .stream().filter(move -&gt; move.equals(&quot;c&quot;)).count();</span>
-<span class="pc bpc" id="L32" title="1 of 2 branches missed.">                if (recentCooperations &lt; 2) {</span>
-<span class="fc" id="L33">                    return &quot;c&quot;;</span>
+<span class="fc" id="L30">                int recentMovesSize = Math.min(2, myPreviousMoves.size());</span>
+<span class="fc" id="L31">                long recentCooperations = myPreviousMoves.subList(myPreviousMoves.size() - recentMovesSize, myPreviousMoves.size())</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">                                                        .stream().filter(move -&gt; move == Decision.BETRAY).count();</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">                if (recentCooperations &lt; 2) {</span>
+<span class="nc" id="L34">                    return Decision.COOPERATE;</span>
                 }
             }
         }
-        
+
         // Coopérer par défaut si aucune condition spéciale n'est remplie
-<span class="fc" id="L39">        return &quot;c&quot;;</span>
+<span class="fc" id="L40">        return Decision.COOPERATE;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

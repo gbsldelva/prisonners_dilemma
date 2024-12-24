@@ -21,45 +21,26 @@ public enum StrategyType {
     RANCUNIER_DOUX;
 
     public static StrategyType fromString(String strategyName) {
-        switch (strategyName) {
-            case "DonnantDonnant":
-                return DONNANT_DONNANT;
-            case "DonnantDonnantAleatoire":
-                return DONNANT_DONNANT_ALEATOIRE;
-            case "DonnantDeuxDonnantAleatoire":
-                return DONNANT_DEUX_DONNANT_ALEATOIRE;
-            case "DonnantDeuxDonnant":
-                return DONNANT_DEUX_DONNANT;
-            case "SondeurNaif":
-                return SONDEUR_NAIF;
-            case "SondeurRepentant":
-                return SONDEUR_REPENTANT;
-            case "PacificateurNaif":
-                return PACIFICATEUR_NAIF;
-            case "VraiPacificateur":
-                return VRAI_PACIFICATEUR;
-            case "Aleatoire":
-                return ALEATOIRE;
-            case "ToujoursTrahir":
-                return TOUJOURS_TRAHIR;
-            case "ToujoursCooperer":
-                return TOUJOURS_COOPERER;
-            case "Rancunier":
-                return RANCUNIER;
-            case "Pavlov":
-                return PAVLOV;
-            case "PavlovAleatoire":
-                return PAVLOV_ALEATOIRE;
-            case "Adaptatif":
-                return ADAPTATIF;
-            case "Graduel":
-                return GRADUEL;
-            case "DonnantDonnantSoupconneux":
-                return DONNANT_DONNANT_SOUPCONNEUX;
-            case "RancunierDoux":
-                return RANCUNIER_DOUX;
-            default:
-                throw new IllegalArgumentException("Unknown strategy type: " + strategyName);
-        }
+        return switch (strategyName) {
+            case "DonnantDonnant" -> DONNANT_DONNANT;
+            case "DonnantDonnantAleatoire" -> DONNANT_DONNANT_ALEATOIRE;
+            case "DonnantDeuxDonnantAleatoire" -> DONNANT_DEUX_DONNANT_ALEATOIRE;
+            case "DonnantDeuxDonnant" -> DONNANT_DEUX_DONNANT;
+            case "SondeurNaif" -> SONDEUR_NAIF;
+            case "SondeurRepentant" -> SONDEUR_REPENTANT;
+            case "PacificateurNaif" -> PACIFICATEUR_NAIF;
+            case "VraiPacificateur" -> VRAI_PACIFICATEUR;
+            case "Aleatoire" -> ALEATOIRE;
+            case "ToujoursTrahir" -> TOUJOURS_TRAHIR;
+            case "ToujoursCooperer" -> TOUJOURS_COOPERER;
+            case "Rancunier" -> RANCUNIER;
+            case "Pavlov" -> PAVLOV;
+            case "PavlovAleatoire" -> PAVLOV_ALEATOIRE;
+            case "Adaptatif" -> ADAPTATIF;
+            case "Graduel" -> GRADUEL;
+            case "DonnantDonnantSoupconneux" -> DONNANT_DONNANT_SOUPCONNEUX;
+            case "RancunierDoux" -> RANCUNIER_DOUX;
+            default -> throw new IllegalArgumentException("Unknown strategy type: " + strategyName);
+        };
     }
 }

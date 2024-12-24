@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DonnantDeuxDonnantAleatoire.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.strategy</a> &gt; <span class="el_source">DonnantDeuxDonnantAleatoire.java</span></div><h1>DonnantDeuxDonnantAleatoire.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.strategy;
 
 import java.util.List;
+
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L6">public class DonnantDeuxDonnantAleatoire implements Strategy {</span>
+<span class="fc" id="L8">public class DonnantDeuxDonnantAleatoire implements Strategy {</span>
     @Override
-    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
+    public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
         // Vérifie si l'adversaire a joué au moins deux coups précédents
-<span class="pc bpc" id="L10" title="2 of 4 branches missed.">        if (UtilFunctions.listContainsMoves(opponentPreviousMoves) &amp;&amp; opponentPreviousMoves.size() &gt;= 2) {</span>
+<span class="pc bpc" id="L12" title="2 of 4 branches missed.">        if (UtilFunctions.listContainsMoves(opponentPreviousMoves) &amp;&amp; opponentPreviousMoves.size() &gt;= 2) {</span>
             // Vérifie si les deux derniers coups de l'adversaire sont identiques
-<span class="fc" id="L12">            boolean twoLastMovesAreSame = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1)</span>
-<span class="fc" id="L13">                                                              .equals(opponentPreviousMoves.get(opponentPreviousMoves.size() - 2));</span>
+<span class="fc" id="L14">            boolean twoLastMovesAreSame = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1)</span>
+<span class="fc" id="L15">                                                              .equals(opponentPreviousMoves.get(opponentPreviousMoves.size() - 2));</span>
             
             // Vérifie si la probabilité d'événement aléatoire est faible et si les deux derniers coups sont les mêmes
-<span class="pc bpc" id="L16" title="2 of 4 branches missed.">            if (twoLastMovesAreSame &amp;&amp; UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
-<span class="fc" id="L17">                return UtilFunctions.getRandomMove();  // Si conditions remplies, jouer un coup aléatoire</span>
+<span class="pc bpc" id="L18" title="2 of 4 branches missed.">            if (twoLastMovesAreSame &amp;&amp; UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
+<span class="fc" id="L19">                return UtilFunctions.getRandomMove();  // Si conditions remplies, jouer un coup aléatoire</span>
             }
-<span class="nc" id="L19">            return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1); // Sinon, répéter le dernier coup de l'adversaire</span>
+<span class="nc" id="L21">            return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1); // Sinon, répéter le dernier coup de l'adversaire</span>
         }
         // Si aucun coup précédent, jouer un coup aléatoire par défaut
-<span class="nc" id="L22">        return UtilFunctions.getRandomMove();</span>
+<span class="nc" id="L24">        return UtilFunctions.getRandomMove();</span>
     }
 }
 

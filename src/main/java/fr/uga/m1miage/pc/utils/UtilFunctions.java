@@ -1,17 +1,18 @@
 package fr.uga.m1miage.pc.utils;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.List;
 
 import fr.uga.m1miage.pc.model.Decision;
 
 public class UtilFunctions {
 	public static final SecureRandom random = new SecureRandom();
-	static String[] choices = {"c", "t"};
+	public static List<Decision> choices = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
 	
 	private UtilFunctions() {}
 	
-	public static boolean listContainsMoves(List<String> myList) {
+	public static boolean listContainsMoves(List<Decision> myList) {
 	    return myList != null && !myList.isEmpty();
 	}
 	
@@ -28,8 +29,8 @@ public class UtilFunctions {
 		return score;
 	}
 	
-	public static String getRandomMove() {
-		return choices[random.nextInt(2)];
+	public static Decision getRandomMove() {
+		return choices.get(random.nextInt(2));
 	}
 	
 	public static boolean eventIsVeryLikelyToHappen() {
@@ -40,23 +41,23 @@ public class UtilFunctions {
 		return randomNumber > 0;
 	}
 	
-	public static boolean get3or5pointsInLastMove(String myMove, String opponentMove) {
-		boolean bothCooperated = myMove.equals(opponentMove) && myMove.equals("c");
-		boolean ibetrayedOnly = opponentMove.equals("c") && myMove.equals("t");
+	public static boolean get3or5pointsInLastMove(Decision myMove, Decision opponentMove) {
+		boolean bothCooperated = myMove == opponentMove && myMove == Decision.COOPERATE;
+		boolean ibetrayedOnly = opponentMove == Decision.COOPERATE && myMove == Decision.BETRAY;
 		
 		return bothCooperated || ibetrayedOnly;
 	}
 	
-	public static String getOppositeMove(String move) {
-		if (move.equals("c"))
-			return "t";
-		return "c";
+	public static Decision getOppositeMove(Decision decision) {
+		if (decision.getValue().equals("c"))
+			return Decision.BETRAY;
+		return Decision.COOPERATE;
 	}
 	
-	public static boolean checkOccurenceOfTextInList(List<String> list, String value, int minOccurence) {
+	public static boolean checkOccurenceOfTextInList(List<Decision> list, Decision decision, int minOccurence) {
 		int occurence = 0;
-		for (String string : list) {
-			if (string.equals(value)) {
+		for (Decision value : list) {
+			if (decision == value) {
 				occurence++;
 			}
 		}

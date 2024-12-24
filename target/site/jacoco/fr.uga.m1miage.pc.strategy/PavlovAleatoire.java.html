@@ -2,29 +2,30 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class PavlovAleatoire implements Strategy {</span>
+<span class="fc" id="L8">public class PavlovAleatoire implements Strategy {</span>
 
     @Override
-    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="pc bpc" id="L11" title="1 of 4 branches missed.">        if (UtilFunctions.listContainsMoves(myPreviousMoves) &amp;&amp; UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
-<span class="fc" id="L12">            String lastMyMove = myPreviousMoves.get(myPreviousMoves.size() - 1);</span>
-<span class="fc" id="L13">            String lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+    public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+<span class="pc bpc" id="L12" title="1 of 4 branches missed.">        if (UtilFunctions.listContainsMoves(myPreviousMoves) &amp;&amp; UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+<span class="fc" id="L13">            Decision lastMyMove = myPreviousMoves.get(myPreviousMoves.size() - 1);</span>
+<span class="fc" id="L14">            Decision lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
 
             // Si 5 ou 3 points ont été obtenus au tour précédent
-<span class="fc bfc" id="L16" title="All 2 branches covered.">            if (UtilFunctions.get3or5pointsInLastMove(lastMyMove, lastOpponentMove)) {</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">            if (UtilFunctions.get3or5pointsInLastMove(lastMyMove, lastOpponentMove)) {</span>
                 // Faire un choix aléatoire avec une faible probabilité
-<span class="pc bpc" id="L18" title="1 of 2 branches missed.">                if (!UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
-<span class="nc" id="L19">                    return UtilFunctions.getRandomMove();</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">                if (!UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
+<span class="nc" id="L20">                    return UtilFunctions.getRandomMove();</span>
                 }
                 // Sinon, répéter le dernier choix
-<span class="fc" id="L22">                return lastMyMove;</span>
+<span class="fc" id="L23">                return lastMyMove;</span>
             }
         }
         
         // Choix aléatoire par défaut s'il n'y a pas assez d'historique ou pas de points 3 ou 5
-<span class="fc" id="L27">        return UtilFunctions.getRandomMove();</span>
+<span class="fc" id="L28">        return UtilFunctions.getRandomMove();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

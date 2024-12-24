@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: fr.uga.m1miage.pc.strategy.DonnantDonnantSoupconneuxTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in fr.uga.m1miage.pc.strategy.DonnantDonnantSoupconneuxTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in fr.uga.m1miage.pc.strategy.DonnantDonnantSoupconneuxTest

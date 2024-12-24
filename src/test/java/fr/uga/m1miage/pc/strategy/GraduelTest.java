@@ -1,10 +1,13 @@
 package fr.uga.m1miage.pc.strategy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
+import fr.uga.m1miage.pc.utils.UtilFunctions;
 import org.junit.jupiter.api.Test;
 
 class GraduelTest {
@@ -12,52 +15,52 @@ class GraduelTest {
     
     @Test
     void testInitialCooperation() {
-        // Premier coup : la stratégie coopère
-        assertEquals("c", strategy.playNextMove(null, null));
+        // Premier coup : la stratï¿½gie coopï¿½re
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(null, null));
     }
 
     @Test
     void testContinuesCooperatingIfNoBetrayal() {
-        List<String> myMoves = Arrays.asList("c", "c", "c");
-        List<String> opponentMoves = Arrays.asList("c", "c", "c");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE);
 
-        // Coopération continue si l'adversaire n'a pas trahi
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        // CoopÃ©ration continue si l'adversaire n'a pas trahi
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
 
     @Test
     void testBetraysEqualToOpponentBetrayals() {
-        List<String> myMoves = Arrays.asList("c", "c");
-        List<String> opponentMoves = Arrays.asList("c", "t", "c", "t");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.COOPERATE, Decision.BETRAY);
 
-        // L'adversaire a trahi deux fois, la stratégie doit trahir deux fois en réponse
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
+        // L'adversaire a trahi deux fois, la stratï¿½gie doit trahir deux fois en rï¿½ponse
+        assertEquals(Decision.BETRAY, strategy.playNextMove(myMoves, opponentMoves));
     }
 
     @Test
     void testReturnsToCooperationAfterBetraying() {
-        List<String> myMoves = Arrays.asList("c", "t", "t");
-        List<String> opponentMoves = Arrays.asList("c", "t", "c", "t");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.COOPERATE, Decision.BETRAY);
 
-        // Après avoir trahi autant de fois que l'adversaire, la stratégie revient à la coopération
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        // Aprï¿½s avoir trahi autant de fois que l'adversaire, la stratï¿½gie revient ï¿½ la coopï¿½ration
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
 
     @Test
     void testCooperatesTwiceAfterRetaliation() {
-        List<String> myMoves = Arrays.asList("c", "t", "t", "c");
-        List<String> opponentMoves = Arrays.asList("c", "t", "t", "c");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE);
 
-        // Après deux trahisons, la stratégie coopère deux fois consécutives
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        // Aprï¿½s deux trahisons, la stratï¿½gie coopï¿½re deux fois consï¿½cutives
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
     
     @Test
     void testMixedBehaviorWithMultipleBetrayals() {
-        List<String> myMoves = Arrays.asList("c", "c", "t", "t", "c", "c");
-        List<String> opponentMoves = Arrays.asList("c", "t", "t", "t", "c", "c");
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE, Decision.COOPERATE);
 
-        // Avec plusieurs trahisons de l'adversaire, la stratégie suit le schéma graduel
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        // Avec plusieurs trahisons de l'adversaire, la stratï¿½gie suit le schï¿½ma graduel
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
 }

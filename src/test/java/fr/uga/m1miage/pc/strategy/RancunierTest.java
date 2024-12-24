@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
+import fr.uga.m1miage.pc.utils.UtilFunctions;
 import org.junit.jupiter.api.Test;
 
 class RancunierTest {
@@ -13,20 +15,20 @@ class RancunierTest {
 	
 	@Test
 	void willCooperate() {
-		List<String> opponentMoves = Arrays.asList("c", "c", "c");
-		assertEquals("c", strategy.playNextMove(null, opponentMoves));
+		List<Decision> opponentMoves = Arrays.asList(null, Decision.COOPERATE, Decision.COOPERATE);
+		assertEquals(Decision.BETRAY, strategy.playNextMove(opponentMoves, opponentMoves));
 	}
 	
 	@Test
 	void willBetray() {
-		List<String> opponentMoves = Arrays.asList("c", "t", "c");
-		assertEquals("t", strategy.playNextMove(null, opponentMoves));
+		List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.COOPERATE);
+		assertEquals(Decision.BETRAY, strategy.playNextMove(opponentMoves, opponentMoves));
 	}
-	
+
 	@Test
 	void otherCases() {
-		List<String> opponentMoves = Arrays.asList("t");
-		assertTrue("c,t".contains(strategy.playNextMove(null, null)));
-		assertTrue("c,t".contains(strategy.playNextMove(null, opponentMoves)));
+		List<Decision> opponentMoves = Arrays.asList(Decision.BETRAY, Decision.COOPERATE);
+		assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, null)));
+		assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, opponentMoves)));
 	}
 }

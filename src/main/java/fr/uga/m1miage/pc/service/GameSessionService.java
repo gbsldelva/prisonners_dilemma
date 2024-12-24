@@ -115,15 +115,15 @@ public class GameSessionService {
 
         // Ajoute le choix du joueur
         if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {
-            session.getPlayer1Choices().add(choiceMessage.getChoice());
+            session.getPlayer1Choices().add(choiceMessage.getDecision());
         } else {
-            session.getPlayer2Choices().add(choiceMessage.getChoice());
+            session.getPlayer2Choices().add(choiceMessage.getDecision());
         }
         
         // Si le serveur est le 2e joueur, il fait son choix en fonction de sa stratégie
         if (player2.isServer()) {
             Strategy serverStrategy = StrategyFactory.createStrategy(player2.getStrategy());
-            String serverChoice = serverStrategy.playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());
+            Decision serverChoice = serverStrategy.playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());
             session.getPlayer2Choices().add(serverChoice);
         }
 
@@ -133,9 +133,9 @@ public class GameSessionService {
         	Decision  player2LastDecision;
         	if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {
         		player1LastDecision = Decision.fromString(choiceMessage.getChoice());
-        		player2LastDecision = Decision.fromString(session.getPlayer2Choices().get(session.getPlayer2Choices().size() - 1));
+        		player2LastDecision = session.getPlayer2Choices().get(session.getPlayer2Choices().size() - 1);
         	} else {
-        		player1LastDecision = Decision.fromString(session.getPlayer1Choices().get(session.getPlayer1Choices().size() - 1));
+        		player1LastDecision = session.getPlayer1Choices().get(session.getPlayer1Choices().size() - 1);
         		player2LastDecision = Decision.fromString(choiceMessage.getChoice());
         	}
         	currentPlayer.setScore(currentPlayer.getScore() + UtilFunctions.getScore(player1LastDecision, player2LastDecision));
@@ -193,8 +193,8 @@ public class GameSessionService {
         disconnectedPlayer.setServer(true);
         if (!session.isGameOver() && !session.isRoundComplete() && disconectedPlayerShouldPlayNow(disconnectedPlayer, session)) {
         	Strategy serverStrategy = StrategyFactory.createStrategy(disconnectedPlayer.getStrategy());
-            String serverChoice = serverStrategy.playNextMove(null, null);
-        	ChoiceMessage nextMove = new ChoiceMessage(disconnectedPlayer.getUsername(), serverChoice);
+            Decision serverChoice = serverStrategy.playNextMove(null, null);
+        	ChoiceMessage nextMove = new ChoiceMessage(disconnectedPlayer.getUsername(), serverChoice.getValue());
         	handleChoice(nextMove);
         }
 

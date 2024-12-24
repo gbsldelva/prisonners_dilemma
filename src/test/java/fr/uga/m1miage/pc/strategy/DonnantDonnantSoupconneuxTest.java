@@ -1,10 +1,13 @@
 package fr.uga.m1miage.pc.strategy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
+import fr.uga.m1miage.pc.utils.UtilFunctions;
 import org.junit.jupiter.api.Test;
 
 class DonnantDonnantSoupconneuxTest {
@@ -12,34 +15,42 @@ class DonnantDonnantSoupconneuxTest {
     
     @Test
     void testInitialMoveIsBetrayal() {
-        // Premier coup : la stratégie commence par trahir
-        assertEquals("t", strategy.playNextMove(null, null));
+        // Premier coup : la stratï¿½gie commence par trahir
+        assertEquals(Decision.BETRAY, strategy.playNextMove(null, null));
     }
     
     @Test
     void testFollowsOpponentMoveAfterFirstTurn() {
-        List<String> myMoves = Arrays.asList("t");
-        List<String> opponentMoves = Arrays.asList("c");
+        List<Decision> myMoves = Arrays.asList(Decision.BETRAY, Decision.BETRAY);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
         
-        // Suivre le dernier coup de l'adversaire, ici coopérer après qu'il a coopéré
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        // Suivre le dernier coup de l'adversaire, ici coopÃ©rer aprÃ¨s qu'il a coopÃ©rÃ©
+        assertEquals(Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
     
     @Test
     void testRepeatsOpponentBetrayal() {
-        List<String> myMoves = Arrays.asList("t", "c");
-        List<String> opponentMoves = Arrays.asList("c", "t");
+        List<Decision> myMoves = Arrays.asList(Decision.BETRAY, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY);
         
-        // Répéter la trahison si l'adversaire a trahi au dernier coup
-        assertEquals("t", strategy.playNextMove(myMoves, opponentMoves));
+        // Rï¿½pï¿½ter la trahison si l'adversaire a trahi au dernier coup
+        assertEquals(Decision.BETRAY, strategy.playNextMove(myMoves, opponentMoves));
     }
     
     @Test
     void testContinuesFollowingOpponentMoves() {
-        List<String> myMoves = Arrays.asList("t", "c", "t");
-        List<String> opponentMoves = Arrays.asList("c", "t", "c");
+        List<Decision> myMoves = Arrays.asList(Decision.BETRAY, Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.COOPERATE);
 
         // Continuer de copier le dernier coup de l'adversaire
-        assertEquals("c", strategy.playNextMove(myMoves, opponentMoves));
+        assertEquals( Decision.COOPERATE, strategy.playNextMove(myMoves, opponentMoves));
     }
+
+    @Test
+    void otherCases() {
+        List<Decision> opponentMoves = Arrays.asList(Decision.BETRAY, Decision.COOPERATE);
+        assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, null)));
+        assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, opponentMoves)));
+    }
+
 }

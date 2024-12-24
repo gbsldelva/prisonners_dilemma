@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import org.junit.jupiter.api.Test;
 
 import fr.uga.m1miage.pc.utils.UtilFunctions;
@@ -16,26 +17,25 @@ class SondeurNaifTest {
 	
 	@Test
 	void testPlayNextMoveWhenBetraying() {
-		List<String> opponentLastMoves = Arrays.asList("c", "t", "c", "t");
-		assertEquals("t", strategy.playNextMove(null, opponentLastMoves));
+		List<Decision> opponentLastMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.COOPERATE, Decision.BETRAY);
+		assertEquals(Decision.BETRAY, strategy.playNextMove(null, opponentLastMoves));
 	}
 	
 	@Test
 	void testPlayNextMoveWhenCooperating() {
-		List<String> opponentLastMoves = Arrays.asList("c", "t", "c");
-		List<String> results = new ArrayList<String>();
+		List<Decision> opponentLastMoves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.COOPERATE);
+		List<Decision> results = new ArrayList<>();
 		
 		for (int i = 0; i < 100; i++)
 			results.add(strategy.playNextMove(null, opponentLastMoves));
-		System.out.println(results);
-		assertTrue(UtilFunctions.checkOccurenceOfTextInList(results, "c", 50));
-		assertTrue(UtilFunctions.checkOccurenceOfTextInList(results, "t", 2));
+		assertTrue(UtilFunctions.checkOccurenceOfTextInList(results, Decision.COOPERATE, 50));
+		assertTrue(UtilFunctions.checkOccurenceOfTextInList(results, Decision.BETRAY, 2));
 	}
-	
+
 	@Test
 	void otherCases() {
-		List<String> opponentMoves = Arrays.asList("t");
-		assertTrue("c,t".contains(strategy.playNextMove(null, null)));
-		assertTrue("c,t".contains(strategy.playNextMove(null, opponentMoves)));
+		List<Decision> opponentMoves = Arrays.asList(Decision.BETRAY, Decision.COOPERATE);
+		assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, null)));
+		assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, opponentMoves)));
 	}
 }

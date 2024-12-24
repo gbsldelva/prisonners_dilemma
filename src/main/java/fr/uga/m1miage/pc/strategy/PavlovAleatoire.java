@@ -2,15 +2,16 @@ package fr.uga.m1miage.pc.strategy;
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
 public class PavlovAleatoire implements Strategy {
 
     @Override
-    public String playNextMove(List<String> myPreviousMoves, List<String> opponentPreviousMoves) {
+    public Decision playNextMove(List<Decision> myPreviousMoves, List<Decision> opponentPreviousMoves) {
         if (UtilFunctions.listContainsMoves(myPreviousMoves) && UtilFunctions.listContainsMoves(opponentPreviousMoves)) {
-            String lastMyMove = myPreviousMoves.get(myPreviousMoves.size() - 1);
-            String lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);
+            Decision lastMyMove = myPreviousMoves.get(myPreviousMoves.size() - 1);
+            Decision lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);
 
             // Si 5 ou 3 points ont été obtenus au tour précédent
             if (UtilFunctions.get3or5pointsInLastMove(lastMyMove, lastOpponentMove)) {

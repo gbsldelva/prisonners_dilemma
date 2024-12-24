@@ -1,7 +1,9 @@
 package fr.uga.m1miage.pc.strategy;
 
+import fr.uga.m1miage.pc.model.Decision;
+
 import java.util.List;
 
 public interface Strategy {
-	String playNextMove(List<String> myPreviousMoves, List<String> opponentPreviousMoves);
+	Decision playNextMove(List<Decision> myPreviousMoves, List<Decision> opponentPreviousMoves);
 }

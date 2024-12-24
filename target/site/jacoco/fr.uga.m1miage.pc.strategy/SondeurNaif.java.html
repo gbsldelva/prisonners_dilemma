@@ -2,20 +2,21 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class SondeurNaif implements Strategy{</span>
+<span class="fc" id="L8">public class SondeurNaif implements Strategy{</span>
 
 	@Override
-	public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="fc bfc" id="L11" title="All 2 branches covered.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+	public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+<span class="fc bfc" id="L12" title="All 2 branches covered.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
 			// Change behavior a few time when it's time to cooperate
-<span class="fc bfc" id="L13" title="All 4 branches covered.">			if (opponentPreviousMoves.get(opponentPreviousMoves.size() - 1).equals(&quot;c&quot;) &amp;&amp; !UtilFunctions.eventIsVeryLikelyToHappen())</span>
-<span class="fc" id="L14">				return &quot;t&quot;;</span>
+<span class="fc bfc" id="L14" title="All 4 branches covered.">			if (opponentPreviousMoves.get(opponentPreviousMoves.size() - 1) == Decision.COOPERATE &amp;&amp; !UtilFunctions.eventIsVeryLikelyToHappen())</span>
+<span class="fc" id="L15">				return Decision.BETRAY;</span>
 			
-<span class="fc" id="L16">			return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+<span class="fc" id="L17">			return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
 		}
-<span class="fc" id="L18">		return UtilFunctions.getRandomMove();	</span>
+<span class="fc" id="L19">		return UtilFunctions.getRandomMove();	</span>
 	}
 	
 }

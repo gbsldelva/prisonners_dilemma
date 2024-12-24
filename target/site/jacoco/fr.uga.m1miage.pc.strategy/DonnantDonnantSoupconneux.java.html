@@ -2,19 +2,20 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class DonnantDonnantSoupconneux implements Strategy {</span>
+<span class="fc" id="L8">public class DonnantDonnantSoupconneux implements Strategy {</span>
 
     @Override
-    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
+    public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
         // Commencer par trahir si aucun coup n'a été joué auparavant
-<span class="fc bfc" id="L12" title="All 2 branches covered.">        if (!UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
-<span class="fc" id="L13">            return &quot;t&quot;;</span>
+<span class="fc bfc" id="L13" title="All 2 branches covered.">        if (!UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+<span class="fc" id="L14">            return Decision.BETRAY;</span>
         }
         
         // Copier le dernier coup de l'adversaire
-<span class="fc" id="L17">        return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+<span class="fc" id="L18">        return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

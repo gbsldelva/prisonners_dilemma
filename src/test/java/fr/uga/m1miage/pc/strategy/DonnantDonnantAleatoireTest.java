@@ -1,6 +1,9 @@
 package fr.uga.m1miage.pc.strategy;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import fr.uga.m1miage.pc.model.Decision;
+import fr.uga.m1miage.pc.utils.UtilFunctions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -11,26 +14,26 @@ class DonnantDonnantAleatoireTest {
 
     @Test
     void testPlayLikeOpponentOrRandom() {
-        List<String> myMoves = Arrays.asList();
-        List<String> opponentMoves = Arrays.asList("c", "t", "c");
-
-        // Tester que la stratégie suit le dernier coup de l'adversaire ou choisit aléatoirement
-        String move = strategy.playNextMove(myMoves, opponentMoves);
-        assertTrue("ct".contains(move));  // Doit être "c" ou "t"
-
-        // Tester qu'il y a une chance de choisir aléatoirement
-        myMoves = Arrays.asList("c");
-        opponentMoves = Arrays.asList("c");
+        // Tester qu'il y a une chance de choisir alï¿½atoirement
+        List<Decision> myMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
+        List<Decision> opponentMoves = Arrays.asList(Decision.COOPERATE, Decision.COOPERATE);
 
         boolean randomMoveMade = false;
         for (int i = 0; i < 100; i++) {
-            move = strategy.playNextMove(myMoves, opponentMoves);
+            Decision move = strategy.playNextMove(myMoves, opponentMoves);
             if (!move.equals(opponentMoves.get(opponentMoves.size() - 1))) {
                 randomMoveMade = true;
                 break;
             }
         }
 
-        assertTrue(randomMoveMade, "Il devrait y avoir une chance que le coup soit aléatoire");
+        assertTrue(randomMoveMade, "Il devrait y avoir une chance que le coup soit alï¿½atoire");
+    }
+
+    @Test
+    void otherCases() {
+        List<Decision> opponentMoves = Arrays.asList(Decision.BETRAY, Decision.COOPERATE);
+        assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, null)));
+        assertTrue(UtilFunctions.choices.contains(strategy.playNextMove(null, opponentMoves)));
     }
 }

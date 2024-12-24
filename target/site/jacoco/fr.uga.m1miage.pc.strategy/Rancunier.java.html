@@ -2,18 +2,19 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class Rancunier implements Strategy{</span>
+<span class="fc" id="L8">public class Rancunier implements Strategy{</span>
 
 	@Override
-	public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="fc bfc" id="L11" title="All 2 branches covered.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
-<span class="fc bfc" id="L12" title="All 2 branches covered.">			if (opponentPreviousMoves.contains(&quot;t&quot;))</span>
-<span class="fc" id="L13">				return &quot;t&quot;;</span>
-<span class="fc" id="L14">			return &quot;c&quot;;</span>
+	public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+<span class="fc bfc" id="L12" title="All 2 branches covered.">		if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+<span class="pc bpc" id="L13" title="1 of 2 branches missed.">			if (opponentPreviousMoves.contains(Decision.COOPERATE))</span>
+<span class="fc" id="L14">				return Decision.BETRAY;</span>
+<span class="nc" id="L15">			return Decision.COOPERATE;</span>
 		}
-<span class="fc" id="L16">		return UtilFunctions.getRandomMove();</span>
+<span class="fc" id="L17">		return UtilFunctions.getRandomMove();</span>
 	}
 
 }

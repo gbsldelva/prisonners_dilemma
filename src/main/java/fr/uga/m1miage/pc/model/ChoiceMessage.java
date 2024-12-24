@@ -22,6 +22,10 @@ public class ChoiceMessage {
                Objects.equals(choice, that.choice);
     }
 
+    public Decision getDecision() {
+        return Decision.fromString(this.getChoice());
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(username, choice);

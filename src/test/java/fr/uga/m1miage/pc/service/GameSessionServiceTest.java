@@ -8,8 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import fr.uga.m1miage.pc.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -21,11 +22,6 @@ import static org.mockito.Mockito.verify;
 import org.mockito.MockitoAnnotations;
 
 import fr.uga.m1miage.pc.controller.WebSocketController;
-import fr.uga.m1miage.pc.model.ChoiceMessage;
-import fr.uga.m1miage.pc.model.GameSession;
-import fr.uga.m1miage.pc.model.Invitation;
-import fr.uga.m1miage.pc.model.InvitationAnswer;
-import fr.uga.m1miage.pc.model.Player;
 
 class GameSessionServiceTest {
 
@@ -162,18 +158,18 @@ class GameSessionServiceTest {
     
     @Test
     void testDisconectedPlayerShouldPlayNow() {
-        // Créez une nouvelle session avec les joueurs player1 et player2
+        // Crï¿½ez une nouvelle session avec les joueurs player1 et player2
         GameSession gameSession = new GameSession(player1, player2);
 
         // Ajoutez des choix pour les joueurs
-        gameSession.getPlayer1Choices().add("c");
-        gameSession.getPlayer2Choices().add("t");
+        gameSession.getPlayer1Choices().add(Decision.COOPERATE);
+        gameSession.getPlayer2Choices().add(Decision.BETRAY);
         
-        // Testez la fonction avec le joueur 1 déconnecté
+        // Testez la fonction avec le joueur 1 dï¿½connectï¿½
         boolean result = gameSessionService.disconectedPlayerShouldPlayNow(player1, gameSession);
         assertFalse(result); // Le joueur 2 devrait jouer maintenant
 
-        gameSession.getPlayer2Choices().add("t");
+        gameSession.getPlayer2Choices().add(Decision.BETRAY);
         result = gameSessionService.disconectedPlayerShouldPlayNow(player1, gameSession);
         assertTrue(result); // Le joueur 2 devrait jouer maintenant
     }

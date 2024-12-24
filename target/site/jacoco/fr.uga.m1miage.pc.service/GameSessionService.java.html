@@ -115,15 +115,15 @@ public class GameSessionService {
 
         // Ajoute le choix du joueur
 <span class="fc bfc" id="L117" title="All 2 branches covered.">        if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {</span>
-<span class="fc" id="L118">            session.getPlayer1Choices().add(choiceMessage.getChoice());</span>
+<span class="fc" id="L118">            session.getPlayer1Choices().add(choiceMessage.getDecision());</span>
         } else {
-<span class="fc" id="L120">            session.getPlayer2Choices().add(choiceMessage.getChoice());</span>
+<span class="fc" id="L120">            session.getPlayer2Choices().add(choiceMessage.getDecision());</span>
         }
         
         // Si le serveur est le 2e joueur, il fait son choix en fonction de sa stratÃ©gie
 <span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (player2.isServer()) {</span>
 <span class="nc" id="L125">            Strategy serverStrategy = StrategyFactory.createStrategy(player2.getStrategy());</span>
-<span class="nc" id="L126">            String serverChoice = serverStrategy.playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());</span>
+<span class="nc" id="L126">            Decision serverChoice = serverStrategy.playNextMove(session.getPlayer1Choices(), session.getPlayer2Choices());</span>
 <span class="nc" id="L127">            session.getPlayer2Choices().add(serverChoice);</span>
         }
 
@@ -133,9 +133,9 @@ public class GameSessionService {
         	Decision  player2LastDecision;
 <span class="pc bpc" id="L134" title="1 of 2 branches missed.">        	if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {</span>
 <span class="nc" id="L135">        		player1LastDecision = Decision.fromString(choiceMessage.getChoice());</span>
-<span class="nc" id="L136">        		player2LastDecision = Decision.fromString(session.getPlayer2Choices().get(session.getPlayer2Choices().size() - 1));</span>
+<span class="nc" id="L136">        		player2LastDecision = session.getPlayer2Choices().get(session.getPlayer2Choices().size() - 1);</span>
         	} else {
-<span class="fc" id="L138">        		player1LastDecision = Decision.fromString(session.getPlayer1Choices().get(session.getPlayer1Choices().size() - 1));</span>
+<span class="fc" id="L138">        		player1LastDecision = session.getPlayer1Choices().get(session.getPlayer1Choices().size() - 1);</span>
 <span class="fc" id="L139">        		player2LastDecision = Decision.fromString(choiceMessage.getChoice());</span>
         	}
 <span class="fc" id="L141">        	currentPlayer.setScore(currentPlayer.getScore() + UtilFunctions.getScore(player1LastDecision, player2LastDecision));</span>
@@ -193,8 +193,8 @@ public class GameSessionService {
 <span class="nc" id="L193">        disconnectedPlayer.setServer(true);</span>
 <span class="nc bnc" id="L194" title="All 6 branches missed.">        if (!session.isGameOver() &amp;&amp; !session.isRoundComplete() &amp;&amp; disconectedPlayerShouldPlayNow(disconnectedPlayer, session)) {</span>
 <span class="nc" id="L195">        	Strategy serverStrategy = StrategyFactory.createStrategy(disconnectedPlayer.getStrategy());</span>
-<span class="nc" id="L196">            String serverChoice = serverStrategy.playNextMove(null, null);</span>
-<span class="nc" id="L197">        	ChoiceMessage nextMove = new ChoiceMessage(disconnectedPlayer.getUsername(), serverChoice);</span>
+<span class="nc" id="L196">            Decision serverChoice = serverStrategy.playNextMove(null, null);</span>
+<span class="nc" id="L197">        	ChoiceMessage nextMove = new ChoiceMessage(disconnectedPlayer.getUsername(), serverChoice.getValue());</span>
 <span class="nc" id="L198">        	handleChoice(nextMove);</span>
         }
 

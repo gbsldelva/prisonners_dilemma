@@ -8,24 +8,24 @@ class StrategyFactoryTest {
 
     @Test
     void testCreateStrategyAllCases() {
-        assertTrue(StrategyFactory.createStrategy(StrategyType.DONNANT_DONNANT) instanceof DonnantDonnant);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.DONNANT_DONNANT_ALEATOIRE) instanceof DonnantDonnantAleatoire);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.DONNANT_DEUX_DONNANT_ALEATOIRE) instanceof DonnantDeuxDonnantAleatoire);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.DONNANT_DEUX_DONNANT) instanceof DonnantDeuxDonnant);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.SONDEUR_NAIF) instanceof SondeurNaif);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.SONDEUR_REPENTANT) instanceof SondeurRepentant);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.PACIFICATEUR_NAIF) instanceof PacificateurNaif);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.VRAI_PACIFICATEUR) instanceof VraiPacificateur);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.ALEATOIRE) instanceof Aleatoire);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.TOUJOURS_TRAHIR) instanceof ToujoursTrahir);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.TOUJOURS_COOPERER) instanceof ToujoursCooperer);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.RANCUNIER) instanceof Rancunier);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.PAVLOV) instanceof Pavlov);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.PAVLOV_ALEATOIRE) instanceof PavlovAleatoire);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.ADAPTATIF) instanceof Adaptatif);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.GRADUEL) instanceof Graduel);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.DONNANT_DONNANT_SOUPCONNEUX) instanceof DonnantDonnantSoupconneux);
-        assertTrue(StrategyFactory.createStrategy(StrategyType.RANCUNIER_DOUX) instanceof RancunierDoux);
+        assertInstanceOf(DonnantDonnant.class, StrategyFactory.createStrategy(StrategyType.DONNANT_DONNANT));
+        assertInstanceOf(DonnantDonnantAleatoire.class, StrategyFactory.createStrategy(StrategyType.DONNANT_DONNANT_ALEATOIRE));
+        assertInstanceOf(DonnantDeuxDonnantAleatoire.class, StrategyFactory.createStrategy(StrategyType.DONNANT_DEUX_DONNANT_ALEATOIRE));
+        assertInstanceOf(DonnantDeuxDonnant.class, StrategyFactory.createStrategy(StrategyType.DONNANT_DEUX_DONNANT));
+        assertInstanceOf(SondeurNaif.class, StrategyFactory.createStrategy(StrategyType.SONDEUR_NAIF));
+        assertInstanceOf(SondeurRepentant.class, StrategyFactory.createStrategy(StrategyType.SONDEUR_REPENTANT));
+        assertInstanceOf(PacificateurNaif.class, StrategyFactory.createStrategy(StrategyType.PACIFICATEUR_NAIF));
+        assertInstanceOf(VraiPacificateur.class, StrategyFactory.createStrategy(StrategyType.VRAI_PACIFICATEUR));
+        assertInstanceOf(Aleatoire.class, StrategyFactory.createStrategy(StrategyType.ALEATOIRE));
+        assertInstanceOf(ToujoursTrahir.class, StrategyFactory.createStrategy(StrategyType.TOUJOURS_TRAHIR));
+        assertInstanceOf(ToujoursCooperer.class, StrategyFactory.createStrategy(StrategyType.TOUJOURS_COOPERER));
+        assertInstanceOf(Rancunier.class, StrategyFactory.createStrategy(StrategyType.RANCUNIER));
+        assertInstanceOf(Pavlov.class, StrategyFactory.createStrategy(StrategyType.PAVLOV));
+        assertInstanceOf(PavlovAleatoire.class, StrategyFactory.createStrategy(StrategyType.PAVLOV_ALEATOIRE));
+        assertInstanceOf(Adaptatif.class, StrategyFactory.createStrategy(StrategyType.ADAPTATIF));
+        assertInstanceOf(Graduel.class, StrategyFactory.createStrategy(StrategyType.GRADUEL));
+        assertInstanceOf(DonnantDonnantSoupconneux.class, StrategyFactory.createStrategy(StrategyType.DONNANT_DONNANT_SOUPCONNEUX));
+        assertInstanceOf(RancunierDoux.class, StrategyFactory.createStrategy(StrategyType.RANCUNIER_DOUX));
     }
 
     @Test

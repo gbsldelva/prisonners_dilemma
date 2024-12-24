@@ -6,48 +6,28 @@ public class StrategyFactory {
 	
     public static Strategy createStrategy(StrategyType type) {
 <span class="fc bfc" id="L8" title="All 2 branches covered.">    	if (type == null)</span>
-<span class="fc" id="L9">    		throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + type);</span>
-    	
-<span class="pc bpc" id="L11" title="1 of 19 branches missed.">        switch (type) {</span>
-            case DONNANT_DONNANT:
-<span class="fc" id="L13">                return new DonnantDonnant();</span>
-            case DONNANT_DONNANT_ALEATOIRE:
-<span class="fc" id="L15">                return new DonnantDonnantAleatoire();</span>
-            case DONNANT_DEUX_DONNANT_ALEATOIRE:
-<span class="fc" id="L17">                return new DonnantDeuxDonnantAleatoire();</span>
-            case DONNANT_DEUX_DONNANT:
-<span class="fc" id="L19">                return new DonnantDeuxDonnant();</span>
-            case SONDEUR_NAIF:
-<span class="fc" id="L21">                return new SondeurNaif();</span>
-            case SONDEUR_REPENTANT:
-<span class="fc" id="L23">                return new SondeurRepentant();</span>
-            case PACIFICATEUR_NAIF:
-<span class="fc" id="L25">                return new PacificateurNaif();</span>
-            case VRAI_PACIFICATEUR:
-<span class="fc" id="L27">                return new VraiPacificateur();</span>
-            case ALEATOIRE:
-<span class="fc" id="L29">                return new Aleatoire();</span>
-            case TOUJOURS_TRAHIR:
-<span class="fc" id="L31">                return new ToujoursTrahir();</span>
-            case TOUJOURS_COOPERER:
-<span class="fc" id="L33">                return new ToujoursCooperer();</span>
-            case RANCUNIER:
-<span class="fc" id="L35">                return new Rancunier();</span>
-            case PAVLOV:
-<span class="fc" id="L37">                return new Pavlov();</span>
-            case PAVLOV_ALEATOIRE:
-<span class="fc" id="L39">                return new PavlovAleatoire();</span>
-            case ADAPTATIF:
-<span class="fc" id="L41">                return new Adaptatif();</span>
-            case GRADUEL:
-<span class="fc" id="L43">                return new Graduel();</span>
-            case DONNANT_DONNANT_SOUPCONNEUX:
-<span class="fc" id="L45">                return new DonnantDonnantSoupconneux();</span>
-            case RANCUNIER_DOUX:
-<span class="fc" id="L47">                return new RancunierDoux();</span>
-            default:
-<span class="nc" id="L49">                throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + type);</span>
-        }
+<span class="fc" id="L9">    		throw new IllegalArgumentException(&quot;Unknown strategy type:&quot;);</span>
+
+<span class="pc bpc" id="L11" title="1 of 19 branches missed.">        return switch (type) {</span>
+<span class="fc" id="L12">            case DONNANT_DONNANT -&gt; new DonnantDonnant();</span>
+<span class="fc" id="L13">            case DONNANT_DONNANT_ALEATOIRE -&gt; new DonnantDonnantAleatoire();</span>
+<span class="fc" id="L14">            case DONNANT_DEUX_DONNANT_ALEATOIRE -&gt; new DonnantDeuxDonnantAleatoire();</span>
+<span class="fc" id="L15">            case DONNANT_DEUX_DONNANT -&gt; new DonnantDeuxDonnant();</span>
+<span class="fc" id="L16">            case SONDEUR_NAIF -&gt; new SondeurNaif();</span>
+<span class="fc" id="L17">            case SONDEUR_REPENTANT -&gt; new SondeurRepentant();</span>
+<span class="fc" id="L18">            case PACIFICATEUR_NAIF -&gt; new PacificateurNaif();</span>
+<span class="fc" id="L19">            case VRAI_PACIFICATEUR -&gt; new VraiPacificateur();</span>
+<span class="fc" id="L20">            case ALEATOIRE -&gt; new Aleatoire();</span>
+<span class="fc" id="L21">            case TOUJOURS_TRAHIR -&gt; new ToujoursTrahir();</span>
+<span class="fc" id="L22">            case TOUJOURS_COOPERER -&gt; new ToujoursCooperer();</span>
+<span class="fc" id="L23">            case RANCUNIER -&gt; new Rancunier();</span>
+<span class="fc" id="L24">            case PAVLOV -&gt; new Pavlov();</span>
+<span class="fc" id="L25">            case PAVLOV_ALEATOIRE -&gt; new PavlovAleatoire();</span>
+<span class="fc" id="L26">            case ADAPTATIF -&gt; new Adaptatif();</span>
+<span class="fc" id="L27">            case GRADUEL -&gt; new Graduel();</span>
+<span class="fc" id="L28">            case DONNANT_DONNANT_SOUPCONNEUX -&gt; new DonnantDonnantSoupconneux();</span>
+<span class="fc" id="L29">            case RANCUNIER_DOUX -&gt; new RancunierDoux();</span>
+        };
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

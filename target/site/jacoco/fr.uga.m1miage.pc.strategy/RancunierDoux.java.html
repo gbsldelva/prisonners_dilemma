@@ -2,35 +2,36 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class RancunierDoux implements Strategy {</span>
+<span class="fc" id="L8">public class RancunierDoux implements Strategy {</span>
 
-<span class="fc" id="L9">    private int punishmentIndex = -1;  // Indique si nous sommes dans une séquence punitive (et la position dans celle-ci)</span>
-<span class="fc" id="L10">    private static final String[] PUNISHMENT_SEQUENCE = {&quot;t&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;, &quot;c&quot;, &quot;c&quot;};</span>
+<span class="fc" id="L10">    private int punishmentIndex = -1;  // Indique si nous sommes dans une séquence punitive (et la position dans celle-ci)</span>
+<span class="fc" id="L11">    private static final Decision[] PUNISHMENT_SEQUENCE = {Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.COOPERATE, Decision.COOPERATE};</span>
 
     @Override
-    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="pc bpc" id="L14" title="1 of 2 branches missed.">        if (punishmentIndex &gt;= 0) {</span>
+    public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        if (punishmentIndex &gt;= 0) {</span>
             // Si nous sommes dans une séquence punitive, continuer cette séquence
-<span class="nc" id="L16">            String nextMove = PUNISHMENT_SEQUENCE[punishmentIndex];</span>
-<span class="nc" id="L17">            punishmentIndex++;</span>
-<span class="nc bnc" id="L18" title="All 2 branches missed.">            if (punishmentIndex &gt;= PUNISHMENT_SEQUENCE.length) {</span>
+<span class="nc" id="L17">            Decision nextMove = PUNISHMENT_SEQUENCE[punishmentIndex];</span>
+<span class="nc" id="L18">            punishmentIndex++;</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">            if (punishmentIndex &gt;= PUNISHMENT_SEQUENCE.length) {</span>
                 // Réinitialiser l'index de punition après avoir terminé la séquence
-<span class="nc" id="L20">                punishmentIndex = -1;</span>
+<span class="nc" id="L21">                punishmentIndex = -1;</span>
             }
-<span class="nc" id="L22">            return nextMove;</span>
+<span class="nc" id="L23">            return nextMove;</span>
         }
         
         // Si l'adversaire a trahi au dernier coup, déclencher la séquence punitive
-<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (UtilFunctions.listContainsMoves(opponentPreviousMoves) &amp;&amp;</span>
-<span class="fc bfc" id="L27" title="All 2 branches covered.">            opponentPreviousMoves.get(opponentPreviousMoves.size() - 1).equals(&quot;t&quot;)) {</span>
-<span class="fc" id="L28">            punishmentIndex = 0;</span>
-<span class="fc" id="L29">            return PUNISHMENT_SEQUENCE[punishmentIndex++];</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (UtilFunctions.listContainsMoves(opponentPreviousMoves) &amp;&amp;</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            opponentPreviousMoves.get(opponentPreviousMoves.size() - 1) == Decision.BETRAY) {</span>
+<span class="fc" id="L29">            punishmentIndex = 0;</span>
+<span class="fc" id="L30">            return PUNISHMENT_SEQUENCE[punishmentIndex++];</span>
         }
 
         // Par défaut, coopérer
-<span class="fc" id="L33">        return &quot;c&quot;;</span>
+<span class="fc" id="L34">        return Decision.COOPERATE;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

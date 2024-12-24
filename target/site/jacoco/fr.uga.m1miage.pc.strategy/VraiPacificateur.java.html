@@ -2,31 +2,32 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class VraiPacificateur implements Strategy {</span>
+<span class="fc" id="L8">public class VraiPacificateur implements Strategy {</span>
 
     @Override
-    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="pc bpc" id="L11" title="1 of 4 branches missed.">        if (opponentPreviousMoves == null || opponentPreviousMoves.size() &lt; 2) {</span>
+    public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+<span class="pc bpc" id="L12" title="1 of 4 branches missed.">        if (opponentPreviousMoves == null || opponentPreviousMoves.size() &lt; 2) {</span>
             // Coopérer par défaut si pas assez de coups précédents pour évaluer la séquence
-<span class="fc" id="L13">            return &quot;c&quot;;</span>
+<span class="fc" id="L14">            return Decision.COOPERATE;</span>
         }
         
-<span class="fc" id="L16">        String lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
-<span class="fc" id="L17">        String secondLastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 2);</span>
+<span class="fc" id="L17">        Decision lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+<span class="fc" id="L18">        Decision secondLastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 2);</span>
         
         // Vérifier si l'adversaire a trahi deux fois de suite
-<span class="pc bpc" id="L20" title="1 of 4 branches missed.">        if (lastOpponentMove.equals(&quot;t&quot;) &amp;&amp; secondLastOpponentMove.equals(&quot;t&quot;)) {</span>
+<span class="pc bpc" id="L21" title="1 of 4 branches missed.">        if (lastOpponentMove == Decision.BETRAY &amp;&amp; secondLastOpponentMove == Decision.BETRAY) {</span>
             // Tenter de faire la paix en coopérant avec une faible probabilité
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">            if (!UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
-<span class="nc" id="L23">                return &quot;c&quot;;  // Coopérer pour apaiser</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">            if (!UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
+<span class="fc" id="L24">                return Decision.COOPERATE;  // Coopérer pour apaiser</span>
             }
-<span class="fc" id="L25">            return &quot;t&quot;;  // Trahir par défaut après une double trahison de l'adversaire</span>
+<span class="nc" id="L26">            return Decision.BETRAY;  // Trahir par défaut après une double trahison de l'adversaire</span>
         }
 
         // Coopérer si l'adversaire n'a pas trahi deux fois de suite
-<span class="fc" id="L29">        return &quot;c&quot;;</span>
+<span class="fc" id="L30">        return Decision.COOPERATE;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

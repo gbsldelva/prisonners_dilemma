@@ -8,15 +8,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import org.junit.jupiter.api.Test;
 
 class UtilFunctionsTest {
 	@Test
 	void testListContainsMoves() {
-		List<String> list = new ArrayList<String>();
+		List<Decision> list = new ArrayList<>();
 		assertTrue(!UtilFunctions.listContainsMoves(list), "The list is empty.");
 		assertTrue(!UtilFunctions.listContainsMoves(null), "The list is null");
-		list.add("Test");
+		list.add(Decision.BETRAY);
 		assertTrue(UtilFunctions.listContainsMoves(list), "The list is not empty");
 	}
 	
@@ -26,8 +27,8 @@ class UtilFunctionsTest {
         int countC = 0;
 
         for (int i = 0; i < numIterations; i++) {
-            String move = UtilFunctions.getRandomMove();
-            if (move.equals("c")) {
+            Decision move = UtilFunctions.getRandomMove();
+            if (move == Decision.COOPERATE) {
                 countC++;
             }
         }
@@ -46,55 +47,55 @@ class UtilFunctionsTest {
 	
 	@Test
 	void testPlayerGet3or5pointsInLastMoveWhenCooperating() {
-		String playerLastMove = "c";
-		String opponentLastMove = "c";
+		Decision playerLastMove = Decision.COOPERATE;
+		Decision opponentLastMove = Decision.COOPERATE;
 		
 		assertTrue(UtilFunctions.get3or5pointsInLastMove(playerLastMove, opponentLastMove));
 	}
 	
 	@Test
 	void testPlayerGet3or5pointsInLastMoveWhenBetraying() {
-		String playerLastMove = "t";
-		String opponentLastMove = "c";
+		Decision playerLastMove = Decision.BETRAY;
+		Decision opponentLastMove = Decision.COOPERATE;
 		
 		assertTrue(UtilFunctions.get3or5pointsInLastMove(playerLastMove, opponentLastMove));
 	}
 	
 	@Test
 	void testPlayerGet3or5pointsInLastMoveFailedCase1() {
-		String playerLastMove = "t";
-		String opponentLastMove = "t";
+		Decision playerLastMove = Decision.BETRAY;
+		Decision opponentLastMove = Decision.BETRAY;
 		
-		assertTrue(!UtilFunctions.get3or5pointsInLastMove(playerLastMove, opponentLastMove));
+		assertFalse(UtilFunctions.get3or5pointsInLastMove(playerLastMove, opponentLastMove));
 	}
 	
 	@Test
 	void testPlayerGet3or5pointsInLastMoveFailedCase2() {
-		String playerLastMove = "c";
-		String opponentLastMove = "t";
+		Decision playerLastMove = Decision.COOPERATE;
+		Decision opponentLastMove = Decision.BETRAY;
 		
-		assertTrue(!UtilFunctions.get3or5pointsInLastMove(playerLastMove, opponentLastMove));
+		assertFalse(UtilFunctions.get3or5pointsInLastMove(playerLastMove, opponentLastMove));
 	}
 	
 	@Test
 	void testGetOppositeMoveWhenCooperating() {
-		String move = "c";
-		assertEquals("t", UtilFunctions.getOppositeMove(move));
+		Decision move = Decision.COOPERATE;
+		assertEquals(Decision.BETRAY, UtilFunctions.getOppositeMove(move));
 	}
 	
 	@Test
 	void testGetOppositeMoveWhenBetraying() {
-		String move = "t";
-		assertEquals("c", UtilFunctions.getOppositeMove(move));
+		Decision move = Decision.BETRAY;
+		assertEquals(Decision.COOPERATE, UtilFunctions.getOppositeMove(move));
 	}
 	
 	@Test
 	void checkOccurenceOfTextInList() {
-		List<String> moves = Arrays.asList("c", "t", "c", "c", "c", "t");
-		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, "c", 2));
-		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, "c", 4));
-		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, "c", 0));
-		assertFalse(UtilFunctions.checkOccurenceOfTextInList(moves, "d", 1));
-		assertFalse(UtilFunctions.checkOccurenceOfTextInList(new ArrayList<String>(), "d", 1));
+		List<Decision> moves = Arrays.asList(Decision.COOPERATE, Decision.BETRAY, Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE, Decision.BETRAY);
+		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, Decision.COOPERATE, 2));
+		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, Decision.COOPERATE, 4));
+		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, Decision.COOPERATE, 0));
+		assertTrue(UtilFunctions.checkOccurenceOfTextInList(moves, Decision.BETRAY, 1));
+		assertFalse(UtilFunctions.checkOccurenceOfTextInList(new ArrayList<Decision>(), Decision.BETRAY, 1));
 	}
 }

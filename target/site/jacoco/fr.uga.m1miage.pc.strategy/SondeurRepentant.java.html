@@ -2,29 +2,30 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class SondeurRepentant implements Strategy {</span>
+<span class="fc" id="L8">public class SondeurRepentant implements Strategy {</span>
 
     @Override
-    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="fc bfc" id="L11" title="All 2 branches covered.">        if (!UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
-<span class="fc" id="L12">            return &quot;c&quot;;</span>
+    public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+<span class="fc bfc" id="L12" title="All 2 branches covered.">        if (!UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
+<span class="fc" id="L13">            return Decision.COOPERATE;</span>
         }
 
-<span class="fc" id="L15">        String lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
-<span class="pc bpc" id="L16" title="1 of 2 branches missed.">        String lastMyMove = !myPreviousMoves.isEmpty() ? myPreviousMoves.get(myPreviousMoves.size() - 1) : &quot;c&quot;;</span>
+<span class="fc" id="L16">        Decision lastOpponentMove = opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        Decision lastMyMove = !myPreviousMoves.isEmpty() ? myPreviousMoves.get(myPreviousMoves.size() - 1) : Decision.COOPERATE;</span>
 
         // Si l'adversaire a trahi en rÃ©ponse Ã  une de nos trahisons, se montrer repentant
-<span class="fc bfc" id="L19" title="All 4 branches covered.">        if (lastMyMove.equals(&quot;t&quot;) &amp;&amp; lastOpponentMove.equals(&quot;t&quot;)) {</span>
-<span class="fc" id="L20">            return &quot;c&quot;;  // CoopÃ©rer pour montrer le repentir</span>
+<span class="fc bfc" id="L20" title="All 4 branches covered.">        if (lastMyMove == Decision.BETRAY &amp;&amp; lastOpponentMove == Decision.BETRAY) {</span>
+<span class="fc" id="L21">            return Decision.COOPERATE;  // CoopÃ©rer pour montrer le repentir</span>
         }
 
         // DÃ©cider si on effectue un test de trahison (probabilitÃ© dâenviron 10 %)
-<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if (UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
-<span class="fc" id="L25">            return lastOpponentMove;  // Imiter le dernier coup de l'adversaire</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
+<span class="fc" id="L26">            return lastOpponentMove;  // Imiter le dernier coup de l'adversaire</span>
         } else {
-<span class="nc" id="L27">            return &quot;t&quot;;  // Trahir pour tester la rÃ©action de lâadversaire</span>
+<span class="nc" id="L28">            return Decision.BETRAY;  // Trahir pour tester la rÃ©action de lâadversaire</span>
         }
     }
 }

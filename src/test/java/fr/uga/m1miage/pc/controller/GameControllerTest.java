@@ -32,9 +32,6 @@ class GameControllerTest {
     @Mock
     private StrategyCompetitionService competitionService;
 
-    @Mock
-    private WebSocketController webSocketController;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

@@ -32,15 +32,15 @@ class GameSessionTest {
         gameSession.setCurrentIteration(3);
         assertEquals(3, gameSession.getCurrentIteration());
 
-        List<String> player1Choices = new ArrayList<>();
-        player1Choices.add("Choice 1");
-        player1Choices.add("Choice 2");
+        List<Decision> player1Choices = new ArrayList<>();
+        player1Choices.add(Decision.BETRAY);
+        player1Choices.add(Decision.BETRAY);
         gameSession.setPlayer1Choices(player1Choices);
         assertEquals(player1Choices, gameSession.getPlayer1Choices());
 
-        List<String> player2Choices = new ArrayList<>();
-        player2Choices.add("Choice 3");
-        player2Choices.add("Choice 4");
+        List<Decision> player2Choices = new ArrayList<>();
+        player2Choices.add(Decision.COOPERATE);
+        player2Choices.add(Decision.COOPERATE);
         gameSession.setPlayer2Choices(player2Choices);
         assertEquals(player2Choices, gameSession.getPlayer2Choices());
     }

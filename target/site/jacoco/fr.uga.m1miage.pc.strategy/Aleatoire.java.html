@@ -2,13 +2,14 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class Aleatoire implements Strategy {</span>
+<span class="fc" id="L8">public class Aleatoire implements Strategy {</span>
 
 	@Override
-	public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-<span class="fc" id="L11">		return UtilFunctions.getRandomMove();</span>
+	public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+<span class="fc" id="L12">		return UtilFunctions.getRandomMove();</span>
 	}
 	
 }

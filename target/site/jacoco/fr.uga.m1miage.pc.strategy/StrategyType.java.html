@@ -21,46 +21,27 @@
 <span class="fc" id="L21">    RANCUNIER_DOUX;</span>
 
     public static StrategyType fromString(String strategyName) {
-<span class="fc bfc" id="L24" title="All 19 branches covered.">        switch (strategyName) {</span>
-            case &quot;DonnantDonnant&quot;:
-<span class="fc" id="L26">                return DONNANT_DONNANT;</span>
-            case &quot;DonnantDonnantAleatoire&quot;:
-<span class="fc" id="L28">                return DONNANT_DONNANT_ALEATOIRE;</span>
-            case &quot;DonnantDeuxDonnantAleatoire&quot;:
-<span class="fc" id="L30">                return DONNANT_DEUX_DONNANT_ALEATOIRE;</span>
-            case &quot;DonnantDeuxDonnant&quot;:
-<span class="fc" id="L32">                return DONNANT_DEUX_DONNANT;</span>
-            case &quot;SondeurNaif&quot;:
-<span class="fc" id="L34">                return SONDEUR_NAIF;</span>
-            case &quot;SondeurRepentant&quot;:
-<span class="fc" id="L36">                return SONDEUR_REPENTANT;</span>
-            case &quot;PacificateurNaif&quot;:
-<span class="fc" id="L38">                return PACIFICATEUR_NAIF;</span>
-            case &quot;VraiPacificateur&quot;:
-<span class="fc" id="L40">                return VRAI_PACIFICATEUR;</span>
-            case &quot;Aleatoire&quot;:
-<span class="fc" id="L42">                return ALEATOIRE;</span>
-            case &quot;ToujoursTrahir&quot;:
-<span class="fc" id="L44">                return TOUJOURS_TRAHIR;</span>
-            case &quot;ToujoursCooperer&quot;:
-<span class="fc" id="L46">                return TOUJOURS_COOPERER;</span>
-            case &quot;Rancunier&quot;:
-<span class="fc" id="L48">                return RANCUNIER;</span>
-            case &quot;Pavlov&quot;:
-<span class="fc" id="L50">                return PAVLOV;</span>
-            case &quot;PavlovAleatoire&quot;:
-<span class="fc" id="L52">                return PAVLOV_ALEATOIRE;</span>
-            case &quot;Adaptatif&quot;:
-<span class="fc" id="L54">                return ADAPTATIF;</span>
-            case &quot;Graduel&quot;:
-<span class="fc" id="L56">                return GRADUEL;</span>
-            case &quot;DonnantDonnantSoupconneux&quot;:
-<span class="fc" id="L58">                return DONNANT_DONNANT_SOUPCONNEUX;</span>
-            case &quot;RancunierDoux&quot;:
-<span class="fc" id="L60">                return RANCUNIER_DOUX;</span>
-            default:
-<span class="fc" id="L62">                throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + strategyName);</span>
-        }
+<span class="fc bfc" id="L24" title="All 19 branches covered.">        return switch (strategyName) {</span>
+<span class="fc" id="L25">            case &quot;DonnantDonnant&quot; -&gt; DONNANT_DONNANT;</span>
+<span class="fc" id="L26">            case &quot;DonnantDonnantAleatoire&quot; -&gt; DONNANT_DONNANT_ALEATOIRE;</span>
+<span class="fc" id="L27">            case &quot;DonnantDeuxDonnantAleatoire&quot; -&gt; DONNANT_DEUX_DONNANT_ALEATOIRE;</span>
+<span class="fc" id="L28">            case &quot;DonnantDeuxDonnant&quot; -&gt; DONNANT_DEUX_DONNANT;</span>
+<span class="fc" id="L29">            case &quot;SondeurNaif&quot; -&gt; SONDEUR_NAIF;</span>
+<span class="fc" id="L30">            case &quot;SondeurRepentant&quot; -&gt; SONDEUR_REPENTANT;</span>
+<span class="fc" id="L31">            case &quot;PacificateurNaif&quot; -&gt; PACIFICATEUR_NAIF;</span>
+<span class="fc" id="L32">            case &quot;VraiPacificateur&quot; -&gt; VRAI_PACIFICATEUR;</span>
+<span class="fc" id="L33">            case &quot;Aleatoire&quot; -&gt; ALEATOIRE;</span>
+<span class="fc" id="L34">            case &quot;ToujoursTrahir&quot; -&gt; TOUJOURS_TRAHIR;</span>
+<span class="fc" id="L35">            case &quot;ToujoursCooperer&quot; -&gt; TOUJOURS_COOPERER;</span>
+<span class="fc" id="L36">            case &quot;Rancunier&quot; -&gt; RANCUNIER;</span>
+<span class="fc" id="L37">            case &quot;Pavlov&quot; -&gt; PAVLOV;</span>
+<span class="fc" id="L38">            case &quot;PavlovAleatoire&quot; -&gt; PAVLOV_ALEATOIRE;</span>
+<span class="fc" id="L39">            case &quot;Adaptatif&quot; -&gt; ADAPTATIF;</span>
+<span class="fc" id="L40">            case &quot;Graduel&quot; -&gt; GRADUEL;</span>
+<span class="fc" id="L41">            case &quot;DonnantDonnantSoupconneux&quot; -&gt; DONNANT_DONNANT_SOUPCONNEUX;</span>
+<span class="fc" id="L42">            case &quot;RancunierDoux&quot; -&gt; RANCUNIER_DOUX;</span>
+<span class="fc" id="L43">            default -&gt; throw new IllegalArgumentException(&quot;Unknown strategy type: &quot; + strategyName);</span>
+        };
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

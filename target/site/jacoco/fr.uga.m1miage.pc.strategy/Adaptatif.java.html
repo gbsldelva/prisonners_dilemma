@@ -2,44 +2,43 @@
 
 import java.util.List;
 
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
-<span class="fc" id="L7">public class Adaptatif implements Strategy {</span>
+<span class="fc" id="L8">public class Adaptatif implements Strategy {</span>
 
-<span class="fc" id="L9">    static final String[] INITIAL_SEQUENCE = {&quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;c&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;, &quot;t&quot;};</span>
-<span class="fc" id="L10">    int moveIndex = 0;</span>
-<span class="fc" id="L11">    int coopScore = 0;</span>
-<span class="fc" id="L12">    int betrayScore = 0;</span>
+<span class="fc" id="L10">    static final Decision[] INITIAL_SEQUENCE = {Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE, Decision.COOPERATE, Decision.BETRAY,Decision.BETRAY, Decision.BETRAY, Decision.BETRAY, Decision.BETRAY};</span>
+<span class="fc" id="L11">    int moveIndex = 0;</span>
+<span class="fc" id="L12">    int coopScore = 0;</span>
+<span class="fc" id="L13">    int betrayScore = 0;</span>
     
     @Override
-    public String playNextMove(List&lt;String&gt; myPreviousMoves, List&lt;String&gt; opponentPreviousMoves) {
-        // Si nous n'avons pas encore joué tous les coups de la séquence initiale, jouer le coup suivant de la séquence
-<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if (moveIndex &lt; INITIAL_SEQUENCE.length) {</span>
-<span class="fc" id="L18">            return INITIAL_SEQUENCE[moveIndex++];</span>
+    public Decision playNextMove(List&lt;Decision&gt; myPreviousMoves, List&lt;Decision&gt; opponentPreviousMoves) {
+        // Si nous n'avons pas encore joué tous les coups de la séquence initiale, jouer le coup suivant de la séquence.
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (moveIndex &lt; INITIAL_SEQUENCE.length) {</span>
+<span class="fc" id="L19">            return INITIAL_SEQUENCE[moveIndex++];</span>
         }
 
         // Recalculer les scores moyens pour coopérer (c) et trahir (t)
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (coopScore &gt; betrayScore) {</span>
-<span class="nc" id="L23">            return &quot;c&quot;;</span>
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        } else if (betrayScore &gt; coopScore) {</span>
-<span class="nc" id="L25">            return &quot;t&quot;;</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        if (coopScore &gt; betrayScore) {</span>
+<span class="nc" id="L24">            return Decision.COOPERATE;</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        } else if (betrayScore &gt; coopScore) {</span>
+<span class="nc" id="L26">            return Decision.BETRAY;</span>
         } else {
-            // Si les scores sont égaux, choisir aléatoirement entre &quot;c&quot; et &quot;t&quot;
-<span class="nc" id="L28">            return UtilFunctions.getRandomMove();</span>
+            // Si les scores sont égaux, choisir aléatoirement entre &quot;c&quot; et &quot;t&quot;.
+<span class="nc" id="L29">            return UtilFunctions.getRandomMove();</span>
         }
     }
 
     public void updateScores(String myMove, String opponentMove) {
         // Mettre à jour les scores pour coopérer et trahir
-<span class="fc bfc" id="L34" title="All 4 branches covered.">        if (myMove.equals(&quot;c&quot;) &amp;&amp; opponentMove.equals(&quot;c&quot;)) {</span>
-<span class="fc" id="L35">            coopScore += 3;  // Coopération contre coopération</span>
-<span class="pc bpc" id="L36" title="1 of 4 branches missed.">        } else if (myMove.equals(&quot;c&quot;) &amp;&amp; opponentMove.equals(&quot;t&quot;)) {</span>
-<span class="fc" id="L37">            coopScore += 0;  // Coopération contre trahison</span>
-<span class="pc bpc" id="L38" title="1 of 4 branches missed.">        } else if (myMove.equals(&quot;t&quot;) &amp;&amp; opponentMove.equals(&quot;c&quot;)) {</span>
-<span class="fc" id="L39">            betrayScore += 5;  // Trahison contre coopération</span>
-<span class="pc bpc" id="L40" title="2 of 4 branches missed.">        } else if (myMove.equals(&quot;t&quot;) &amp;&amp; opponentMove.equals(&quot;t&quot;)) {</span>
-<span class="fc" id="L41">            betrayScore += 1;  // Trahison contre trahison</span>
+<span class="fc bfc" id="L35" title="All 4 branches covered.">        if (myMove.equals(&quot;c&quot;) &amp;&amp; opponentMove.equals(&quot;c&quot;)) {</span>
+<span class="fc" id="L36">            coopScore += 3;  // Coopération contre coopération</span>
+<span class="fc bfc" id="L37" title="All 4 branches covered.">        } else if (myMove.equals(&quot;t&quot;) &amp;&amp; opponentMove.equals(&quot;c&quot;)) {</span>
+<span class="fc" id="L38">            betrayScore += 5;  // Trahison contre coopération</span>
+<span class="pc bpc" id="L39" title="1 of 4 branches missed.">        } else if (myMove.equals(&quot;t&quot;) &amp;&amp; opponentMove.equals(&quot;t&quot;)) {</span>
+<span class="fc" id="L40">            betrayScore += 1;  // Trahison contre trahison</span>
         }
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L42">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

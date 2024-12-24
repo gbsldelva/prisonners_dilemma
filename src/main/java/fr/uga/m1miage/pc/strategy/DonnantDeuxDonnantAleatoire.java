@@ -1,11 +1,13 @@
 package fr.uga.m1miage.pc.strategy;
 
 import java.util.List;
+
+import fr.uga.m1miage.pc.model.Decision;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 
 public class DonnantDeuxDonnantAleatoire implements Strategy {
     @Override
-    public String playNextMove(List<String> myPreviousMoves, List<String> opponentPreviousMoves) {
+    public Decision playNextMove(List<Decision> myPreviousMoves, List<Decision> opponentPreviousMoves) {
         // Vérifie si l'adversaire a joué au moins deux coups précédents
         if (UtilFunctions.listContainsMoves(opponentPreviousMoves) && opponentPreviousMoves.size() >= 2) {
             // Vérifie si les deux derniers coups de l'adversaire sont identiques

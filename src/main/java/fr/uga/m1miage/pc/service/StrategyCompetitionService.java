@@ -36,12 +36,12 @@ public class StrategyCompetitionService {
 		
 		for (int i = 0; i < iterations; i++) {
 			result += "Iteration #" + (i + 1) + "\n";
-			String myMove = myStrategy.playNextMove(gameSession.getPlayer1Choices(), gameSession.getPlayer2Choices());
+			Decision myMove = myStrategy.playNextMove(gameSession.getPlayer1Choices(), gameSession.getPlayer2Choices());
 			gameSession.getPlayer1Choices().add(myMove);
-			String opponentMove = TypeActionToDecision.convert(opponentStrategy.getAction(listMoveStringToTypeAction(gameSession.getPlayer1Choices()), i)).getValue();
+			Decision opponentMove = TypeActionToDecision.convert(opponentStrategy.getAction(listMoveStringToTypeAction(gameSession.getPlayer1Choices()), i));
 			gameSession.getPlayer2Choices().add(opponentMove);
-			Decision ourLastMove = Decision.fromString(gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1));
-			Decision opponentLastMove = Decision.fromString(gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1));
+			Decision ourLastMove = gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1);
+			Decision opponentLastMove = gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1);
 			me.setScore(me.getScore() + UtilFunctions.getScore(ourLastMove, opponentLastMove));
 			opponent.setScore(opponent.getScore() + UtilFunctions.getScore(opponentLastMove, ourLastMove));
 			result += me.getUsername() + "[" + textForChoice(gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1)) + "] - " + opponent.getUsername() + "[" + textForChoice(gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1)) + "]";
@@ -53,16 +53,16 @@ public class StrategyCompetitionService {
 		notificationService.sendCompetitionResult(sessionId, result);
 	}
 	
-	public String textForChoice(String choice) {
-		if (choice.equals("c"))
-			return "Coopérer";
+	public String textForChoice(Decision decision) {
+		if (decision == Decision.COOPERATE)
+			return "Cooperer";
 		return "Trahir";
 	}
 	
-	static List<TypeAction> listMoveStringToTypeAction(List<String> moveStrings) {
+	static List<TypeAction> listMoveStringToTypeAction(List<Decision> moveStrings) {
 		List<TypeAction> actions = new ArrayList<>();
 		for (int i = 0; i < moveStrings.size(); i++) {
-			actions.add(DecisionToTypeAction.convert(Decision.fromString(moveStrings.get(i))));
+			actions.add(DecisionToTypeAction.convert(moveStrings.get(i)));
 		}
 		return actions;
 	}

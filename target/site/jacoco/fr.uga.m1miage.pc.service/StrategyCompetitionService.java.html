@@ -36,12 +36,12 @@ public class StrategyCompetitionService {
 		
 <span class="fc bfc" id="L37" title="All 2 branches covered.">		for (int i = 0; i &lt; iterations; i++) {</span>
 <span class="fc" id="L38">			result += &quot;Iteration #&quot; + (i + 1) + &quot;\n&quot;;</span>
-<span class="fc" id="L39">			String myMove = myStrategy.playNextMove(gameSession.getPlayer1Choices(), gameSession.getPlayer2Choices());</span>
+<span class="fc" id="L39">			Decision myMove = myStrategy.playNextMove(gameSession.getPlayer1Choices(), gameSession.getPlayer2Choices());</span>
 <span class="fc" id="L40">			gameSession.getPlayer1Choices().add(myMove);</span>
-<span class="fc" id="L41">			String opponentMove = TypeActionToDecision.convert(opponentStrategy.getAction(listMoveStringToTypeAction(gameSession.getPlayer1Choices()), i)).getValue();</span>
+<span class="fc" id="L41">			Decision opponentMove = TypeActionToDecision.convert(opponentStrategy.getAction(listMoveStringToTypeAction(gameSession.getPlayer1Choices()), i));</span>
 <span class="fc" id="L42">			gameSession.getPlayer2Choices().add(opponentMove);</span>
-<span class="fc" id="L43">			Decision ourLastMove = Decision.fromString(gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1));</span>
-<span class="fc" id="L44">			Decision opponentLastMove = Decision.fromString(gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1));</span>
+<span class="fc" id="L43">			Decision ourLastMove = gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1);</span>
+<span class="fc" id="L44">			Decision opponentLastMove = gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1);</span>
 <span class="fc" id="L45">			me.setScore(me.getScore() + UtilFunctions.getScore(ourLastMove, opponentLastMove));</span>
 <span class="fc" id="L46">			opponent.setScore(opponent.getScore() + UtilFunctions.getScore(opponentLastMove, ourLastMove));</span>
 <span class="fc" id="L47">			result += me.getUsername() + &quot;[&quot; + textForChoice(gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1)) + &quot;] - &quot; + opponent.getUsername() + &quot;[&quot; + textForChoice(gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1)) + &quot;]&quot;;</span>
@@ -53,16 +53,16 @@ public class StrategyCompetitionService {
 <span class="fc" id="L53">		notificationService.sendCompetitionResult(sessionId, result);</span>
 <span class="fc" id="L54">	}</span>
 	
-	public String textForChoice(String choice) {
-<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (choice.equals(&quot;c&quot;))</span>
-<span class="fc" id="L58">			return &quot;Coopérer&quot;;</span>
+	public String textForChoice(Decision decision) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (decision == Decision.COOPERATE)</span>
+<span class="fc" id="L58">			return &quot;Cooperer&quot;;</span>
 <span class="fc" id="L59">		return &quot;Trahir&quot;;</span>
 	}
 	
-	static List&lt;TypeAction&gt; listMoveStringToTypeAction(List&lt;String&gt; moveStrings) {
+	static List&lt;TypeAction&gt; listMoveStringToTypeAction(List&lt;Decision&gt; moveStrings) {
 <span class="fc" id="L63">		List&lt;TypeAction&gt; actions = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L64" title="All 2 branches covered.">		for (int i = 0; i &lt; moveStrings.size(); i++) {</span>
-<span class="fc" id="L65">			actions.add(DecisionToTypeAction.convert(Decision.fromString(moveStrings.get(i))));</span>
+<span class="fc" id="L65">			actions.add(DecisionToTypeAction.convert(moveStrings.get(i)));</span>
 		}
 <span class="fc" id="L67">		return actions;</span>
 	}

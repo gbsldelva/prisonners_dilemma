@@ -1,22 +1,15 @@
 package fr.uga.m1miage.pc.service;
 
 import fr.uga.m1miage.pc.model.Decision;
-import fr.uga.m1miage.pc.model.GameSession;
-import fr.uga.m1miage.pc.model.Player;
-import fr.uga.m1miage.pc.service.StrategyCompetitionService;
-import fr.uga.m1miage.pc.strategy.StrategyFactory;
-import fr.uga.m1miage.pc.strategy.StrategyType;
 import fr.uga.m1miage.pc.utils.UtilFunctions;
 import fr.uga.strats.g8.enums.TypeAction;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,17 +24,6 @@ class StrategyCompetitionServiceTest {
 
     @InjectMocks
     private StrategyCompetitionService strategyCompetitionService;
-
-    private Player player1;
-    private Player player2;
-    private GameSession gameSession;
-
-    @BeforeEach
-    public void setup() {
-        player1 = new Player("Groupe Gabriel & Nadine", "id1");
-        player2 = new Player("Groupe Amine & Manal", "id2");
-        gameSession = new GameSession(player1, player2);
-    }
 
     @Test
     public void testStartCompetition() {
@@ -60,28 +42,22 @@ class StrategyCompetitionServiceTest {
 
     @Test
     public void testTextForChoice() {
-        // Arrange
-        String choice = "c";
-
-        // Act
-        String result = strategyCompetitionService.textForChoice(choice);
-
-        // Assert
-        assertEquals("Coopérer", result);
+        assertEquals("Cooperer", strategyCompetitionService.textForChoice(Decision.COOPERATE));
+        assertEquals("Trahir", strategyCompetitionService.textForChoice(Decision.BETRAY));
     }
 
     @Test
     public void testListMoveStringToTypeAction() {
         // Arrange
-        List<String> moveStrings = new ArrayList<>();
-        moveStrings.add("c");
-        moveStrings.add("t");
+        List<Decision> decisions = Arrays.asList(Decision.BETRAY, Decision.COOPERATE);
 
         // Act
-        List<TypeAction> result = StrategyCompetitionService.listMoveStringToTypeAction(moveStrings);
+        List<TypeAction> result = StrategyCompetitionService.listMoveStringToTypeAction(decisions);
 
         // Assert
         assertEquals(2, result.size());
+        assertEquals(TypeAction.TRAHIR, result.get(0));
+        assertEquals(TypeAction.COOPERER, result.get(1));
     }
 
     @Test

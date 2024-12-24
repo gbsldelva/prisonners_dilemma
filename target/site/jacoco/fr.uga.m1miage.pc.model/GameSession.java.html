@@ -14,8 +14,8 @@ public class GameSession {
     private Player player2;
     private int totalIterations;
     private int currentIteration;
-    List&lt;String&gt; player1Choices;
-    List&lt;String&gt; player2Choices;
+    List&lt;Decision&gt; player1Choices;
+    List&lt;Decision&gt; player2Choices;
 
 <span class="fc" id="L20">    public GameSession(Player player1, Player player2) {</span>
 <span class="fc" id="L21">        this.player1 = player1;</span>
@@ -31,49 +31,48 @@ public class GameSession {
 	@Override
     public boolean equals(Object o) {
 <span class="fc bfc" id="L33" title="All 2 branches covered.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (!(o instanceof GameSession)) return false;</span>
-<span class="fc" id="L35">        GameSession that = (GameSession) o;</span>
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        return Objects.equals(player1, that.player1) &amp;&amp;</span>
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">               Objects.equals(player2, that.player2);</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (!(o instanceof GameSession that)) return false;</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        return Objects.equals(player1, that.player1) &amp;&amp;</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">               Objects.equals(player2, that.player2);</span>
     }
 	
 	public boolean isRoundComplete() {
-<span class="pc bpc" id="L41" title="1 of 4 branches missed.">        return player1Choices.size() == player2Choices.size() &amp;&amp; player1Choices.size() &gt; currentIteration;</span>
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">        return player1Choices.size() == player2Choices.size() &amp;&amp; player1Choices.size() &gt; currentIteration;</span>
     }
 
     public boolean isGameOver() {
-<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        return currentIteration &gt;= totalIterations;</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        return currentIteration &gt;= totalIterations;</span>
     }
 
     public boolean containsPlayer(String username) {
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">    if (username == null) {</span>
-<span class="nc" id="L50">        return false;</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">    if (username == null) {</span>
+<span class="nc" id="L49">        return false;</span>
     }
 
-<span class="fc" id="L53">    String normalizedUsername = username.trim().toLowerCase();</span>
-<span class="fc" id="L54">    String player1Raw = player1.getUsername();</span>
-<span class="fc" id="L55">    String player2Raw = player2.getUsername();</span>
+<span class="fc" id="L52">    String normalizedUsername = username.trim().toLowerCase();</span>
+<span class="fc" id="L53">    String player1Raw = player1.getUsername();</span>
+<span class="fc" id="L54">    String player2Raw = player2.getUsername();</span>
 
-<span class="fc" id="L57">    String player1Normalized = player1Raw.trim().toLowerCase();</span>
-<span class="fc" id="L58">    String player2Normalized = player2Raw.trim().toLowerCase();</span>
+<span class="fc" id="L56">    String player1Normalized = player1Raw.trim().toLowerCase();</span>
+<span class="fc" id="L57">    String player2Normalized = player2Raw.trim().toLowerCase();</span>
 
-<span class="pc bpc" id="L60" title="1 of 4 branches missed.">    return normalizedUsername.equals(player1Normalized) || normalizedUsername.equals(player2Normalized);</span>
+<span class="pc bpc" id="L59" title="1 of 4 branches missed.">    return normalizedUsername.equals(player1Normalized) || normalizedUsername.equals(player2Normalized);</span>
 }
 
 
     public String getScoreSummary() {
-<span class="fc" id="L65">        return player1.getUsername() + &quot;(&quot; + player1.getScore() + &quot;) - &quot; +</span>
-<span class="fc" id="L66">               player2.getUsername() + &quot;(&quot; + player2.getScore() + &quot;)&quot;;</span>
+<span class="fc" id="L64">        return player1.getUsername() + &quot;(&quot; + player1.getScore() + &quot;) - &quot; +</span>
+<span class="fc" id="L65">               player2.getUsername() + &quot;(&quot; + player2.getScore() + &quot;)&quot;;</span>
     }
     
     @Override
     public int hashCode() {
-<span class="fc" id="L71">        return Objects.hash(player1, player2, totalIterations, currentIteration);</span>
+<span class="fc" id="L70">        return Objects.hash(player1, player2, totalIterations, currentIteration);</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L76">        return &quot;GameSession{&quot; +</span>
+<span class="nc" id="L75">        return &quot;GameSession{&quot; +</span>
                 &quot;player1=&quot; + player1 +
                 &quot;, player2=&quot; + player2 +
                 &quot;, totalIterations=&quot; + totalIterations +
