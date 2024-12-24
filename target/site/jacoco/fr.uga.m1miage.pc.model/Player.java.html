@@ -1,76 +1,83 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.model</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.model;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.model</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import fr.uga.m1miage.pc.strategy.StrategyType;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Player {
     private String username;
     private String sessionId;
     private int score;
-    private String choice;
+    private boolean isServer;
+    private StrategyType strategy;
 
-<span class="nc" id="L9">    public Player() {}</span>
-
-<span class="fc" id="L11">    public Player(String username, String sessionId) {</span>
-<span class="fc" id="L12">        this.username = username;</span>
-<span class="fc" id="L13">        this.sessionId = sessionId;</span>
-<span class="fc" id="L14">        this.score = 0;</span>
-<span class="fc" id="L15">        this.choice = &quot;&quot;;</span>
-<span class="fc" id="L16">    }</span>
-    
-<span class="fc" id="L18">    public Player(String username) {</span>
-<span class="fc" id="L19">    	this.username = username;</span>
+<span class="fc" id="L18">    public Player() {</span>
+        // No-args constructor for deserialization
 <span class="fc" id="L20">    }</span>
 
-	public String getUsername() {
-<span class="fc" id="L23">		return username;</span>
-	}
 
-	public void setUsername(String username) {
-<span class="fc" id="L27">		this.username = username;</span>
-<span class="fc" id="L28">	}</span>
+<span class="fc" id="L23">    public Player(String username, String sessionId ) {</span>
+<span class="fc" id="L24">        this.username = username;</span>
+<span class="fc" id="L25">        this.sessionId = sessionId;</span>
+<span class="fc" id="L26">        this.score = 0;</span>
+<span class="fc" id="L27">        this.strategy = null;</span>
+<span class="fc" id="L28">        this.isServer = false;</span>
+<span class="fc" id="L29">    }</span>
+    
+<span class="fc" id="L31">    public Player(String username) {</span>
+<span class="fc" id="L32">    	this.username = username;</span>
+<span class="fc" id="L33">    }</span>
 
-	public String getSessionId() {
-<span class="fc" id="L31">		return sessionId;</span>
-	}
+<span class="nc" id="L35">    public Player(String username, String sessionId, StrategyType strategy) {</span>
+<span class="nc" id="L36">        this.username = username;</span>
+<span class="nc" id="L37">        this.sessionId = sessionId;</span>
+<span class="nc" id="L38">        this.score = 0;</span>
+<span class="nc" id="L39">        this.strategy = strategy;</span>
+<span class="nc" id="L40">        this.isServer = false;</span>
+<span class="nc" id="L41">    }</span>
 
-	public void setSessionId(String sessionId) {
-<span class="fc" id="L35">		this.sessionId = sessionId;</span>
-<span class="fc" id="L36">	}</span>
 
-	public int getScore() {
-<span class="fc" id="L39">		return score;</span>
-	}
+<span class="fc" id="L44">    public Player(String username, String sessionId, StrategyType strategy, boolean isServer) {</span>
+<span class="fc" id="L45">        this.username = username;</span>
+<span class="fc" id="L46">        this.sessionId = sessionId;</span>
+<span class="fc" id="L47">        this.score = 0;</span>
+<span class="fc" id="L48">        this.strategy = strategy;</span>
+<span class="fc" id="L49">        this.isServer = isServer;</span>
+<span class="fc" id="L50">    }</span>
 
-	public void setScore(int score) {
-<span class="fc" id="L43">		this.score = score;</span>
-<span class="fc" id="L44">	}</span>
-
-	public String getChoice() {
-<span class="nc" id="L47">		return choice;</span>
-	}
-
-	public void setChoice(String choice) {
-<span class="nc" id="L51">		this.choice = choice;</span>
-<span class="nc" id="L52">	}</span>
-	
 	@Override
     public boolean equals(Object o) {
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (!(o instanceof Player)) return false;</span>
-<span class="fc" id="L58">        Player player = (Player) o;</span>
-<span class="fc" id="L59">        return username.equals(player.username);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (!(o instanceof Player)) return false;</span>
+<span class="fc" id="L56">        Player player = (Player) o;</span>
+<span class="fc" id="L57">        return username.equals(player.username);</span>
+    }
+	
+	public String toJson() {
+        try {
+<span class="fc" id="L62">            ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L63">            return mapper.writeValueAsString(this);</span>
+<span class="nc" id="L64">        } catch (Exception e) {</span>
+<span class="nc" id="L65">            return &quot;Error converting to JSON: &quot; + e.getMessage();</span>
+        }
     }
 	
 	@Override
     public int hashCode() {
-<span class="fc" id="L64">        return username.hashCode();</span>
+<span class="fc" id="L71">        return (username + sessionId).hashCode();</span>
     }
 	
 	@Override
     public String toString() {
-<span class="fc" id="L69">        return &quot;Player{&quot; +</span>
+<span class="fc" id="L76">        return &quot;Player{&quot; +</span>
                 &quot;username='&quot; + username + '\'' +
                 &quot;, score=&quot; + score +
+                &quot;, strategy=&quot; + strategy +
                 '}';
     }
-    
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

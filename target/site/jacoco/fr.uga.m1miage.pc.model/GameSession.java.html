@@ -1,91 +1,82 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameSession.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.model</a> &gt; <span class="el_source">GameSession.java</span></div><h1>GameSession.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.model;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameSession.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.model</a> &gt; <span class="el_source">GameSession.java</span></div><h1>GameSession.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class GameSession {
     private Player player1;
     private Player player2;
     private int totalIterations;
     private int currentIteration;
-    private Map&lt;String, String&gt; choices;
+    List&lt;Decision&gt; player1Choices;
+    List&lt;Decision&gt; player2Choices;
 
-<span class="fc" id="L14">    public GameSession() {</span>
-<span class="fc" id="L15">        this.choices = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L16">    }</span>
-
-<span class="fc" id="L18">    public GameSession(Player player1, Player player2) {</span>
-<span class="fc" id="L19">        this.player1 = player1;</span>
-<span class="fc" id="L20">        this.player2 = player2;</span>
-<span class="fc" id="L21">        this.choices = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L22">    }</span>
-
-    public Player getPlayer1() {
-<span class="fc" id="L25">        return player1;</span>
-    }
-
-    public void setPlayer1(Player player1) {
-<span class="fc" id="L29">        this.player1 = player1;</span>
-<span class="fc" id="L30">    }</span>
-
-    public Player getPlayer2() {
-<span class="fc" id="L33">        return player2;</span>
-    }
-
-    public void setPlayer2(Player player2) {
-<span class="fc" id="L37">        this.player2 = player2;</span>
-<span class="fc" id="L38">    }</span>
-
-    public int getTotalIterations() {
-<span class="fc" id="L41">        return totalIterations;</span>
-    }
-
-    public void setTotalIterations(int totalIterations) {
-<span class="fc" id="L45">        this.totalIterations = totalIterations;</span>
-<span class="fc" id="L46">    }</span>
-
-    public int getCurrentIteration() {
-<span class="fc" id="L49">        return currentIteration;</span>
-    }
-
-    public void setCurrentIteration(int currentIteration) {
-<span class="fc" id="L53">        this.currentIteration = currentIteration;</span>
-<span class="fc" id="L54">    }</span>
-
-    public Map&lt;String, String&gt; getChoices() {
-<span class="fc" id="L57">        return choices;</span>
-    }
-
-    public void setChoices(Map&lt;String, String&gt; choices) {
-<span class="fc" id="L61">        this.choices = choices;</span>
-<span class="fc" id="L62">    }</span>
-
-    @Override
+<span class="fc" id="L20">    public GameSession(Player player1, Player player2) {</span>
+<span class="fc" id="L21">        this.player1 = player1;</span>
+<span class="fc" id="L22">        this.player2 = player2;</span>
+<span class="fc" id="L23">        player1Choices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L24">        player2Choices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L25">    }</span>
+	
+	public void incrementIteration () {
+<span class="fc" id="L28">		this.currentIteration++;</span>
+<span class="fc" id="L29">	}</span>
+	
+	@Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        if (!(o instanceof GameSession)) return false;</span>
-<span class="fc" id="L68">        GameSession that = (GameSession) o;</span>
-<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        return totalIterations == that.totalIterations &amp;&amp;</span>
-               currentIteration == that.currentIteration &amp;&amp;
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">               Objects.equals(player1, that.player1) &amp;&amp;</span>
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">               Objects.equals(player2, that.player2) &amp;&amp;</span>
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">               Objects.equals(choices, that.choices);</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (!(o instanceof GameSession that)) return false;</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        return Objects.equals(player1, that.player1) &amp;&amp;</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">               Objects.equals(player2, that.player2);</span>
+    }
+	
+	public boolean isRoundComplete() {
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">        return player1Choices.size() == player2Choices.size() &amp;&amp; player1Choices.size() &gt; currentIteration;</span>
     }
 
+    public boolean isGameOver() {
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        return currentIteration &gt;= totalIterations;</span>
+    }
+
+    public boolean containsPlayer(String username) {
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">    if (username == null) {</span>
+<span class="nc" id="L49">        return false;</span>
+    }
+
+<span class="fc" id="L52">    String normalizedUsername = username.trim().toLowerCase();</span>
+<span class="fc" id="L53">    String player1Raw = player1.getUsername();</span>
+<span class="fc" id="L54">    String player2Raw = player2.getUsername();</span>
+
+<span class="fc" id="L56">    String player1Normalized = player1Raw.trim().toLowerCase();</span>
+<span class="fc" id="L57">    String player2Normalized = player2Raw.trim().toLowerCase();</span>
+
+<span class="pc bpc" id="L59" title="1 of 4 branches missed.">    return normalizedUsername.equals(player1Normalized) || normalizedUsername.equals(player2Normalized);</span>
+}
+
+
+    public String getScoreSummary() {
+<span class="fc" id="L64">        return player1.getUsername() + &quot;(&quot; + player1.getScore() + &quot;) - &quot; +</span>
+<span class="fc" id="L65">               player2.getUsername() + &quot;(&quot; + player2.getScore() + &quot;)&quot;;</span>
+    }
+    
     @Override
     public int hashCode() {
-<span class="fc" id="L78">        return Objects.hash(player1, player2, totalIterations, currentIteration, choices);</span>
+<span class="fc" id="L70">        return Objects.hash(player1, player2, totalIterations, currentIteration);</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L83">        return &quot;GameSession{&quot; +</span>
+<span class="nc" id="L75">        return &quot;GameSession{&quot; +</span>
                 &quot;player1=&quot; + player1 +
                 &quot;, player2=&quot; + player2 +
                 &quot;, totalIterations=&quot; + totalIterations +
                 &quot;, currentIteration=&quot; + currentIteration +
-                &quot;, choices=&quot; + choices +
                 '}';
     }
 }

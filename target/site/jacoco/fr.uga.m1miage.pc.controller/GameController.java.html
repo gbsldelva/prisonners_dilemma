@@ -1,132 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.controller</a> &gt; <span class="el_source">GameController.java</span></div><h1>GameController.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.controller</a> &gt; <span class="el_source">GameController.java</span></div><h1>GameController.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.controller;
 
-import fr.uga.m1miage.pc.model.ChoiceMessage;
-import fr.uga.m1miage.pc.model.GameSession;
-import fr.uga.m1miage.pc.model.Player;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.*;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import fr.uga.m1miage.pc.model.ChoiceMessage;
+import fr.uga.m1miage.pc.model.Competition;
+import fr.uga.m1miage.pc.model.Invitation;
+import fr.uga.m1miage.pc.model.InvitationAnswer;
+import fr.uga.m1miage.pc.model.PlayAgainstServerRequest;
+import fr.uga.m1miage.pc.model.Player;
+import fr.uga.m1miage.pc.service.GameSessionService;
+import fr.uga.m1miage.pc.service.StrategyCompetitionService;
 
 @Controller
-<span class="fc" id="L15">public class GameController {</span>
+public class GameController {
 
- @Autowired
- private SimpMessagingTemplate messagingTemplate;
+    private final GameSessionService gameSessionService;
+    private StrategyCompetitionService competitionService;
 
- // Queue to hold waiting players
-<span class="fc" id="L21"> private ConcurrentLinkedQueue&lt;Player&gt; waitingPlayers = new ConcurrentLinkedQueue&lt;&gt;();</span>
+<span class="fc" id="L22">    public GameController(GameSessionService gameSessionService, StrategyCompetitionService competitionService) {</span>
+<span class="fc" id="L23">        this.gameSessionService = gameSessionService;</span>
+<span class="fc" id="L24">        this.competitionService = competitionService;</span>
+<span class="fc" id="L25">    }</span>
 
- // Map to hold active game sessions
-<span class="fc" id="L24"> private ConcurrentHashMap&lt;String, GameSession&gt; activeGames = new ConcurrentHashMap&lt;&gt;();</span>
+    @MessageMapping(&quot;/invite&quot;)
+    public void invitePlayer(@Payload Invitation invitation) {
+<span class="fc" id="L29">        gameSessionService.handleInvitation(invitation);</span>
+<span class="fc" id="L30">    }</span>
 
- @MessageMapping(&quot;/connectPlayer&quot;)
- public void connect(@Payload Player player, @Header(&quot;simpSessionId&quot;) String sessionId) {
-<span class="fc" id="L28">     player.setSessionId(sessionId);</span>
-<span class="fc" id="L29">     waitingPlayers.add(player);</span>
-<span class="fc" id="L30">     pairingPlayers();</span>
-<span class="fc" id="L31"> }</span>
+    @MessageMapping(&quot;/invitationAnswer&quot;)
+    public void playerResponseToInvitation(@Payload InvitationAnswer answer) {
+<span class="fc" id="L34">        gameSessionService.handleInvitationAnswer(answer);</span>
+<span class="fc" id="L35">    }</span>
 
- private void pairingPlayers() {
-<span class="fc bfc" id="L34" title="All 2 branches covered.">     if (waitingPlayers.size() &gt;= 2) {</span>
-<span class="fc" id="L35">         Player player1 = waitingPlayers.poll();</span>
-<span class="fc" id="L36">         Player player2 = waitingPlayers.poll();</span>
-<span class="fc" id="L37">         GameSession session = new GameSession();</span>
-<span class="fc" id="L38">         session.setPlayer1(player1);</span>
-<span class="fc" id="L39">         session.setPlayer2(player2);</span>
-<span class="fc" id="L40">         session.setCurrentIteration(0);</span>
-         // Assign a unique session ID, e.g., using current timestamp or UUID
-<span class="fc" id="L42">         String gameId = &quot;game-&quot; + System.currentTimeMillis();</span>
-<span class="fc" id="L43">         activeGames.put(gameId, session);</span>
+    @MessageMapping(&quot;/makeChoice&quot;)
+    public void makeChoice(@Payload ChoiceMessage choiceMessage) {
+<span class="fc" id="L39">        gameSessionService.handleChoice(choiceMessage);</span>
+<span class="fc" id="L40">    }</span>
+    @MessageMapping(&quot;/disconnect&quot;)
+    public void disconnect(@Payload String username) {
+<span class="fc" id="L43">        gameSessionService.handleDisconnection(username);</span>
+<span class="fc" id="L44">    }</span>
+    
+    @MessageMapping(&quot;/startCompetition&quot;)
+    public void startCompetition(Competition competition) {
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">    	if (competition.getIterations() &gt; 0)</span>
+<span class="fc" id="L49">    		competitionService.startCompetition(competition.getGroupe210Strategy(), competition.getGroupe18Strategy(), competition.getIterations(), competition.getSessionId());</span>
+<span class="fc" id="L50">    }</span>
 
-         // Notify both players that the game has started
-<span class="fc" id="L46">         messagingTemplate.convertAndSendToUser(player1.getSessionId(), &quot;/queue/gameStart&quot;, gameId);</span>
-<span class="fc" id="L47">         messagingTemplate.convertAndSendToUser(player2.getSessionId(), &quot;/queue/gameStart&quot;, gameId);</span>
-     }
-<span class="fc" id="L49"> }</span>
-
- @MessageMapping(&quot;/startGame&quot;)
- public void startGame(@Payload String gameId, @Header(&quot;simpSessionId&quot;) String sessionId) {
-<span class="fc" id="L53">     GameSession session = activeGames.get(gameId);</span>
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">     if (session != null) {</span>
-<span class="nc" id="L55">         session.setTotalIterations(session.getTotalIterations());</span>
-         // Notify players to set number of iterations
-     }
-<span class="fc" id="L58"> }</span>
-
- @MessageMapping(&quot;/makeChoice&quot;)
- public void makeChoice(@Payload ChoiceMessage choiceMessage, @Header(&quot;simpSessionId&quot;) String sessionId) {
-     // Find the game session for this player
-<span class="nc" id="L63">     GameSession session = findGameSession(sessionId);</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">     if (session != null) {</span>
-<span class="nc" id="L65">         session.getChoices().put(choiceMessage.getUsername(), choiceMessage.getChoice());</span>
-
-         // If both players have made their choices, compute scores
-<span class="nc bnc" id="L68" title="All 2 branches missed.">         if (session.getChoices().size() == 2) {</span>
-<span class="nc" id="L69">             computeScores(session);</span>
-             // Reset choices for next iteration
-<span class="nc" id="L71">             session.getChoices().clear();</span>
-<span class="nc" id="L72">             session.setCurrentIteration(session.getCurrentIteration() + 1);</span>
-
-             // Check if game has ended
-<span class="nc bnc" id="L75" title="All 2 branches missed.">             if (session.getCurrentIteration() &gt;= session.getTotalIterations()) {</span>
-<span class="nc" id="L76">                 endGame(session);</span>
-             }
-         }
-     }
-<span class="nc" id="L80"> }</span>
-
- private GameSession findGameSession(String sessionId) {
-<span class="nc" id="L83">     return activeGames.values().stream()</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">             .filter(session -&gt; session.getPlayer1().getSessionId().equals(sessionId) ||</span>
-<span class="nc bnc" id="L85" title="All 2 branches missed.">                     session.getPlayer2().getSessionId().equals(sessionId))</span>
-<span class="nc" id="L86">             .findFirst()</span>
-<span class="nc" id="L87">             .orElse(null);</span>
- }
-
- private void computeScores(GameSession session) {
-<span class="nc" id="L91">     String choice1 = session.getChoices().get(session.getPlayer1().getUsername());</span>
-<span class="nc" id="L92">     String choice2 = session.getChoices().get(session.getPlayer2().getUsername());</span>
-
-<span class="nc" id="L94">     int score1 = 0;</span>
-<span class="nc" id="L95">     int score2 = 0;</span>
-
-<span class="nc bnc" id="L97" title="All 4 branches missed.">     if (choice1.equals(&quot;C&quot;) &amp;&amp; choice2.equals(&quot;C&quot;)) {</span>
-<span class="nc" id="L98">         score1 += 3;</span>
-<span class="nc" id="L99">         score2 += 3;</span>
-<span class="nc bnc" id="L100" title="All 4 branches missed.">     } else if (choice1.equals(&quot;C&quot;) &amp;&amp; choice2.equals(&quot;D&quot;)) {</span>
-<span class="nc" id="L101">         score1 += 1;</span>
-<span class="nc" id="L102">         score2 += 5;</span>
-<span class="nc bnc" id="L103" title="All 4 branches missed.">     } else if (choice1.equals(&quot;D&quot;) &amp;&amp; choice2.equals(&quot;C&quot;)) {</span>
-<span class="nc" id="L104">         score1 += 5;</span>
-<span class="nc" id="L105">         score2 += 1;</span>
-<span class="nc bnc" id="L106" title="All 4 branches missed.">     } else if (choice1.equals(&quot;D&quot;) &amp;&amp; choice2.equals(&quot;D&quot;)) {</span>
-<span class="nc" id="L107">         score1 += 0;</span>
-<span class="nc" id="L108">         score2 += 0;</span>
-     }
-
-<span class="nc" id="L111">     session.getPlayer1().setScore(session.getPlayer1().getScore() + score1);</span>
-<span class="nc" id="L112">     session.getPlayer2().setScore(session.getPlayer2().getScore() + score2);</span>
-
-     // Send updated scores to both players
-<span class="nc" id="L115">     messagingTemplate.convertAndSendToUser(session.getPlayer1().getSessionId(), &quot;/queue/scoreUpdate&quot;,</span>
-<span class="nc" id="L116">             session.getPlayer1().getScore() + &quot;-&quot; + session.getPlayer2().getScore());</span>
-<span class="nc" id="L117">     messagingTemplate.convertAndSendToUser(session.getPlayer2().getSessionId(), &quot;/queue/scoreUpdate&quot;,</span>
-<span class="nc" id="L118">             session.getPlayer2().getScore() + &quot;-&quot; + session.getPlayer1().getScore());</span>
-<span class="nc" id="L119"> }</span>
-
- void endGame(GameSession session) {
-     // Notify players that the game has ended
-<span class="nc" id="L123">     messagingTemplate.convertAndSendToUser(session.getPlayer1().getSessionId(), &quot;/queue/gameEnd&quot;,</span>
-<span class="nc" id="L124">             &quot;Final Score: &quot; + session.getPlayer1().getScore() + &quot; - &quot; + session.getPlayer2().getScore());</span>
-<span class="nc" id="L125">     messagingTemplate.convertAndSendToUser(session.getPlayer2().getSessionId(), &quot;/queue/gameEnd&quot;,</span>
-<span class="nc" id="L126">             &quot;Final Score: &quot; + session.getPlayer2().getScore() + &quot; - &quot; + session.getPlayer1().getScore());</span>
-
-     // Remove the game session
-<span class="nc" id="L129">     activeGames.values().removeIf(s -&gt; s.equals(session));</span>
-<span class="nc" id="L130"> }</span>
+    @MessageMapping(&quot;/playAgainstServer&quot;)
+    public void playAgainstServer(@Payload PlayAgainstServerRequest request) {
+<span class="fc" id="L54">        Player player = WebSocketController.connectedPlayers.get(request.getUsername());</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (player == null) {</span>
+<span class="nc" id="L56">            return;</span>
+        }
+<span class="fc" id="L58">        gameSessionService.playAgainstServer(player, request.getIterations());</span>
+<span class="fc" id="L59">    }</span>
 }
+
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

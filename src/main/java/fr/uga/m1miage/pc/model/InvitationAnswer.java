@@ -1,18 +1,14 @@
 package fr.uga.m1miage.pc.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class InvitationAnswer {
 	private String message;
 	private String oponentUsername;
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	public String getOponentUsername() {
-		return oponentUsername;
-	}
-	public void setOponentUsername(String oponentUsername) {
-		this.oponentUsername = oponentUsername;
-	}
+	private String playerUsername;
 }

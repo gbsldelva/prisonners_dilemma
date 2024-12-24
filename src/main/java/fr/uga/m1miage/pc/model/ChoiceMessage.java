@@ -2,30 +2,16 @@ package fr.uga.m1miage.pc.model;
 
 import java.util.Objects;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class ChoiceMessage {
     private String username;
-    private String choice; // "C" or "D"
-
-    public ChoiceMessage(String username, String choice) {
-        this.username = username;
-        this.choice = choice;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getChoice() {
-        return choice;
-    }
-
-    public void setChoice(String choice) {
-        this.choice = choice;
-    }
+    private String choice; // "c" or "t"
 
     @Override
     public boolean equals(Object o) {
@@ -34,6 +20,10 @@ public class ChoiceMessage {
         ChoiceMessage that = (ChoiceMessage) o;
         return Objects.equals(username, that.username) && 
                Objects.equals(choice, that.choice);
+    }
+
+    public Decision getDecision() {
+        return Decision.fromString(this.getChoice());
     }
 
     @Override

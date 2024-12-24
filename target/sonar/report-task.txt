@@ -1,6 +1,0 @@
-projectKey=fr.uga.m1miage.pc:prisonniersdilemma_mg2_10
-serverUrl=http://im2ag-sonar.u-ga.fr:9000
-serverVersion=9.1.0.47736
-dashboardUrl=http://im2ag-sonar.u-ga.fr:9000/dashboard?id=fr.uga.m1miage.pc%3Aprisonniersdilemma_mg2_10
-ceTaskId=AZJxIeRfeo2LGamz66Fn
-ceTaskUrl=http://im2ag-sonar.u-ga.fr:9000/api/ce/task?id=AZJxIeRfeo2LGamz66Fn

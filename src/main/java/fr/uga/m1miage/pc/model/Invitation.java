@@ -1,22 +1,14 @@
 package fr.uga.m1miage.pc.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class Invitation {
-    private String fromPlayer;
+	private String fromPlayer;
     private String toUsername;
-
-    public String getFromPlayer() {
-        return fromPlayer;
-    }
-
-    public void setFromPlayer(String fromPlayer) {
-        this.fromPlayer = fromPlayer;
-    }
-
-    public String getToUsername() {
-        return toUsername;
-    }
-
-    public void setToUsername(String toUsername) {
-        this.toUsername = toUsername;
-    }
+    private int iteration;
 }

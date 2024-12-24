@@ -1,94 +1,91 @@
 package fr.uga.m1miage.pc.controller;
 
 import fr.uga.m1miage.pc.model.ChoiceMessage;
-import fr.uga.m1miage.pc.model.GameSession;
+import fr.uga.m1miage.pc.model.Competition;
+import fr.uga.m1miage.pc.model.Invitation;
+import fr.uga.m1miage.pc.model.InvitationAnswer;
+import fr.uga.m1miage.pc.model.PlayAgainstServerRequest;
 import fr.uga.m1miage.pc.model.Player;
+import fr.uga.m1miage.pc.service.GameSessionService;
+import fr.uga.m1miage.pc.service.StrategyCompetitionService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import static org.mockito.Mockito.verify;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
 
 class GameControllerTest {
 
     @Mock
-    private SimpMessagingTemplate messagingTemplate;
+    private GameSessionService gameSessionService;
 
     @InjectMocks
     private GameController gameController;
-
-    private ConcurrentHashMap<String, GameSession> activeGames;
+    
+    @Mock
+    private StrategyCompetitionService competitionService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        activeGames = new ConcurrentHashMap<>();
+        WebSocketController.connectedPlayers = new HashMap<>();
     }
 
     @Test
-    void testConnectPlayerAndPairing() {
-        Player player1 = new Player("player1", "session1");
-        Player player2 = new Player("player2", "session2");
-
-        // Simulate connecting two players
-        gameController.connect(player1, "session1");
-        gameController.connect(player2, "session2");
-
-        // Verify that a game session has been created and both players are notified
-        verify(messagingTemplate, times(1)).convertAndSendToUser(eq("session1"), eq("/queue/gameStart"), anyString());
-        verify(messagingTemplate, times(1)).convertAndSendToUser(eq("session2"), eq("/queue/gameStart"), anyString());
+    void testInvitePlayer() {
+        Invitation invitation = new Invitation("John", "Doe", 5);
+        gameController.invitePlayer(invitation);
+        verify(gameSessionService, times(1)).handleInvitation(invitation);
     }
 
-//    @Test
-//    public void testEndGame() {
-//        // Arrange
-//        Player player1 = new Player("session1", "Player1");
-//        Player player2 = new Player("session2", "Player2");
-//        GameSession session = new GameSession(player1, player2);
-//        session.setTotalIterations(1);  // Ensure total iterations are set for the game to end
-//        session.setCurrentIteration(1);  // Simulate that the game has reached the final iteration
-//
-//        activeGames.put("gameId", session);
-//
-//        // Act
-//        gameController.endGame(session);
-//
-//        // Assert - Correcting to use session ID, not username
-//        verify(messagingTemplate).convertAndSendToUser(eq("session1"), eq("/queue/gameEnd"),
-//                contains("Final Score"));
-//        verify(messagingTemplate).convertAndSendToUser(eq("session2"), eq("/queue/gameEnd"),
-//                contains("Final Score"));
-//    }
+    @Test
+    void testPlayerResponseToInvitation() {
+        InvitationAnswer answer = new InvitationAnswer("John", "Doe", "accepted");
+        gameController.playerResponseToInvitation(answer);
+        verify(gameSessionService, times(1)).handleInvitationAnswer(answer);
+    }
 
-	/*
-	 * @Test public void testMakeChoiceAndScoreComputation() { // Arrange Player
-	 * player1 = new Player("session1", "Player1"); Player player2 = new
-	 * Player("session2", "Player2"); GameSession session = new GameSession(player1,
-	 * player2); session.setTotalIterations(3); // Set total iterations for the game
-	 * session.setCurrentIteration(0); // Starting iteration
-	 * 
-	 * activeGames.put("gameId", session);
-	 * 
-	 * ChoiceMessage choice1 = new ChoiceMessage("Player1", "C"); ChoiceMessage
-	 * choice2 = new ChoiceMessage("Player2", "D");
-	 * 
-	 * // Act gameController.makeChoice(choice1, "session1");
-	 * gameController.makeChoice(choice2, "session2");
-	 * 
-	 * // Assert - Check score computations assertEquals(1, player1.getScore());
-	 * assertEquals(5, player2.getScore());
-	 * 
-	 * verify(messagingTemplate).convertAndSendToUser(eq("session1"),
-	 * eq("/queue/scoreUpdate"), contains("1-5"));
-	 * verify(messagingTemplate).convertAndSendToUser(eq("session2"),
-	 * eq("/queue/scoreUpdate"), contains("5-1")); }
-	 */
+    @Test
+    void testMakeChoice() {
+        ChoiceMessage choiceMessage = new ChoiceMessage("John", "c");
+        gameController.makeChoice(choiceMessage);
+        verify(gameSessionService, times(1)).handleChoice(choiceMessage);
+    }
+    
+    @Test
+    void testDisconnect() {
+        String username = "John";
+        gameController.disconnect(username);
+        verify(gameSessionService, times(1)).handleDisconnection(username);
+    }
 
+    @Test
+    void testStartCompetition() {
+        Competition competition = new Competition("DonnantDonnant", "DonnantDonnant", "sessionId", 10);
+        competition.setIterations(10);
+        competition.setSessionId("sessionId");
+        gameController.startCompetition(competition);
+        verify(competitionService, times(1)).startCompetition(competition.getGroupe210Strategy(), competition.getGroupe18Strategy(), competition.getIterations(), competition.getSessionId());
+    }
+
+    @Test
+    void testPlayAgainstServer() {
+        PlayAgainstServerRequest request = new PlayAgainstServerRequest();
+        Player player = new Player();
+        player.setUsername("John");
+        request.setUsername("John");
+        request.setIterations(10);
+        WebSocketController.connectedPlayers.put("John", player);
+        gameController.playAgainstServer(request);
+        Player playerWanted = WebSocketController.connectedPlayers.get(request.getUsername());
+        assertNotNull(playerWanted);
+        verify(gameSessionService, times(1)).playAgainstServer(playerWanted, request.getIterations());
+    }
 }

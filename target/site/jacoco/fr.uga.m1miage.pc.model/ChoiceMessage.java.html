@@ -1,49 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChoiceMessage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.model</a> &gt; <span class="el_source">ChoiceMessage.java</span></div><h1>ChoiceMessage.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.model;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChoiceMessage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">prisonniers_dilemma_g2_10</a> &gt; <a href="index.source.html" class="el_package">fr.uga.m1miage.pc.model</a> &gt; <span class="el_source">ChoiceMessage.java</span></div><h1>ChoiceMessage.java</h1><pre class="source lang-java linenums">package fr.uga.m1miage.pc.model;
 
 import java.util.Objects;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class ChoiceMessage {
     private String username;
-    private String choice; // &quot;C&quot; or &quot;D&quot;
-
-<span class="fc" id="L9">    public ChoiceMessage(String username, String choice) {</span>
-<span class="fc" id="L10">        this.username = username;</span>
-<span class="fc" id="L11">        this.choice = choice;</span>
-<span class="fc" id="L12">    }</span>
-
-    public String getUsername() {
-<span class="fc" id="L15">        return username;</span>
-    }
-
-    public void setUsername(String username) {
-<span class="fc" id="L19">        this.username = username;</span>
-<span class="fc" id="L20">    }</span>
-
-    public String getChoice() {
-<span class="fc" id="L23">        return choice;</span>
-    }
-
-    public void setChoice(String choice) {
-<span class="fc" id="L27">        this.choice = choice;</span>
-<span class="fc" id="L28">    }</span>
+    private String choice; // &quot;c&quot; or &quot;t&quot;
 
     @Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (!(o instanceof ChoiceMessage)) return false;</span>
-<span class="fc" id="L34">        ChoiceMessage that = (ChoiceMessage) o;</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        return Objects.equals(username, that.username) &amp;&amp; </span>
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">               Objects.equals(choice, that.choice);</span>
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (!(o instanceof ChoiceMessage)) return false;</span>
+<span class="fc" id="L20">        ChoiceMessage that = (ChoiceMessage) o;</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        return Objects.equals(username, that.username) &amp;&amp; </span>
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">               Objects.equals(choice, that.choice);</span>
+    }
+
+    public Decision getDecision() {
+<span class="fc" id="L26">        return Decision.fromString(this.getChoice());</span>
     }
 
     @Override
     public int hashCode() {
-<span class="fc" id="L41">        return Objects.hash(username, choice);</span>
+<span class="fc" id="L31">        return Objects.hash(username, choice);</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L46">        return &quot;ChoiceMessage{&quot; +</span>
+<span class="fc" id="L36">        return &quot;ChoiceMessage{&quot; +</span>
                 &quot;username='&quot; + username + '\'' +
                 &quot;, choice='&quot; + choice + '\'' +
                 '}';
