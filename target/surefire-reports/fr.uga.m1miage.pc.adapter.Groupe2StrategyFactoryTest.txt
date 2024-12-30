@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: fr.uga.m1miage.pc.adapter.Groupe2StrategyFactoryTest
 -------------------------------------------------------------------------------
-Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.397 s -- in fr.uga.m1miage.pc.adapter.Groupe2StrategyFactoryTest
+Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.498 s -- in fr.uga.m1miage.pc.adapter.Groupe2StrategyFactoryTest

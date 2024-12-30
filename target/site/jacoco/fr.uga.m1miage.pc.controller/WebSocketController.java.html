@@ -43,13 +43,13 @@ public class WebSocketController {
     // Handle a new user connecting with their username and sessionId
     @MessageMapping(&quot;/connectUser&quot;)
     public void connectUser(@Payload Player player) {
-<span class="fc bfc" id="L46" title="All 2 branches covered.">    if (connectedPlayers.containsKey(player.getUsername())) {</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">    if (connectedPlayers.containsKey(player.getId())) {</span>
 <span class="fc" id="L47">        messagingTemplate.convertAndSendToUser( player.getSessionId(), &quot;/queue/errors&quot;, </span>
-<span class="fc" id="L48">            &quot;Le nom d'utilisateur \&quot;&quot; + player.getUsername() + &quot;\&quot; est n'est plus disponible.&quot;);</span>
+<span class="fc" id="L48">            &quot;Le nom d'utilisateur \&quot;&quot; + player.getId() + &quot;\&quot; est n'est plus disponible.&quot;);</span>
     } else {
 <span class="fc" id="L50">        connectedUsers.add(player.toJson());</span>
-<span class="fc" id="L51">        connectedPlayers.put(player.getUsername(), player);</span>
-<span class="fc" id="L52">        userSessionMap.put(player.getSessionId(), player.getUsername());</span>
+<span class="fc" id="L51">        connectedPlayers.put(player.getId(), player);</span>
+<span class="fc" id="L52">        userSessionMap.put(player.getSessionId(), player.getId());</span>
 <span class="fc" id="L53">        updateAvailableUsers();</span>
     }
 <span class="fc" id="L55">    }</span>
@@ -60,7 +60,7 @@ public class WebSocketController {
             try {
 <span class="fc" id="L61">                ObjectMapper mapper = new ObjectMapper();</span>
 <span class="fc" id="L62">                Player player = mapper.readValue(userJson, Player.class);</span>
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">                return !activePlayers.contains(player.getUsername());</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">                return !activePlayers.contains(player.getId());</span>
 <span class="nc" id="L64">            } catch (Exception e) {</span>
 <span class="nc" id="L65">                return false;</span>
             }

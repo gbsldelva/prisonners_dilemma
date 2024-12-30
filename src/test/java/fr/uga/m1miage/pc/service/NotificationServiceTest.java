@@ -33,7 +33,7 @@ class NotificationServiceTest {
         MockitoAnnotations.openMocks(this);
         fromPlayer = new Player("Alice");
         toPlayer = new Player("Bob");
-        invitation = new Invitation(fromPlayer.getUsername(), toPlayer.getUsername(), 3);
+        invitation = new Invitation(fromPlayer.getId(), toPlayer.getId(), 3);
         gameSession = new GameSession(fromPlayer, toPlayer);
         gameSession.setTotalIterations(3);
     }
@@ -50,10 +50,10 @@ class NotificationServiceTest {
     @Test
     void testNotifyGameStartWithUsername() {
         fromPlayer.setSessionId("sessionId1");
-        WebSocketController.connectedPlayers.put(fromPlayer.getUsername(), fromPlayer);
+        WebSocketController.connectedPlayers.put(fromPlayer.getId(), fromPlayer);
 
         String message = "Game between Alice and the server started";
-        notificationService.notifyGameStart(fromPlayer.getUsername(), message);
+        notificationService.notifyGameStart(fromPlayer.getId(), message);
 
         verify(messagingTemplate).convertAndSendToUser(
             eq("sessionId1"),
@@ -90,7 +90,7 @@ class NotificationServiceTest {
 
         Result expectedResult = new Result();
         expectedResult.setScore("Alice(0) - Bob(0)");
-        expectedResult.setStatus("Terminé");
+        expectedResult.setStatus("Fini");
         expectedResult.setParti("3/3");
 
         verify(messagingTemplate).convertAndSend(

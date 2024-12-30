@@ -39,8 +39,8 @@ public class GameSessionService {
     void pairPlayers(String player1Username, String player2Username) {
         Player player1 = WebSocketController.connectedPlayers.get(player1Username);
         Player player2 = WebSocketController.connectedPlayers.get(player2Username);
-        String key1 = player1.getUsername() + "&" + player2.getUsername();
-        String key2 = player2.getUsername() + "&" + player1.getUsername();
+        String key1 = player1.getId() + "&" + player2.getId();
+        String key2 = player2.getId() + "&" + player1.getId();
         int nbIteration = 0;
         if (invitationIterationMap.containsKey(key1))
         	nbIteration = invitationIterationMap.get(key1);
@@ -63,7 +63,7 @@ public class GameSessionService {
     server.setStrategy(randomStrategy);
 
     GameSession session = createSession(player, server, iterations);
-    notificationService.notifyGameStart(player.getUsername(), "La partie commence contre l'ordinateur");
+    notificationService.notifyGameStart(player.getId(), "La partie commence contre l'ordinateur");
 
     return session;
 }
@@ -88,7 +88,7 @@ public class GameSessionService {
     }
     
     private String generateSessionKey(Player player1, Player player2) {
-        return player1.getUsername() + "VS" + player2.getUsername();
+        return player1.getId() + "VS" + player2.getId();
     }
     
 	public void handleInvitation(Invitation invitation) {
@@ -114,7 +114,7 @@ public class GameSessionService {
         Player player2 = session.getPlayer2(); // Le joueur 2 est toujours le serveur
 
         // Ajoute le choix du joueur
-        if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {
+        if (currentPlayer.getId().equals(choiceMessage.getUsername())) {
             session.getPlayer1Choices().add(choiceMessage.getDecision());
         } else {
             session.getPlayer2Choices().add(choiceMessage.getDecision());
@@ -131,7 +131,7 @@ public class GameSessionService {
         if (session.isRoundComplete()) {
         	Decision player1LastDecision;
         	Decision  player2LastDecision;
-        	if (currentPlayer.getUsername().equals(choiceMessage.getUsername())) {
+        	if (currentPlayer.getId().equals(choiceMessage.getUsername())) {
         		player1LastDecision = Decision.fromString(choiceMessage.getChoice());
         		player2LastDecision = session.getPlayer2Choices().get(session.getPlayer2Choices().size() - 1);
         	} else {
@@ -165,7 +165,7 @@ public class GameSessionService {
     }
     
     boolean disconectedPlayerShouldPlayNow(Player disconnectedPlayer, GameSession gameSession) {
-    	if (gameSession.getPlayer1().getUsername().equals(disconnectedPlayer.getUsername())) {
+    	if (gameSession.getPlayer1().getId().equals(disconnectedPlayer.getId())) {
     		return gameSession.getPlayer2Choices().size() > gameSession.getPlayer1Choices().size();
     	} else {
     		return gameSession.getPlayer1Choices().size() > gameSession.getPlayer2Choices().size();
@@ -181,7 +181,7 @@ public class GameSessionService {
         Player disconnectedPlayer;
 
         // Determine the remaining and disconnected players
-        if (session.getPlayer1().getUsername().equals(username)) {
+        if (session.getPlayer1().getId().equals(username)) {
             remainingPlayer = session.getPlayer2();
             disconnectedPlayer = session.getPlayer1();
         } else {
@@ -194,13 +194,13 @@ public class GameSessionService {
         if (!session.isGameOver() && !session.isRoundComplete() && disconectedPlayerShouldPlayNow(disconnectedPlayer, session)) {
         	Strategy serverStrategy = StrategyFactory.createStrategy(disconnectedPlayer.getStrategy());
             Decision serverChoice = serverStrategy.playNextMove(null, null);
-        	ChoiceMessage nextMove = new ChoiceMessage(disconnectedPlayer.getUsername(), serverChoice.getValue());
+        	ChoiceMessage nextMove = new ChoiceMessage(disconnectedPlayer.getId(), serverChoice.getValue());
         	handleChoice(nextMove);
         }
 
         // Notify the remaining player about the replacement
         notificationService.notifyPlayerReplacement(
-            remainingPlayer.getUsername(),
+            remainingPlayer.getId(),
             "Votre adversaire s'est déconnecté, tu vas continuer la partie contre le serveur (avec sa stratégie initiale)."
         );
 
@@ -211,7 +211,7 @@ public class GameSessionService {
 
     public Set<String> getActivePlayers() {
       return activeGames.values().stream()
-            .flatMap(game -> Stream.of(game.getPlayer1().getUsername(), game.getPlayer2().getUsername()))
+            .flatMap(game -> Stream.of(game.getPlayer1().getId(), game.getPlayer2().getId()))
             .collect(Collectors.toSet());
     }
 

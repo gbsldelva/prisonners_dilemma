@@ -71,8 +71,8 @@ class WebSocketControllerTest {
 
         // Assert
         assertTrue(webSocketController.connectedUsers.contains(player.toJson()));
-        assertTrue(WebSocketController.connectedPlayers.containsKey(player.getUsername()));
-        assertEquals(player.getUsername(), webSocketController.userSessionMap.get("session1"));
+        assertTrue(WebSocketController.connectedPlayers.containsKey(player.getId()));
+        assertEquals(player.getId(), webSocketController.userSessionMap.get("session1"));
 
         // Verify that updateAvailableUsers is called (sends message to /topic/availablePlayers)
         verify(messagingTemplate, times(1)).convertAndSend(eq("/topic/availablePlayers"), anySet());
@@ -89,8 +89,8 @@ class WebSocketControllerTest {
 
         // Assert
         assertTrue(webSocketController.connectedUsers.contains(player1.toJson()));
-        assertTrue(WebSocketController.connectedPlayers.containsKey(player1.getUsername()));
-        assertEquals(player1.getUsername(), webSocketController.userSessionMap.get("session1"));
+        assertTrue(WebSocketController.connectedPlayers.containsKey(player1.getId()));
+        assertEquals(player1.getId(), webSocketController.userSessionMap.get("session1"));
 
         // Verify player2 is not added to connectedUsers or connectedPlayers
         assertFalse(WebSocketController.connectedPlayers.containsKey(player2.getSessionId()));
@@ -100,7 +100,7 @@ class WebSocketControllerTest {
 //        verify(messagingTemplate, times(1)).convertAndSendToUser(
 //          eq("session2"), 
 //          eq("/queue/errors"),
-//          eq("Le nom d'utilisateur \"user1\" est déjà pris.")
+//          eq("Le nom d'utilisateur \"user1\" est dï¿½jï¿½ pris.")
 //    );
     }
 }

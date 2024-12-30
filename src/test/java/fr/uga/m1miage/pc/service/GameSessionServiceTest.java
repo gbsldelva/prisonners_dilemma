@@ -47,8 +47,8 @@ class GameSessionServiceTest {
 
         // Mock static method in WebSocketController for connected players
         Map<String, Player> connectedPlayers = new HashMap<>();
-        connectedPlayers.put(player1.getUsername(), player1);
-        connectedPlayers.put(player2.getUsername(), player2);
+        connectedPlayers.put(player1.getId(), player1);
+        connectedPlayers.put(player2.getId(), player2);
         
         gameSessionService = new GameSessionService(notificationService, webSocketController);
 
@@ -57,11 +57,11 @@ class GameSessionServiceTest {
 
     @Test
     void testHandleInvitation() {
-        Invitation invitation = new Invitation(player1.getUsername(), player2.getUsername(), 5);
+        Invitation invitation = new Invitation(player1.getId(), player2.getId(), 5);
         
         gameSessionService.handleInvitation(invitation);
         
-        assertTrue(gameSessionService.invitationIterationMap.containsKey(player1.getUsername() + "&" + player2.getUsername()));
+        assertTrue(gameSessionService.invitationIterationMap.containsKey(player1.getId() + "&" + player2.getId()));
         verify(notificationService, times(1)).notifyInvitation(invitation);
     }
 
@@ -86,7 +86,7 @@ class GameSessionServiceTest {
 
     @Test
     void testPairPlayers() {
-        Invitation invitation = new Invitation(player1.getUsername(), player2.getUsername(), 3);
+        Invitation invitation = new Invitation(player1.getId(), player2.getId(), 3);
         gameSessionService.handleInvitation(invitation);
 
         gameSessionService.pairPlayers("player1", "player2");
@@ -118,14 +118,14 @@ class GameSessionServiceTest {
         session = gameSessionService.createSession(player1, player2, 5);
         assertNotNull(session);
         assertEquals(5, session.getTotalIterations());
-        assertTrue(session.containsPlayer(player1.getUsername()));
-        assertTrue(session.containsPlayer(player2.getUsername()));
+        assertTrue(session.containsPlayer(player1.getId()));
+        assertTrue(session.containsPlayer(player2.getId()));
     }
 
     @Test
     void testFindGameSession() {
         session = gameSessionService.createSession(player1, player2, 5);
-        GameSession foundSession = gameSessionService.findGameSession(player1.getUsername());
+        GameSession foundSession = gameSessionService.findGameSession(player1.getId());
         assertEquals(session, foundSession);
     }
     
@@ -138,7 +138,7 @@ class GameSessionServiceTest {
         assertNotNull(createdSession);
         assertEquals(iterations, createdSession.getTotalIterations());
         assertTrue(createdSession.containsPlayer("player1"));
-        assertEquals("Ordinateur", createdSession.getPlayer2().getUsername());
+        assertEquals("Ordinateur", createdSession.getPlayer2().getId());
         assertTrue(createdSession.getPlayer2().isServer());
 
         verify(notificationService, times(1)).notifyGameStart(eq("player1"), anyString());
@@ -181,8 +181,8 @@ class GameSessionServiceTest {
 
         // Verify that both players are active
         assertEquals(3, activePlayers.size());
-        assertTrue(activePlayers.contains(player1.getUsername()));
-        assertTrue(activePlayers.contains(player2.getUsername()));
+        assertTrue(activePlayers.contains(player1.getId()));
+        assertTrue(activePlayers.contains(player2.getId()));
     }
     
 }

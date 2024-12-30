@@ -12,10 +12,10 @@ class PlayerTest {
     @Test
     void testGettersAndSetters() {
         Player player = new Player("Player1");
-        assertEquals("Player1", player.getUsername());
+        assertEquals("Player1", player.getId());
         
-        player.setUsername("NewPlayer");
-        assertEquals("NewPlayer", player.getUsername());
+        player.setId("NewPlayer");
+        assertEquals("NewPlayer", player.getId());
         
         assertEquals(0, player.getScore());
         player.setScore(10);
@@ -36,7 +36,7 @@ class PlayerTest {
     @Test
     void testToString() {
     Player player = new Player("Player1", null, StrategyType.ALEATOIRE, false);
-    String expectedString = "Player{username='Player1', score=0, strategy=ALEATOIRE}";
+    String expectedString = "Player{id='Player1', score=0, strategy=ALEATOIRE}";
         assertEquals(expectedString, player.toString());
     }
 
@@ -44,7 +44,7 @@ class PlayerTest {
     void testToJson() {
         Player player = new Player("Player1", "session123", StrategyType.ALEATOIRE, true);
         String json = player.toJson();
-        assertTrue(json.contains("\"username\":\"Player1\""));
+        assertTrue(json.contains("\"id\":\"Player1\""));
         assertTrue(json.contains("\"sessionId\":\"session123\""));
         assertTrue(json.contains("\"strategy\":\"ALEATOIRE\""));
         assertTrue(json.contains("\"server\":true"));

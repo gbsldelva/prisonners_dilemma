@@ -21,9 +21,9 @@ import fr.uga.m1miage.pc.utils.UtilFunctions;
 <span class="pc bpc" id="L21" title="1 of 4 branches missed.">        if (lastOpponentMove == Decision.BETRAY &amp;&amp; secondLastOpponentMove == Decision.BETRAY) {</span>
             // Tenter de faire la paix en coopérant avec une faible probabilité
 <span class="pc bpc" id="L23" title="1 of 2 branches missed.">            if (!UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
-<span class="fc" id="L24">                return Decision.COOPERATE;  // Coopérer pour apaiser</span>
+<span class="nc" id="L24">                return Decision.COOPERATE;  // Coopérer pour apaiser</span>
             }
-<span class="nc" id="L26">            return Decision.BETRAY;  // Trahir par défaut après une double trahison de l'adversaire</span>
+<span class="fc" id="L26">            return Decision.BETRAY;  // Trahir par défaut après une double trahison de l'adversaire</span>
         }
 
         // Coopérer si l'adversaire n'a pas trahi deux fois de suite

@@ -15,10 +15,10 @@ import fr.uga.m1miage.pc.utils.UtilFunctions;
 <span class="fc" id="L15">                                                              .equals(opponentPreviousMoves.get(opponentPreviousMoves.size() - 2));</span>
             
             // Vérifie si la probabilité d'événement aléatoire est faible et si les deux derniers coups sont les mêmes
-<span class="pc bpc" id="L18" title="2 of 4 branches missed.">            if (twoLastMovesAreSame &amp;&amp; UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
+<span class="pc bpc" id="L18" title="1 of 4 branches missed.">            if (twoLastMovesAreSame &amp;&amp; UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
 <span class="fc" id="L19">                return UtilFunctions.getRandomMove();  // Si conditions remplies, jouer un coup aléatoire</span>
             }
-<span class="nc" id="L21">            return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1); // Sinon, répéter le dernier coup de l'adversaire</span>
+<span class="fc" id="L21">            return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1); // Sinon, répéter le dernier coup de l'adversaire</span>
         }
         // Si aucun coup précédent, jouer un coup aléatoire par défaut
 <span class="nc" id="L24">        return UtilFunctions.getRandomMove();</span>

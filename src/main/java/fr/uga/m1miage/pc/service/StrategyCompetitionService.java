@@ -32,7 +32,7 @@ public class StrategyCompetitionService {
 		Strategy myStrategy = StrategyFactory.createStrategy(StrategyType.fromString(strategyGroupe210));
 		Strategie opponentStrategy = Groupe2StrategyFactory.createStrategy(StrategyType.fromString(strategyGroupe18));
 		
-		String result = "Résumé du match entre " + me.getUsername() + " VS " + opponent.getUsername() + "\n\n";
+		String result = "Résumé du match entre " + me.getId() + " VS " + opponent.getId() + "\n\n";
 		
 		for (int i = 0; i < iterations; i++) {
 			result += "Iteration #" + (i + 1) + "\n";
@@ -44,11 +44,11 @@ public class StrategyCompetitionService {
 			Decision opponentLastMove = gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1);
 			me.setScore(me.getScore() + UtilFunctions.getScore(ourLastMove, opponentLastMove));
 			opponent.setScore(opponent.getScore() + UtilFunctions.getScore(opponentLastMove, ourLastMove));
-			result += me.getUsername() + "[" + textForChoice(gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1)) + "] - " + opponent.getUsername() + "[" + textForChoice(gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1)) + "]";
+			result += me.getId() + "[" + textForChoice(gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1)) + "] - " + opponent.getId() + "[" + textForChoice(gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1)) + "]";
 			result += "(" + me.getScore() + " - " + opponent.getScore() + ")\n";
 		}
 		result += "\nScore final :\n\n";
-		result += me.getUsername() + "(" + me.getScore() + ") - " + opponent.getUsername() + "(" + opponent.getScore() + ")";
+		result += me.getId() + "(" + me.getScore() + ") - " + opponent.getId() + "(" + opponent.getScore() + ")";
 		
 		notificationService.sendCompetitionResult(sessionId, result);
 	}

@@ -79,7 +79,7 @@ class GameControllerTest {
     void testPlayAgainstServer() {
         PlayAgainstServerRequest request = new PlayAgainstServerRequest();
         Player player = new Player();
-        player.setUsername("John");
+        player.setId("John");
         request.setUsername("John");
         request.setIterations(10);
         WebSocketController.connectedPlayers.put("John", player);

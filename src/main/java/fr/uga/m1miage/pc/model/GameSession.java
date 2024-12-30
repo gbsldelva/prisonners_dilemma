@@ -50,8 +50,8 @@ public class GameSession {
     }
 
     String normalizedUsername = username.trim().toLowerCase();
-    String player1Raw = player1.getUsername();
-    String player2Raw = player2.getUsername();
+    String player1Raw = player1.getId();
+    String player2Raw = player2.getId();
 
     String player1Normalized = player1Raw.trim().toLowerCase();
     String player2Normalized = player2Raw.trim().toLowerCase();
@@ -61,8 +61,8 @@ public class GameSession {
 
 
     public String getScoreSummary() {
-        return player1.getUsername() + "(" + player1.getScore() + ") - " +
-               player2.getUsername() + "(" + player2.getScore() + ")";
+        return player1.getId() + "(" + player1.getScore() + ") - " +
+               player2.getId() + "(" + player2.getScore() + ")";
     }
     
     @Override

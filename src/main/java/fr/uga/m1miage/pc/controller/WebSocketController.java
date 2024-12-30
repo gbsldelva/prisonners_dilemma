@@ -43,13 +43,13 @@ public class WebSocketController {
     // Handle a new user connecting with their username and sessionId
     @MessageMapping("/connectUser")
     public void connectUser(@Payload Player player) {
-    if (connectedPlayers.containsKey(player.getUsername())) {
+    if (connectedPlayers.containsKey(player.getId())) {
         messagingTemplate.convertAndSendToUser( player.getSessionId(), "/queue/errors", 
-            "Le nom d'utilisateur \"" + player.getUsername() + "\" est n'est plus disponible.");
+            "Le nom d'utilisateur \"" + player.getId() + "\" est n'est plus disponible.");
     } else {
         connectedUsers.add(player.toJson());
-        connectedPlayers.put(player.getUsername(), player);
-        userSessionMap.put(player.getSessionId(), player.getUsername());
+        connectedPlayers.put(player.getId(), player);
+        userSessionMap.put(player.getSessionId(), player.getId());
         updateAvailableUsers();
     }
     }
@@ -60,7 +60,7 @@ public class WebSocketController {
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 Player player = mapper.readValue(userJson, Player.class);
-                return !activePlayers.contains(player.getUsername());
+                return !activePlayers.contains(player.getId());
             } catch (Exception e) {
                 return false;
             }

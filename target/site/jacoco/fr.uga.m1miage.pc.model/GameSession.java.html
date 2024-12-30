@@ -50,8 +50,8 @@ public class GameSession {
     }
 
 <span class="fc" id="L52">    String normalizedUsername = username.trim().toLowerCase();</span>
-<span class="fc" id="L53">    String player1Raw = player1.getUsername();</span>
-<span class="fc" id="L54">    String player2Raw = player2.getUsername();</span>
+<span class="fc" id="L53">    String player1Raw = player1.getId();</span>
+<span class="fc" id="L54">    String player2Raw = player2.getId();</span>
 
 <span class="fc" id="L56">    String player1Normalized = player1Raw.trim().toLowerCase();</span>
 <span class="fc" id="L57">    String player2Normalized = player2Raw.trim().toLowerCase();</span>
@@ -61,8 +61,8 @@ public class GameSession {
 
 
     public String getScoreSummary() {
-<span class="fc" id="L64">        return player1.getUsername() + &quot;(&quot; + player1.getScore() + &quot;) - &quot; +</span>
-<span class="fc" id="L65">               player2.getUsername() + &quot;(&quot; + player2.getScore() + &quot;)&quot;;</span>
+<span class="fc" id="L64">        return player1.getId() + &quot;(&quot; + player1.getScore() + &quot;) - &quot; +</span>
+<span class="fc" id="L65">               player2.getId() + &quot;(&quot; + player2.getScore() + &quot;)&quot;;</span>
     }
     
     @Override

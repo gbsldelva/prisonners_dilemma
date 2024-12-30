@@ -56,7 +56,7 @@ public class NotificationService {
     public void endGame(GameSession session) {
 <span class="fc" id="L57">        Result result = new Result();</span>
 <span class="fc" id="L58">        result.setScore(session.getScoreSummary());</span>
-<span class="fc" id="L59">        result.setStatus(&quot;Terminé&quot;);</span>
+<span class="fc" id="L59">        result.setStatus(&quot;Fini&quot;);</span>
 <span class="fc" id="L60">        result.setParti(session.getTotalIterations() + &quot;/&quot; + session.getTotalIterations());</span>
 <span class="fc" id="L61">        messagingTemplate.convertAndSend(&quot;/queue/gameEnd&quot;, result.toJson());</span>
 <span class="fc" id="L62">    }</span>

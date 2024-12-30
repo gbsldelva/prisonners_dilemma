@@ -32,7 +32,7 @@ public class StrategyCompetitionService {
 <span class="fc" id="L32">		Strategy myStrategy = StrategyFactory.createStrategy(StrategyType.fromString(strategyGroupe210));</span>
 <span class="fc" id="L33">		Strategie opponentStrategy = Groupe2StrategyFactory.createStrategy(StrategyType.fromString(strategyGroupe18));</span>
 		
-<span class="fc" id="L35">		String result = &quot;Résumé du match entre &quot; + me.getUsername() + &quot; VS &quot; + opponent.getUsername() + &quot;\n\n&quot;;</span>
+<span class="fc" id="L35">		String result = &quot;Résumé du match entre &quot; + me.getId() + &quot; VS &quot; + opponent.getId() + &quot;\n\n&quot;;</span>
 		
 <span class="fc bfc" id="L37" title="All 2 branches covered.">		for (int i = 0; i &lt; iterations; i++) {</span>
 <span class="fc" id="L38">			result += &quot;Iteration #&quot; + (i + 1) + &quot;\n&quot;;</span>
@@ -44,11 +44,11 @@ public class StrategyCompetitionService {
 <span class="fc" id="L44">			Decision opponentLastMove = gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1);</span>
 <span class="fc" id="L45">			me.setScore(me.getScore() + UtilFunctions.getScore(ourLastMove, opponentLastMove));</span>
 <span class="fc" id="L46">			opponent.setScore(opponent.getScore() + UtilFunctions.getScore(opponentLastMove, ourLastMove));</span>
-<span class="fc" id="L47">			result += me.getUsername() + &quot;[&quot; + textForChoice(gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1)) + &quot;] - &quot; + opponent.getUsername() + &quot;[&quot; + textForChoice(gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1)) + &quot;]&quot;;</span>
+<span class="fc" id="L47">			result += me.getId() + &quot;[&quot; + textForChoice(gameSession.getPlayer1Choices().get(gameSession.getPlayer1Choices().size() - 1)) + &quot;] - &quot; + opponent.getId() + &quot;[&quot; + textForChoice(gameSession.getPlayer2Choices().get(gameSession.getPlayer2Choices().size() - 1)) + &quot;]&quot;;</span>
 <span class="fc" id="L48">			result += &quot;(&quot; + me.getScore() + &quot; - &quot; + opponent.getScore() + &quot;)\n&quot;;</span>
 		}
 <span class="fc" id="L50">		result += &quot;\nScore final :\n\n&quot;;</span>
-<span class="fc" id="L51">		result += me.getUsername() + &quot;(&quot; + me.getScore() + &quot;) - &quot; + opponent.getUsername() + &quot;(&quot; + opponent.getScore() + &quot;)&quot;;</span>
+<span class="fc" id="L51">		result += me.getId() + &quot;(&quot; + me.getScore() + &quot;) - &quot; + opponent.getId() + &quot;(&quot; + opponent.getScore() + &quot;)&quot;;</span>
 		
 <span class="fc" id="L53">		notificationService.sendCompetitionResult(sessionId, result);</span>
 <span class="fc" id="L54">	}</span>
