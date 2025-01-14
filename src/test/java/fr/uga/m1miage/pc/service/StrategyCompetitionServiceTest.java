@@ -26,7 +26,7 @@ class StrategyCompetitionServiceTest {
     private StrategyCompetitionService strategyCompetitionService;
 
     @Test
-    public void testStartCompetition() {
+    void testStartCompetition() {
         // Arrange
         String strategyGroupe210 = "DonnantDonnant";
         String strategyGroupe18 = "DonnantDonnant";
@@ -41,13 +41,13 @@ class StrategyCompetitionServiceTest {
     }
 
     @Test
-    public void testTextForChoice() {
+    void testTextForChoice() {
         assertEquals("Cooperer", strategyCompetitionService.textForChoice(Decision.COOPERATE));
         assertEquals("Trahir", strategyCompetitionService.textForChoice(Decision.BETRAY));
     }
 
     @Test
-    public void testListMoveStringToTypeAction() {
+    void testListMoveStringToTypeAction() {
         // Arrange
         List<Decision> decisions = Arrays.asList(Decision.BETRAY, Decision.COOPERATE);
 
@@ -61,7 +61,7 @@ class StrategyCompetitionServiceTest {
     }
 
     @Test
-    public void testGetScore() {
+    void testGetScore() {
         // Arrange
         Decision myDecision = Decision.COOPERATE;
         Decision opponentDecision = Decision.COOPERATE;
@@ -74,7 +74,7 @@ class StrategyCompetitionServiceTest {
     }
 
     @Test
-    public void testGetScore_Betray() {
+    void testGetScore_Betray() {
         // Arrange
         Decision myDecision = Decision.BETRAY;
         Decision opponentDecision = Decision.COOPERATE;
@@ -87,7 +87,7 @@ class StrategyCompetitionServiceTest {
     }
 
     @Test
-    public void testGetScore_OpponentBetray() {
+    void testGetScore_OpponentBetray() {
         // Arrange
         Decision myDecision = Decision.COOPERATE;
         Decision opponentDecision = Decision.BETRAY;
@@ -100,7 +100,7 @@ class StrategyCompetitionServiceTest {
     }
 
     @Test
-    public void testGetScore_BothBetray() {
+    void testGetScore_BothBetray() {
         // Arrange
         Decision myDecision = Decision.BETRAY;
         Decision opponentDecision = Decision.BETRAY;

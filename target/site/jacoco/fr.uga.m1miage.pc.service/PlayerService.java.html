@@ -12,32 +12,32 @@ public class PlayerService {
     PlayerRepository repository;
 
     @Autowired
-<span class="nc" id="L15">    PlayerService(PlayerRepository repository) {</span>
-<span class="nc" id="L16">        this.repository = repository;</span>
-<span class="nc" id="L17">    }</span>
+<span class="fc" id="L15">    PlayerService(PlayerRepository repository) {</span>
+<span class="fc" id="L16">        this.repository = repository;</span>
+<span class="fc" id="L17">    }</span>
 
     public Player connectNewPlayer(Player player) {
-<span class="nc" id="L20">        return repository.save(player);</span>
+<span class="fc" id="L20">        return repository.save(player);</span>
     }
 
     public List&lt;Player&gt; getAllPlayers() {
-<span class="nc" id="L24">        return repository.findAll();</span>
+<span class="fc" id="L24">        return repository.findAll();</span>
     }
 
     public Player getPlayerByUsername(String id) {
-<span class="nc" id="L28">        return repository.findPlayerById(id).orElseThrow(() -&gt; new RuntimeException(&quot;No player with the following username : &quot; + id));</span>
+<span class="fc" id="L28">        return repository.findPlayerById(id).orElseThrow(() -&gt; new RuntimeException(&quot;No player with the following username : &quot; + id));</span>
     }
 
     public Player updatePlayer(Player player) {
-<span class="nc" id="L32">        return repository.save(player);</span>
+<span class="fc" id="L32">        return repository.save(player);</span>
     }
 
     public void disconnectPlayer(String username) {
-<span class="nc" id="L36">        repository.deleteById(username);</span>
-<span class="nc" id="L37">    }</span>
+<span class="fc" id="L36">        repository.deleteById(username);</span>
+<span class="fc" id="L37">    }</span>
 
     public List&lt;Player&gt; getAllAvailablePlayers() {
-<span class="nc" id="L40">        return repository.getAllAvailablePlayers();</span>
+<span class="fc" id="L40">        return repository.getAllAvailablePlayers();</span>
     }
 
 }

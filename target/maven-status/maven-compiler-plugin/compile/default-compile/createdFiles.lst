@@ -27,7 +27,6 @@ fr\uga\m1miage\pc\strategy\DonnantDeuxDonnant.class
 fr\uga\m1miage\pc\strategy\StrategyFactory$1.class
 fr\uga\m1miage\pc\model\ChoiceMessage.class
 fr\uga\m1miage\pc\service\PlayerService.class
-fr\uga\m1miage\pc\controller\PlayerController.class
 fr\uga\m1miage\pc\strategy\PavlovAleatoire.class
 fr\uga\m1miage\pc\strategy\Adaptatif.class
 fr\uga\m1miage\pc\service\StrategyCompetitionService.class

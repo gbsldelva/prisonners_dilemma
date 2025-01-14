@@ -1,6 +1,8 @@
 fr\uga\m1miage\pc\strategy\SondeurRepentantTest.class
 fr\uga\m1miage\pc\strategy\StrategyFactoryTest.class
 fr\uga\m1miage\pc\model\InvitationAnswerTest.class
+fr\uga\m1miage\pc\service\PlayerServiceTest.class
+fr\uga\m1miage\pc\repository\PlayerRepositoryTest.class
 fr\uga\m1miage\pc\model\ChoiceMessageTest.class
 fr\uga\m1miage\pc\strategy\VraiPacificateurTest.class
 fr\uga\m1miage\pc\model\PlayerTest.class

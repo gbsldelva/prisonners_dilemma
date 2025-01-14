@@ -12,11 +12,11 @@ import java.util.List;
         // Vérifie si l'adversaire a fait des coups précédents
 <span class="fc bfc" id="L13" title="All 2 branches covered.">        if (UtilFunctions.listContainsMoves(opponentPreviousMoves)) {</span>
             // Avec une probabilité de RANDOM_PROBABILITY, jouer un coup aléatoire
-<span class="pc bpc" id="L15" title="1 of 2 branches missed.">            if (UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">            if (UtilFunctions.eventIsVeryLikelyToHappen()) {</span>
 <span class="fc" id="L16">                return UtilFunctions.getRandomMove();</span>
             } else {
                 // Sinon, jouer comme le dernier coup de l'adversaire
-<span class="nc" id="L19">                return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
+<span class="fc" id="L19">                return opponentPreviousMoves.get(opponentPreviousMoves.size() - 1);</span>
             }
         }
 
