@@ -1,0 +1,18 @@
+export const options = [
+    { key: 'DONNANT_DONNANT', value: 'Donnant-Donnant Aléatoire' },
+    { key: 'DONNANT_DONNANT_ALEATOIRE', value: 'Donnant-Donnant Aléatoire' },
+    { key: 'DONNANT_DEUX_DONNANT', value: 'Donnant-Deux-Donnant Aléatoire' },
+    { key: 'SONDEUR_NAIF', value: 'Sondeur naif' },
+    { key: 'SONDEUR_REPENTANT', value: 'Sondeur Repentant' },
+    { key: 'PACIFICATEUR_NAIF', value: 'Pacificateur naif' },
+    { key: 'VRAI_PACIFICATEUR', value: 'Vrai Pacificateur' },
+    { key: 'ALEATOIRE', value: 'Aléatoire' },
+    { key: 'TOUJOURS_TRAHIR', value: 'Toujours Trahir' },
+    { key: 'TOUJOURS_COOPERER', value: 'Toujours Coopérer' },
+    { key: 'RANCUNIER', value: 'Rancunier' },
+    { key: 'PAVLOV', value: 'Pavlov' },
+    { key: 'PAVLOV_ALEATOIRE', value: 'Pavlov Aléatoire' },
+    { key: 'GRADUEL', value: 'Graduel' },
+    { key: 'DONNANT_DONNANT_SOUPCONNEUX', value: 'Donnant-Donnant Soupconneux' },
+    { key: 'RANCUNIER_DOUX', value: 'Rancunier Doux' },
+]
