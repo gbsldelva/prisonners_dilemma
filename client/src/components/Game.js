@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Typography, Container, Box, Paper } from '@mui/material';
+import { useWebSocket } from '../context/WebSocketContext';
+import { useSession } from '../context/SessionContext';
 
 const Game = () => {
   const [roundNumber, setRoundNumber] = useState(0);
@@ -7,11 +9,37 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState('Match débuté!');
   const [yourChoice, setYourChoice] = useState(null);
   const [opponentChoice, setOpponentChoice] = useState(null);
+  const {subscribe, sendMessage} = useWebSocket()
+  const {sessionId, username} = useSession()
  
 
   const makeChoice = (choice) => {
     setYourChoice(choice);
   };
+  const handleDisconnect = () => {
+    sendMessage('app/disconnect', JSON.stringify(username))
+    subscribe('/topic/availablePlayers', (message) => {
+      const parsedPlayers = JSON.parse(message.body)
+        .map((player) => JSON.parse(player))
+        .filter((player) => player.username !== username);
+
+        navigate('/waiting', { state: { connectedPlayers: parsedPlayers } });  
+    })  
+    navigate('/waiting', { state: { connectedPlayers: [] } }); 
+  }
+  
+  useEffect(() => {
+    subscribe(`/user/${username}/queue/scoreUpdate`, (message) => {
+      console.log(message.body)
+    })
+    subscribe(`/user/${username}/queue/gameEnd`, (message) => {
+      console.log(message.body)
+    })
+    subscribe(`/user/${username}/queue/playerReplacement`, (message) => {
+      alert(message.body);
+  });
+
+  })
 
   return (
     <Container maxWidth="sm">
@@ -56,6 +84,9 @@ const Game = () => {
           </Box>
         </Paper>
       </Box>
+    <Button fullWidth variant="outlined" onClick={handleDisconnect} style={{ marginTop: '10px' }}>
+              Deconnexion
+        </Button>
     </Container>
   );
 };

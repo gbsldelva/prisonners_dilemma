@@ -17,8 +17,7 @@ export const ErrorProvider = ({ children }) => {
   useEffect(() => {
     if (sessionId) {
       subscribe(`/user/${sessionId}/queue/errors`, (message) => {
-        const error = JSON.parse(message.body);
-        setErrorMessage(error.message); 
+        setErrorMessage(message.body); 
       });
     }
   }, [sessionId, subscribe]);

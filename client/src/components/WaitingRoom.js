@@ -8,7 +8,6 @@ import NombreDesPartiesDialog from './NombreDesPartiesDialog';
 const WaitingRoom = ({ route }) => {
   const location = useLocation()
   const connectedPlayers = location.state?.connectedPlayers || []
-  console.log(connectedPlayers)
   const [players, setPlayers] = useState(connectedPlayers);
   const [inviteSent, setInviteSent] = useState(false);
   const [nombreParties, setNombreParties] = useState(0);
@@ -17,9 +16,6 @@ const WaitingRoom = ({ route }) => {
   const { username } = useSession();
   const navigate = useNavigate();
   const { sendMessage, subscribe } = useWebSocket();
-
-  console.log(players);
-  console.log(opponent)
 
 
   const sendInvitation = (user) => {
@@ -116,9 +112,9 @@ const WaitingRoom = ({ route }) => {
         handleInvitation(message.body);
       });
     }
-
-    if (inviteSent) {
+    if(inviteSent) {
       subscribe(`/user/${username}/queue/gameStartHandler`, (message) => {
+        console.log(message.body)
         if (message.body === 'confirmed') {
           navigate('/game');
         } else {
