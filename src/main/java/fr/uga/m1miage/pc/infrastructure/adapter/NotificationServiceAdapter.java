@@ -1,4 +1,4 @@
-package fr.uga.m1miage.pc.infrastructure.service;
+package fr.uga.m1miage.pc.infrastructure.adapter;
 
 import fr.uga.m1miage.pc.domain.port.output.NotificationPort;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -11,11 +11,11 @@ import fr.uga.m1miage.pc.domain.model.Player;
 import fr.uga.m1miage.pc.domain.model.Result;
 
 @Service
-public class NotificationService implements NotificationPort {
+public class NotificationServiceAdapter implements NotificationPort {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    public NotificationService(SimpMessagingTemplate messagingTemplate) {
+    public NotificationServiceAdapter(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 

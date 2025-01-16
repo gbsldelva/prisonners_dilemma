@@ -7,7 +7,7 @@ import java.util.UUID;
 import fr.uga.m1miage.pc.domain.strategy.Strategy;
 import fr.uga.m1miage.pc.domain.strategy.StrategyFactory;
 import fr.uga.m1miage.pc.domain.strategy.StrategyType;
-import fr.uga.m1miage.pc.infrastructure.service.NotificationService;
+import fr.uga.m1miage.pc.infrastructure.adapter.NotificationServiceAdapter;
 import org.springframework.stereotype.Service;
 
 import fr.uga.m1miage.pc.application.strategy_adapter.DecisionToTypeAction;
@@ -22,10 +22,10 @@ import fr.uga.strats.g8.strategie.*;
 
 @Service
 public class StrategyCompetitionService {
-	private final NotificationService notificationService;
+	private final NotificationServiceAdapter notificationServiceAdapter;
 	
-	public StrategyCompetitionService(NotificationService notificationService) {
-		this.notificationService = notificationService;
+	public StrategyCompetitionService(NotificationServiceAdapter notificationServiceAdapter) {
+		this.notificationServiceAdapter = notificationServiceAdapter;
 	}
 	
 	public void startCompetition(String strategyGroupe210, String strategyGroupe18, int iterations, String sessionId) {
@@ -53,7 +53,7 @@ public class StrategyCompetitionService {
 		result += "\nScore final :\n\n";
 		result += me.getUsername() + "(" + me.getScore() + ") - " + opponent.getUsername() + "(" + opponent.getScore() + ")";
 		
-		notificationService.sendCompetitionResult(sessionId, result);
+		notificationServiceAdapter.sendCompetitionResult(sessionId, result);
 	}
 	
 	public String textForChoice(Decision decision) {

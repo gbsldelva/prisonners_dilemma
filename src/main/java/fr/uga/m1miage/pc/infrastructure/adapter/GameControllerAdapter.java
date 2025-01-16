@@ -1,6 +1,7 @@
-package fr.uga.m1miage.pc.infrastructure.controller;
+package fr.uga.m1miage.pc.infrastructure.adapter;
 
 import fr.uga.m1miage.pc.domain.port.input.GamePort;
+import fr.uga.m1miage.pc.infrastructure.controller.WebSocketController;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
@@ -15,12 +16,12 @@ import fr.uga.m1miage.pc.application.game_service.GameSessionService;
 import fr.uga.m1miage.pc.application.game_service.StrategyCompetitionService;
 
 @Controller
-public class GameController implements GamePort {
+public class GameControllerAdapter implements GamePort {
 
     private final GameSessionService gameSessionService;
     private StrategyCompetitionService competitionService;
 
-    public GameController(GameSessionService gameSessionService, StrategyCompetitionService competitionService) {
+    public GameControllerAdapter(GameSessionService gameSessionService, StrategyCompetitionService competitionService) {
         this.gameSessionService = gameSessionService;
         this.competitionService = competitionService;
     }
