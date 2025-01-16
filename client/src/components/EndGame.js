@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const EndGame = () => {
+  const location = useLocation()
+  const score = location.state?.score || ''
   const [finalYourScore, setFinalYourScore] = useState(0);
   const [finalOpponentScore, setFinalOpponentScore] = useState(0);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (score) {
+      const regex = /\((\d+)\) - .+\((\d+)\)/;
+      const match = score.match(regex);
+      if (match) {
+        const [_, yourScore, opponentScore] = match;
+        setFinalYourScore(parseInt(yourScore, 10));
+        setFinalOpponentScore(parseInt(opponentScore, 10));
+      }
+    }
+  }, [score]);
 
   return (
     <Container>

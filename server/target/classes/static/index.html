@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.2/dist/sockjs.min.js"></script>
 </head>
 <body>
-    <h1>Dilemne d prisonnier</h1>
+    <h1>Dilemne du prisonnier</h1>
 
     <div id="login">
         <input type="text" id="username" placeholder="Entrer ton nom d'utilisateur" required/>
@@ -121,7 +121,7 @@
             }
 
             // Establish the WebSocket connection using SockJS
-            var socket = new SockJS('http://localhost:8080/ws');
+            var socket = new SockJS('http://129.88.210.44:8080/ws');
             stompClient = Stomp.over(socket);
 
             stompClient.connect({}, function (frame) {
@@ -144,7 +144,7 @@
                 });
 
                 // Start game if invitation accepted
-                stompClient.subscribe(`/queue/gameStartHandler`, function (message) {
+                stompClient.subscribe(`/user/${username}/queue/gameStartHandler`, function (message) {
                     if (message.body == 'confirmed') {
                         startGameForBothPlayers();
                     } else {
@@ -152,12 +152,12 @@
                     }
                 });
 
-                stompClient.subscribe(`/queue/scoreUpdate`, function(message) {
+                stompClient.subscribe(`/user/${username}/queue/scoreUpdate`, function(message) {
                     displayResults(message.body);
                     document.getElementById('choices').querySelectorAll('button').forEach(btn => btn.disabled = false);
                 });
 
-                stompClient.subscribe(`/queue/gameEnd`, function(message) {
+                stompClient.subscribe(`/user/${username}/queue/gameEnd`, function(message) {
                     displayResults(message.body);
                     document.getElementById('choices').querySelectorAll('button').forEach(btn => btn.disabled = true);
                 });
@@ -168,11 +168,11 @@
                     handleInvitation(message.body);
                 });
                 // Subscribe to player replacement notifications
-                stompClient.subscribe(`/user/${sessionId}/queue/playerReplacement`, function (message) {
+                stompClient.subscribe(`/user/${username}/queue/playerReplacement`, function (message) {
                     alert(message.body);
                 });
 
-                stompClient.subscribe(`/user/${sessionId}/queue/gameStartHandler`, function (message) {
+                stompClient.subscribe(`/user/${username}/queue/gameStartHandler`, function (message) {
                     alert(message.body); 
                     startGameForBothPlayers(message.body); 
             });

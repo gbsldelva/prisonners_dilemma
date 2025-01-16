@@ -4,14 +4,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
 import { useWebSocket } from '../context/WebSocketContext';
 import NombreDesPartiesDialog from './NombreDesPartiesDialog';
+import InviteDialog from './InviteDialog';
 
-const WaitingRoom = ({ route }) => {
+const WaitingRoom = () => {
   const location = useLocation()
   const connectedPlayers = location.state?.connectedPlayers || []
+  console.log(connectedPlayers)
   const [players, setPlayers] = useState(connectedPlayers);
   const [inviteSent, setInviteSent] = useState(false);
   const [nombreParties, setNombreParties] = useState(0);
   const [displayDialog, setDisplayDialog] = useState(false);
+  const [displayInvite, setDisplayInvite] = useState(false)
   const [opponent, setOpponent] = useState('')
   const { username } = useSession();
   const navigate = useNavigate();
@@ -33,20 +36,27 @@ const WaitingRoom = ({ route }) => {
   }
 
   const handleInvitation = (opponent) => {
-    if (window.confirm(`${opponent} vous invite à jouer, voulez-vous accepter l'invitation ?`)) {
-      sendMessage('/app/invitationAnswer', JSON.stringify({ message: "confirmed", oponentUsername: opponent, playerUsername: username }));
-      navigate('/game');
-    } else {
-      sendMessage('/app/invitationAnswer', JSON.stringify({ message: "declined", oponentUsername: opponent, playerUsername: username }));
-    }
+    setOpponent(opponent)
+    setDisplayInvite(true)
   };
+  const handleInviteSubmission = () => {
+    setDisplayInvite(false)
+    sendMessage('/app/invitationAnswer', JSON.stringify({ message: "confirmed", oponentUsername: opponent, playerUsername: username }));
+    navigate('/game');
+  }
+
+  const handleInviteCancellation = () => {
+    setDisplayInvite(false)
+    sendMessage('/app/invitationAnswer', JSON.stringify({ message: "declined", oponentUsername: opponent, playerUsername: username }));
+  }
 
   const availablePlayers = useMemo(() => {
-    return players?.length > 0 ? (
+      const playersToMap = players?.length > 0 ? players: connectedPlayers
+    return playersToMap?.length > 0 ? (
       <>
         <Typography variant="h5" paddingBottom="20px">Liste des joueurs disponibles</Typography>
         <List>
-          {players.map((player) => (
+          {playersToMap.map((player) => (
             <ListItem key={player.sessionId} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
               <Box
                 style={{
@@ -87,7 +97,7 @@ const WaitingRoom = ({ route }) => {
         <Typography textAlign="center" padding="10px">En attente...</Typography>
       </>
     );
-  }, [players, sendInvitation, username]);
+  }, [players, connectedPlayers, username]);
 
   useEffect(() => {
     subscribe('/topic/availablePlayers', (message) => {
@@ -107,11 +117,16 @@ const WaitingRoom = ({ route }) => {
       });
     }, [username, players]);
 
-    if (players?.length > 0) {
+
+    if (players?.length > 0 ) {
       subscribe(`/user/${username}/queue/invitation`, (message) => {
         handleInvitation(message.body);
       });
     }
+
+  }, [players]);
+
+  useEffect(() => {
     if(inviteSent) {
       subscribe(`/user/${username}/queue/gameStartHandler`, (message) => {
         console.log(message.body)
@@ -122,10 +137,11 @@ const WaitingRoom = ({ route }) => {
         }
       });
     }
-  }, [players, inviteSent, username, navigate, subscribe]);
+  }, [inviteSent])
 
   return (
     <Container>
+      <InviteDialog open={displayInvite} onSubmit={handleInviteSubmission} onClose={handleInviteCancellation} opponent={opponent}/>
       <NombreDesPartiesDialog open={displayDialog} onClose={() => setDisplayDialog(false)} onSubmit={handleInvite} nombreDesParties={nombreParties} setNombreDesParties={setNombreParties} />
       {availablePlayers}
       <Button variant="contained" fullWidth onClick={() => navigate('/game')} style={{ marginTop: '10px' }}>

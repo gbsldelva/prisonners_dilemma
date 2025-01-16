@@ -2,44 +2,67 @@ import React, { useState, useEffect } from 'react';
 import { Button, Typography, Container, Box, Paper } from '@mui/material';
 import { useWebSocket } from '../context/WebSocketContext';
 import { useSession } from '../context/SessionContext';
+import { useNavigate } from 'react-router-dom';
 
 const Game = () => {
-  const [roundNumber, setRoundNumber] = useState(0);
+  const [roundNumber, setRoundNumber] = useState(`0/0`);
   const [currentScore, setCurrentScore] = useState('0 - 0');
   const [gameStatus, setGameStatus] = useState('Match débuté!');
+  const [choiceMade, setChoiceMade] = useState(false)
   const [yourChoice, setYourChoice] = useState(null);
   const [opponentChoice, setOpponentChoice] = useState(null);
   const {subscribe, sendMessage} = useWebSocket()
-  const {sessionId, username} = useSession()
+  const {username} = useSession()
+  const navigate = useNavigate()
  
 
-  const makeChoice = (choice) => {
+  const handleMakeChoice = (choice) => {
     setYourChoice(choice);
+    setChoiceMade(true)
+    sendMessage(`/app/makeChoice`, JSON.stringify({username, choice}))
   };
+  
   const handleDisconnect = () => {
     sendMessage('app/disconnect', JSON.stringify(username))
     subscribe('/topic/availablePlayers', (message) => {
+      console.log(message.body)
       const parsedPlayers = JSON.parse(message.body)
         .map((player) => JSON.parse(player))
         .filter((player) => player.username !== username);
 
         navigate('/waiting', { state: { connectedPlayers: parsedPlayers } });  
     })  
-    navigate('/waiting', { state: { connectedPlayers: [] } }); 
+
+    setTimeout(() => {
+      navigate('/waiting', { state: { connectedPlayers: [] } });  
+    }, 5000)
+  }
+
+  const displayResults = (res) => {
+    const parsedResult = JSON.parse(res)
+    console.log(parsedResult)
+    if(parsedResult?.status == 'Fini') {
+      navigate('/end', { state: { score: parsedResult?.score } }); 
+    }
+    setGameStatus(parsedResult?.status)
+    setRoundNumber(parsedResult?.parti)
+    setCurrentScore(parsedResult?.score)
+    setYourChoice(null)
+    setChoiceMade(false) 
   }
   
   useEffect(() => {
     subscribe(`/user/${username}/queue/scoreUpdate`, (message) => {
-      console.log(message.body)
+        displayResults(message.body)
     })
     subscribe(`/user/${username}/queue/gameEnd`, (message) => {
-      console.log(message.body)
+      displayResults(message.body)
     })
     subscribe(`/user/${username}/queue/playerReplacement`, (message) => {
       alert(message.body);
   });
 
-  })
+  }, [])
 
   return (
     <Container maxWidth="sm">
@@ -68,16 +91,18 @@ const Game = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => makeChoice('c')}
+              onClick={() => handleMakeChoice('c')}
               sx={{ width: 120 }}
+              disabled={choiceMade}
             >
               Coopérer
             </Button>
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => makeChoice('t')}
+              onClick={() => handleMakeChoice('t')}
               sx={{ width: 120 }}
+              disabled={choiceMade}
             >
               Trahir
             </Button>
