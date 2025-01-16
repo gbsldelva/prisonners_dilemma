@@ -12,7 +12,7 @@ export const useWebSocket = () => {
 export const WebSocketProvider = ({ children }) => {
   const stompClientRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
-  const { updateSessionId } = useSession();
+  const { sessionId, updateSessionId } = useSession();
   const subscriptionsRef = useRef({}); 
 
   useEffect(() => {
@@ -50,13 +50,13 @@ export const WebSocketProvider = ({ children }) => {
     stompClient.activate();
     stompClientRef.current = stompClient;
 
-    return () => {
-      if (stompClientRef.current) {
-        stompClientRef.current.deactivate();
-        stompClientRef.current = null;
-      }
-    };
-  }, []);
+    // return () => {
+    //   if (stompClientRef.current) {
+    //     stompClientRef.current.deactivate();
+    //     stompClientRef.current = null;
+    //   }
+    // };
+  }, [sessionId]);
 
   const sendMessage = (destination, body) => {
     if (stompClientRef.current && stompClientRef.current.connected) {

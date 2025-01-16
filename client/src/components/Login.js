@@ -8,7 +8,7 @@ import { options } from '../constants/options';
 const Login = () => {
   const [strategy, setStrategy] = useState('');
   const { sessionId , username, updateUsername} = useSession()
-  const {sendMessage} = useWebSocket()
+  const {sendMessage, subscribe} = useWebSocket()
   const navigate = useNavigate();
 
   const isValidUsername = (username) => /^[a-zA-Z0-9]{3,16}$/.test(username);
@@ -18,8 +18,17 @@ const Login = () => {
       alert('Veuillez entrer un nom d\'utilisateur correct.');
       return;
     }
-    sendMessage('/app/connectUser', JSON.stringify(username,sessionId,strategy));
-    navigate('/waiting');
+    sendMessage('/app/connectUser', JSON.stringify({username,sessionId,strategy}));
+    subscribe('/topic/availablePlayers', (message) => {
+      console.log(message.body)
+      const parsedPlayers = JSON.parse(message.body)
+        .map((player) => JSON.parse(player))
+        .filter((player) => player.username !== username);
+
+        navigate('/waiting', { state: { connectedPlayers: parsedPlayers } });  
+    })
+
+    
   };
 
   return (

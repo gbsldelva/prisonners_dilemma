@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { List, ListItem, Button, Typography, Container, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
 import { useWebSocket } from '../context/WebSocketContext';
 import NombreDesPartiesDialog from './NombreDesPartiesDialog';
 
-const WaitingRoom = () => {
-  const [players, setPlayers] = useState([]);
+const WaitingRoom = ({ route }) => {
+  const location = useLocation()
+  const connectedPlayers = location.state?.connectedPlayers || []
+  console.log(connectedPlayers)
+  const [players, setPlayers] = useState(connectedPlayers);
   const [inviteSent, setInviteSent] = useState(false);
   const [nombreParties, setNombreParties] = useState(0);
   const [displayDialog, setDisplayDialog] = useState(false);
@@ -17,6 +20,7 @@ const WaitingRoom = () => {
 
   console.log(players);
   console.log(opponent)
+
 
   const sendInvitation = (user) => {
     if (window.confirm(`Voulez-vous jouer contre ${user}?`)) {
@@ -42,7 +46,7 @@ const WaitingRoom = () => {
   };
 
   const availablePlayers = useMemo(() => {
-    return players.length > 0 ? (
+    return players?.length > 0 ? (
       <>
         <Typography variant="h5" paddingBottom="20px">Liste des joueurs disponibles</Typography>
         <List>
@@ -87,26 +91,27 @@ const WaitingRoom = () => {
         <Typography textAlign="center" padding="10px">En attente...</Typography>
       </>
     );
-  }, [players, sendInvitation]);
+  }, [players, sendInvitation, username]);
 
   useEffect(() => {
     subscribe('/topic/availablePlayers', (message) => {
+      console.log(message.body)
       const parsedPlayers = JSON.parse(message.body)
         .map((player) => JSON.parse(player))
         .filter((player) => player.username !== username);
 
       setPlayers((prevPlayers) => {
         const updatedPlayers = [...prevPlayers];
-        parsedPlayers.forEach((newPlayer) => {
+        parsedPlayers?.forEach((newPlayer) => {
           if (!updatedPlayers.some((player) => player.sessionId === newPlayer.sessionId)) {
             updatedPlayers.push(newPlayer);
           }
         });
         return updatedPlayers;
       });
-    }, [username]);
+    }, [username, players]);
 
-    if (players.length > 0) {
+    if (players?.length > 0) {
       subscribe(`/user/${username}/queue/invitation`, (message) => {
         handleInvitation(message.body);
       });
