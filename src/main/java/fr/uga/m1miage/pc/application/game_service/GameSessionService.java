@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import fr.uga.m1miage.pc.infrastructure.service.NotificationService;
+import fr.uga.m1miage.pc.infrastructure.adapter.NotificationServiceAdapter;
 import org.springframework.stereotype.Service;
 
 import fr.uga.m1miage.pc.infrastructure.controller.WebSocketController;
@@ -26,13 +26,13 @@ import fr.uga.m1miage.pc.domain.utils.UtilFunctions;
 
 @Service
 public class GameSessionService {
-    private final NotificationService notificationService;
+    private final NotificationServiceAdapter notificationServiceAdapter;
     private final WebSocketController webSocketController;
     public final Map<String, Integer> invitationIterationMap = new LinkedHashMap<>();
     public static final ConcurrentMap<String, GameSession> activeGames = new ConcurrentHashMap<>();
 
-    public GameSessionService(NotificationService notificationService, WebSocketController webSocketController) {
-        this.notificationService = notificationService;
+    public GameSessionService(NotificationServiceAdapter notificationServiceAdapter, WebSocketController webSocketController) {
+        this.notificationServiceAdapter = notificationServiceAdapter;
         this.webSocketController = webSocketController;
     }
     
@@ -63,7 +63,7 @@ public class GameSessionService {
     server.setStrategy(randomStrategy);
 
     GameSession session = createSession(player, server, iterations);
-    notificationService.notifyGameStart(player.getUsername(), "La partie commence contre l'ordinateur");
+    notificationServiceAdapter.notifyGameStart(player.getUsername(), "La partie commence contre l'ordinateur");
 
     return session;
 }
@@ -97,12 +97,12 @@ public class GameSessionService {
 		String key = invitation.getFromPlayer() + "&" + invitation.getToUsername();
 		
         invitationIterationMap.put(key, invitation.getIteration());
-        notificationService.notifyInvitation(invitation);
+        notificationServiceAdapter.notifyInvitation(invitation);
     }
 
     public void handleInvitationAnswer(InvitationAnswer answer) {
-        notificationService.notifyGameStart(answer.getOponentUsername(), answer.getMessage());
-        notificationService.notifyGameStart(answer.getPlayerUsername(), answer.getMessage());
+        notificationServiceAdapter.notifyGameStart(answer.getOponentUsername(), answer.getMessage());
+        notificationServiceAdapter.notifyGameStart(answer.getPlayerUsername(), answer.getMessage());
         if ("confirmed".equals(answer.getMessage())) {
             pairPlayers(answer.getPlayerUsername(), answer.getOponentUsername());
         }
@@ -147,7 +147,7 @@ public class GameSessionService {
             if (session.isGameOver()) {
                 endGame(session);
             } else {
-                notificationService.updateScore(session);
+                notificationServiceAdapter.updateScore(session);
             }
         }
     }
@@ -164,7 +164,7 @@ public class GameSessionService {
     void endGame(GameSession session) {
         session.getPlayer1().setPlaying(false);
         session.getPlayer2().setPlaying(false);
-        notificationService.endGame(session);
+        notificationServiceAdapter.endGame(session);
         activeGames.values().removeIf(s -> s.equals(session));
         webSocketController.refreshAvailableUsers();
     }
@@ -204,7 +204,7 @@ public class GameSessionService {
         }
 
         // Notify the remaining player about the replacement
-        notificationService.notifyPlayerReplacement(
+        notificationServiceAdapter.notifyPlayerReplacement(
             remainingPlayer.getUsername(),
             "Votre adversaire s'est d�connect�, tu vas continuer la partie contre le serveur (avec sa strat�gie initiale)."
         );

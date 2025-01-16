@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import fr.uga.m1miage.pc.domain.model.*;
-import fr.uga.m1miage.pc.infrastructure.service.NotificationService;
+import fr.uga.m1miage.pc.infrastructure.adapter.NotificationServiceAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,7 +26,7 @@ import fr.uga.m1miage.pc.infrastructure.controller.WebSocketController;
 class GameSessionServiceTest {
 
 	@Mock
-    private NotificationService notificationService;
+    private NotificationServiceAdapter notificationServiceAdapter;
 	
 	@InjectMocks
     private GameSessionService gameSessionService;
@@ -50,7 +50,7 @@ class GameSessionServiceTest {
         connectedPlayers.put(player1.getUsername(), player1);
         connectedPlayers.put(player2.getUsername(), player2);
         
-        gameSessionService = new GameSessionService(notificationService, webSocketController);
+        gameSessionService = new GameSessionService(notificationServiceAdapter, webSocketController);
 
         WebSocketController.connectedPlayers = connectedPlayers;
     }
@@ -62,7 +62,7 @@ class GameSessionServiceTest {
         gameSessionService.handleInvitation(invitation);
         
         assertTrue(gameSessionService.invitationIterationMap.containsKey(player1.getUsername() + "&" + player2.getUsername()));
-        verify(notificationService, times(1)).notifyInvitation(invitation);
+        verify(notificationServiceAdapter, times(1)).notifyInvitation(invitation);
     }
 
     @Test
@@ -71,7 +71,7 @@ class GameSessionServiceTest {
 
         gameSessionService.handleInvitationAnswer(answer);
 
-        verify(notificationService, times(1)).notifyGameStart(player2.getUsername() ,answer.getMessage());
+        verify(notificationServiceAdapter, times(1)).notifyGameStart(player2.getUsername() ,answer.getMessage());
     }
 
     @Test
@@ -80,7 +80,7 @@ class GameSessionServiceTest {
 
         gameSessionService.handleInvitationAnswer(answer);
 
-        verify(notificationService, times(1)).notifyGameStart(player2.getUsername(), answer.getMessage());
+        verify(notificationServiceAdapter, times(1)).notifyGameStart(player2.getUsername(), answer.getMessage());
     }
 
     @Test
@@ -109,7 +109,7 @@ class GameSessionServiceTest {
         session = gameSessionService.findGameSession("player1");
         assertNotNull(session);
         assertEquals(1, session.getCurrentIteration());
-        verify(notificationService, times(1)).updateScore(session);
+        verify(notificationServiceAdapter, times(1)).updateScore(session);
     }
     
     @Test
@@ -140,7 +140,7 @@ class GameSessionServiceTest {
         assertEquals("Ordinateur", createdSession.getPlayer2().getUsername());
         assertTrue(createdSession.getPlayer2().isServer());
 
-        verify(notificationService, times(1)).notifyGameStart(eq("player1"), anyString());
+        verify(notificationServiceAdapter, times(1)).notifyGameStart(eq("player1"), anyString());
     }
 
     @Test

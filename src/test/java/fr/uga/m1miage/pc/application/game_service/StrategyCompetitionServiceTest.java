@@ -1,9 +1,8 @@
 package fr.uga.m1miage.pc.application.game_service;
 
-import fr.uga.m1miage.pc.application.game_service.StrategyCompetitionService;
 import fr.uga.m1miage.pc.domain.model.Decision;
 import fr.uga.m1miage.pc.domain.utils.UtilFunctions;
-import fr.uga.m1miage.pc.infrastructure.service.NotificationService;
+import fr.uga.m1miage.pc.infrastructure.adapter.NotificationServiceAdapter;
 import fr.uga.strats.g8.enums.TypeAction;
 
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.verify;
 class StrategyCompetitionServiceTest {
 
     @Mock
-    private NotificationService notificationService;
+    private NotificationServiceAdapter notificationServiceAdapter;
 
     @InjectMocks
     private StrategyCompetitionService strategyCompetitionService;
@@ -39,7 +38,7 @@ class StrategyCompetitionServiceTest {
         strategyCompetitionService.startCompetition(strategyGroupe210, strategyGroupe18, iterations, sessionId);
 
         // Assert
-        verify(notificationService).sendCompetitionResult(anyString(), anyString());
+        verify(notificationServiceAdapter).sendCompetitionResult(anyString(), anyString());
     }
 
     @Test

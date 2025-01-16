@@ -1,4 +1,4 @@
-package fr.uga.m1miage.pc.infrastructure.service;
+package fr.uga.m1miage.pc.infrastructure.adapter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,13 +15,13 @@ import fr.uga.m1miage.pc.domain.model.Invitation;
 import fr.uga.m1miage.pc.domain.model.Player;
 import fr.uga.m1miage.pc.domain.model.Result;
 
-class NotificationServiceTest {
+class NotificationServiceAdapterTest {
 
     @Mock
     private SimpMessagingTemplate messagingTemplate;
 
     @InjectMocks
-    private NotificationService notificationService;
+    private NotificationServiceAdapter notificationServiceAdapter;
 
     private Player fromPlayer;
     private Player toPlayer;
@@ -42,7 +42,7 @@ class NotificationServiceTest {
 
     @Test
     void testNotifyInvitation() {
-        notificationService.notifyInvitation(invitation);
+        notificationServiceAdapter.notifyInvitation(invitation);
         verify(messagingTemplate).convertAndSendToUser(
             eq(invitation.getToUsername()),
             eq("/queue/invitation"),
@@ -55,7 +55,7 @@ class NotificationServiceTest {
         WebSocketController.connectedPlayers.put(fromPlayer.getUsername(), fromPlayer);
 
         String message = "Game between Alice and the server started";
-        notificationService.notifyGameStart(fromPlayer.getUsername(), message);
+        notificationServiceAdapter.notifyGameStart(fromPlayer.getUsername(), message);
 
         verify(messagingTemplate).convertAndSendToUser(
             eq("Alice"),
@@ -66,7 +66,7 @@ class NotificationServiceTest {
 
     @Test
     void testUpdateScore() {
-        notificationService.updateScore(gameSession);
+        notificationServiceAdapter.updateScore(gameSession);
 
         Result expectedResult = new Result();
         expectedResult.setScore("Alice(0) - Bob(0)");
@@ -88,7 +88,7 @@ class NotificationServiceTest {
 
     @Test
     void testEndGame() {
-        notificationService.endGame(gameSession);
+        notificationServiceAdapter.endGame(gameSession);
 
         Result expectedResult = new Result();
         expectedResult.setScore("Alice(0) - Bob(0)");
